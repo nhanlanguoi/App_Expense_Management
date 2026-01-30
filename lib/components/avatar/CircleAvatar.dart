@@ -6,13 +6,14 @@ class Circleavatar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      alignment: Alignment.topLeft,
+      padding: const EdgeInsets.only(top: 10),
       child: CircleAvatar(
-
         backgroundColor: Colors.white,
-        radius: 29,
+        radius: 24,
         child: CircleAvatar(
           backgroundColor: Colors.red,
-          radius: 19,
+          radius: 22,
           child: Icon(Icons.person),
         )
       ),
