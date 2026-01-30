@@ -18,7 +18,11 @@ class _MyHomeState extends State<MyHome> {
         toolbarHeight: 150,
         leadingWidth: 50,
         backgroundColor: Colors.blueAccent,
-
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(20)
+          )
+        ),
         leading: Container(
           alignment: Alignment.topLeft,
           padding: const EdgeInsets.only(left: 10, top: 10),
