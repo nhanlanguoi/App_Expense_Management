@@ -5,12 +5,16 @@ class Circleavatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return Container(
       child: CircleAvatar(
 
-        backgroundColor: Colors.greenAccent[400],
-        radius: 100,
-        child: Text("Nhan"),
+        backgroundColor: Colors.white,
+        radius: 29,
+        child: CircleAvatar(
+          backgroundColor: Colors.red,
+          radius: 19,
+          child: Icon(Icons.person),
+        )
       ),
     );
   }
