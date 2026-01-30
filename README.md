@@ -1,3 +1,5 @@
+
+```
 lib/
 ├── assets/                 # (Tùy chọn) Chứa ảnh, fonts, json nếu khai báo trong pubspec.yaml
 ├── components/             # Các widget nhỏ dùng chung (Button, Input, Sidebar...) - Bạn đang làm đúng!
@@ -24,3 +26,4 @@ lib/
 │   └── local_storage.dart
 ├── providers/ (hoặc blocs) # Quản lý trạng thái (State Management)
 └── main.dart               # File chạy chính
+```
