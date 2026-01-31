@@ -22,13 +22,13 @@ class _MyHomeState extends State<MyHome> {
       body: Stack(
         children: [
           Container(
-            height: 220,
+            height: 200,
             width: double.infinity,
             decoration: const BoxDecoration(
               color: Colors.blueAccent,
               borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(10),
-                bottomRight: Radius.circular(100),
+                bottomLeft: Radius.circular(30),
+                bottomRight: Radius.circular(30),
               ),
             ),
           ),
@@ -44,6 +44,12 @@ class _MyHomeState extends State<MyHome> {
                 ],
               ),
             ),
+          ),
+          Positioned(
+            top: 90,
+            left: 20,
+            right: 20,
+            child: const Cardgeneraltotal(),
           ),
         ],
       ),

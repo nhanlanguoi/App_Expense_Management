@@ -7,15 +7,30 @@ class Cardgeneraltotal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.red,
-      width: 200,
+      height: 100,
+      decoration: BoxDecoration(
+        color: Colors.red,
+        borderRadius: BorderRadius.circular(20),
+
+      ),
       child: Column(
         children: [
           Text("Đã chi tiêu"),
           Text("3254325"),
           Container(),
           Container(
-            child: Row(children: [Text("Còn lại:"), Text("4553235241")]),
+            child: Row(
+              children: [
+                Container(
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 10),
+                    child: Row(
+                      children: [Text("Còn lại:"), Text("4553235241")],
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),
