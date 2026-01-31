@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-
-// Import các component của bạn
 import 'package:expense_management/components/avatar/CircleAvatar.dart';
 import 'package:expense_management/components/avatar/InfoAvatar.dart';
 import 'package:expense_management/components/cardshowvalue/CardGeneralTotal.dart';
+import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
+import 'package:expense_management/components/bottomnavbar/Bottomnavbar.dart';
 
 class MyHome extends StatefulWidget {
   const MyHome({super.key});
@@ -53,6 +53,17 @@ class _MyHomeState extends State<MyHome> {
           ),
         ],
       ),
+
+
+      bottomNavigationBar: Bottomnavbar(
+        listicon: [
+          Icons.home,
+          Icons.analytics_outlined,
+          Icons.history_sharp,
+          Icons.person,
+        ],
+      ),
     );
+
   }
 }
