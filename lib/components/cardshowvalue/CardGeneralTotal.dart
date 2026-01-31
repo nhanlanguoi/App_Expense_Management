@@ -11,25 +11,26 @@ class Cardgeneraltotal extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.red,
         borderRadius: BorderRadius.circular(20),
-
       ),
       child: Column(
         children: [
           Text("Đã chi tiêu"),
           Text("3254325"),
-          Container(),
+          SizedBox(
+            width: double.infinity,
+            height: 30,
+            child: Padding(
+              padding: EdgeInsets.all(10),
+              child: Container(
+                width: double.infinity,
+                color: Colors.green,
+              ),
+            ),
+          ),
           Container(
-            child: Row(
-              children: [
-                Container(
-                  child: Padding(
-                    padding: EdgeInsets.only(left: 10),
-                    child: Row(
-                      children: [Text("Còn lại:"), Text("4553235241")],
-                    ),
-                  ),
-                ),
-              ],
+            child: Padding(
+              padding: EdgeInsets.only(left: 10),
+              child: Row(children: [Text("Còn lại:"), Text("4553235241")]),
             ),
           ),
         ],
