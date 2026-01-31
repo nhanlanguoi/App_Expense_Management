@@ -53,7 +53,16 @@ class _MyHomeState extends State<MyHome> {
           ),
         ],
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          print("Bấm nút thêm mới!");
+        },
+        backgroundColor: Colors.blueAccent,
+        shape: const CircleBorder(),
+        child: const Icon(Icons.add, color: Colors.white ,size: 30,),
+      ),
 
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
 
       bottomNavigationBar: Bottomnavbar(
         listicon: [
