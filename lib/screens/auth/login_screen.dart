@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:expense_management/components/inputs/textbox.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -28,12 +28,14 @@ class _LoginScreenState extends State<LoginScreen> {
             key: _formKey,
             child: Column(
               children: [
-                TextFormField(
+                textbox(
+                  label: 'Email hoặc Số điện thoại',
                   controller: _usernameController,
-                  decoration: const InputDecoration(
-                    labelText: 'Tên đăng nhập',
+                  prefixIcon: Icon(
+                    Icons.mail,
+                    color: Colors.grey,
                   ),
-                ),
+                  hintText: 'moi@example.com',),
                 TextFormField(
                   controller: _passwordController,
                   obscureText: _isObscure,
