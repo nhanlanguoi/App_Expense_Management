@@ -23,7 +23,7 @@ class Cardgeneraltotal extends StatelessWidget {
       height: 100,
       padding: EdgeInsets.all(5),
       decoration: BoxDecoration(
-        color: Colors.grey,
+        color: Colors.grey.withValues(alpha: 0.4),
         borderRadius: BorderRadius.circular(20),
       ),
 
@@ -43,7 +43,7 @@ class Cardgeneraltotal extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  "3254325",
+                  "3.254.325 đ",
                   style: TextStyle(
                     fontSize: kichthuocmain2 ?? 30,
                     fontWeight: FontWeight.bold,
@@ -64,13 +64,13 @@ class Cardgeneraltotal extends StatelessWidget {
                     child: Row(
                       children: [
                         Icon(Icons.circle ,size: 10,color: Colors.green,),
-                        SizedBox(width: 5,),
+                        SizedBox(width: 6,),
                         Text(
                           "Đã tiêu:",
                           style: TextStyle(color: colormain ?? Colors.white),
                         ),
                         Text(
-                          "4553235241",
+                          "4.553.235.241 đ",
                           style: TextStyle(color: colormain ?? Colors.white),
                         ),
                       ],
@@ -81,14 +81,14 @@ class Cardgeneraltotal extends StatelessWidget {
                     child: Row(
                       children: [
                         Icon(Icons.circle ,size: 10,color: Colors.red,),
-                        SizedBox(width: 5,),
+                        SizedBox(width: 6,),
                         Text(
                           "Đã tiêu:",
                           style: TextStyle(color: colormain ?? Colors.white),
                         ),
 
                         Text(
-                          "4553235241",
+                          "4.553.235.241 đ",
                           style: TextStyle(color: colormain ?? Colors.white),
                         ),
                       ],
