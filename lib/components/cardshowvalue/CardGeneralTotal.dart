@@ -7,6 +7,9 @@ class Cardgeneraltotal extends StatelessWidget {
   final double? kichthuocphu11;
   final double? kichthuocphu12;
   final Color? colormain;
+  final String? Tongsodu;
+  final String? Tietkiem;
+  final String? Chitieu;
 
   const Cardgeneraltotal({
     super.key,
@@ -15,6 +18,9 @@ class Cardgeneraltotal extends StatelessWidget {
     this.kichthuocphu11,
     this.kichthuocphu12,
     this.colormain,
+    this.Tongsodu,
+    this.Tietkiem,
+    this.Chitieu,
   });
 
   @override
@@ -43,7 +49,7 @@ class Cardgeneraltotal extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  "3.254.325 đ",
+                  Tongsodu ?? "3.254.325" + " ₫",
                   style: TextStyle(
                     fontSize: kichthuocmain2 ?? 30,
                     fontWeight: FontWeight.bold,
@@ -63,14 +69,14 @@ class Cardgeneraltotal extends StatelessWidget {
                     padding: EdgeInsets.only(),
                     child: Row(
                       children: [
-                        Icon(Icons.circle ,size: 10,color: Colors.green,),
-                        SizedBox(width: 6,),
+                        Icon(Icons.circle, size: 10, color: Colors.green),
+                        SizedBox(width: 6),
                         Text(
-                          "Đã tiêu:",
+                          "Tiết kiệm: ",
                           style: TextStyle(color: colormain ?? Colors.white),
                         ),
                         Text(
-                          "4.553.235.241 đ",
+                          Tietkiem ??"4.553.235.241" + " ₫",
                           style: TextStyle(color: colormain ?? Colors.white),
                         ),
                       ],
@@ -80,15 +86,15 @@ class Cardgeneraltotal extends StatelessWidget {
                     padding: EdgeInsets.only(left: 10),
                     child: Row(
                       children: [
-                        Icon(Icons.circle ,size: 10,color: Colors.red,),
-                        SizedBox(width: 6,),
+                        Icon(Icons.circle, size: 10, color: Colors.red),
+                        SizedBox(width: 6),
                         Text(
-                          "Đã tiêu:",
+                          "Đã tiêu: ",
                           style: TextStyle(color: colormain ?? Colors.white),
                         ),
 
                         Text(
-                          "4.553.235.241 đ",
+                          Chitieu ?? "4.553.235.241" + " ₫",
                           style: TextStyle(color: colormain ?? Colors.white),
                         ),
                       ],

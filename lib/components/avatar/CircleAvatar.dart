@@ -9,10 +9,10 @@ class Circleavatar extends StatelessWidget {
       alignment: Alignment.topLeft,
       padding: const EdgeInsets.only(top: 10),
       child: CircleAvatar(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.black,
         radius: 24,
         child: CircleAvatar(
-          backgroundColor: Colors.red,
+          backgroundColor: Colors.white,
           radius: 22,
           child: Icon(Icons.person),
         )
