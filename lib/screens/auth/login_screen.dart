@@ -1,3 +1,4 @@
+import 'package:expense_management/components/inputs/passwordbox.dart';
 import 'package:flutter/material.dart';
 import 'package:expense_management/components/inputs/textbox.dart';
 
@@ -36,28 +37,15 @@ class _LoginScreenState extends State<LoginScreen> {
                     color: Colors.grey,
                   ),
                   hintText: 'moi@example.com',),
-                TextFormField(
+                passwordbox(
+                  label: "Mật khẩu",
                   controller: _passwordController,
-                  obscureText: _isObscure,
-                  decoration: InputDecoration(
-                    labelText: 'Mật khẩu',
-                    // prefixIcon: Icon(Icons.visibility_off),
-                    suffixIcon: IconButton(
-                      icon: Icon(_isObscure ? Icons.visibility : Icons.visibility_off) ,
-                      onPressed: () {
-                        setState(() {
-                          _isObscure = !_isObscure;
-                        });
-
-                      },
-
-                    ),
+                  hintText: "●●●●●●●●●",
+                  prefixIcon: Icon(
+                    Icons.lock,
+                    color: Colors.grey,
                   ),
                 ),
-                SizedBox(
-                  width: 50,
-                  // child: ,
-                )
               ],
             )
         ),
