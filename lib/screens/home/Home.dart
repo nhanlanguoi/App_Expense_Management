@@ -19,38 +19,48 @@ class _MyHomeState extends State<MyHome> {
 
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Stack(
+      body: ListView(
+        padding: EdgeInsets.zero,
         children: [
-          Container(
-            height: 200,
-            width: double.infinity,
-            decoration: const BoxDecoration(
-              color: Colors.blueAccent,
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(30),
-                bottomRight: Radius.circular(30),
-              ),
+          //Header
+          SizedBox(
+            height: 280,
+            child: Stack(
+              children: [
+                Container(
+                  height: 200,
+                  width: double.infinity,
+                  decoration: const BoxDecoration(
+                    color: Colors.blueAccent,
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(30),
+                      bottomRight: Radius.circular(30),
+                    ),
+                  ),
+                ),
+                SafeArea(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Circleavatar(),
+                        const SizedBox(width: 15),
+                        const CardInfo(),
+                      ],
+                    ),
+                  ),
+                ),
+                Positioned(
+                  top: 90,
+                  left: 20,
+                  right: 20,
+                  child: const Cardgeneraltotal(),
+                ),
+              ],
             ),
           ),
-          SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Circleavatar(),
-                  const SizedBox(width: 15),
-                  const CardInfo(),
-                ],
-              ),
-            ),
-          ),
-          Positioned(
-            top: 90,
-            left: 20,
-            right: 20,
-            child: const Cardgeneraltotal(),
-          ),
+
         ],
       ),
       floatingActionButton: FloatingActionButton(
@@ -75,4 +85,6 @@ class _MyHomeState extends State<MyHome> {
     );
 
   }
+
+
 }
