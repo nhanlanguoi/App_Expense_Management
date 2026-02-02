@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:expense_management/components/avatar/CircleAvatar.dart';
 import 'package:expense_management/components/avatar/InfoAvatar.dart';
 import 'package:expense_management/components/cardshowvalue/CardGeneralTotal.dart';
-import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:expense_management/components/bottomnavbar/Bottomnavbar.dart';
 import 'package:expense_management/components/cardshowvalue/CardManagerExpense.dart';
 

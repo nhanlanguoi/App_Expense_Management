@@ -26,8 +26,7 @@ class Cardgeneraltotal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 100,
-      padding: EdgeInsets.all(5),
+      padding: EdgeInsets.all(15),
       decoration: BoxDecoration(
         color: Colors.grey.withValues(alpha: 0.4),
         borderRadius: BorderRadius.circular(20),
@@ -35,6 +34,7 @@ class Cardgeneraltotal extends StatelessWidget {
 
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
         children: [
           Padding(
             padding: EdgeInsetsGeometry.only(left: 10, top: 5),
@@ -55,6 +55,7 @@ class Cardgeneraltotal extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                     color: colormain ?? Colors.white,
                   ),
+                  overflow: TextOverflow.ellipsis,
                 ),
               ],
             ),
@@ -65,37 +66,40 @@ class Cardgeneraltotal extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Padding(
-                    padding: EdgeInsets.only(),
+                  Expanded(
                     child: Row(
                       children: [
-                        Icon(Icons.circle, size: 10, color: Colors.green),
-                        SizedBox(width: 6),
-                        Text(
-                          "Tiết kiệm: ",
-                          style: TextStyle(color: colormain ?? Colors.white),
-                        ),
-                        Text(
-                          Tietkiem ??"4.553.235.241" + " ₫",
-                          style: TextStyle(color: colormain ?? Colors.white),
+                        const Icon(Icons.circle, size: 10, color: Colors.green),
+                        const SizedBox(width: 6),
+                        const Text("Tiết kiệm: ", style: TextStyle(color: Colors.white, fontSize: 12)),
+
+                        Flexible(
+                          child: Text(
+                            Tietkiem ?? "4.553.235.241 ₫",
+                            style: TextStyle(color: colormain ?? Colors.white, fontWeight: FontWeight.bold),
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
                       ],
                     ),
                   ),
-                  Padding(
-                    padding: EdgeInsets.only(left: 10),
-                    child: Row(
-                      children: [
-                        Icon(Icons.circle, size: 10, color: Colors.red),
-                        SizedBox(width: 6),
-                        Text(
-                          "Đã tiêu: ",
-                          style: TextStyle(color: colormain ?? Colors.white),
-                        ),
 
-                        Text(
-                          Chitieu ?? "4.553.235.241" + " ₫",
-                          style: TextStyle(color: colormain ?? Colors.white),
+                  const SizedBox(width: 10),
+
+
+                  Expanded(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        const Icon(Icons.circle, size: 10, color: Colors.red),
+                        const SizedBox(width: 6),
+                        const Text("Đã tiêu: ", style: TextStyle(color: Colors.white, fontSize: 12)),
+                        Flexible(
+                          child: Text(
+                            Chitieu ?? "4.553.235.241 ₫",
+                            style: TextStyle(color: colormain ?? Colors.white, fontWeight: FontWeight.bold),
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
                       ],
                     ),

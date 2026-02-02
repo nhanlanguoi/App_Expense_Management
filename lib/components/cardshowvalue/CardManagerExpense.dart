@@ -93,7 +93,7 @@ class _CardmanagerexpenseState extends State<Cardmanagerexpense> {
                       ),
                     ),
                     Text(
-                      (widget.percen.toString() ??"23") + "%",
+                      "${((widget.percen ?? 0.23) * 100).toInt()}%",
                       style: TextStyle(fontSize: 14, color: Colors.red),
                     ),
                   ],
