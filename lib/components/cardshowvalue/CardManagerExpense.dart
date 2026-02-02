@@ -1,7 +1,22 @@
 import 'package:flutter/material.dart';
 
 class Cardmanagerexpense extends StatefulWidget {
-  const Cardmanagerexpense({super.key});
+  final String? title;
+  final String? total;
+  final String? allmoney;
+  final double? percen;
+  final IconData? Icon;
+  final Color? Iconcolor;
+
+
+  const Cardmanagerexpense({
+    super.key,
+    this.title,
+    this.total,
+    this.allmoney,
+    this.percen,
+    this.Icon, this.Iconcolor,
+  });
 
   @override
   State<Cardmanagerexpense> createState() => _CardmanagerexpenseState();
@@ -12,8 +27,17 @@ class _CardmanagerexpenseState extends State<Cardmanagerexpense> {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-          color: Colors.green,
-        borderRadius: BorderRadius.circular(15)
+        color: Colors.grey[150],
+        borderRadius: BorderRadius.circular(15),
+        border: Border.all(color: Colors.grey.withValues(alpha: 0.1), width: 2),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.05),
+            blurRadius: 20,
+            spreadRadius: 10,
+            offset: const Offset(4, 4),
+          ),
+        ],
       ),
 
       child: Column(
@@ -27,12 +51,16 @@ class _CardmanagerexpenseState extends State<Cardmanagerexpense> {
                   children: [
                     Container(
                       decoration: BoxDecoration(
-                        color: Colors.red,
+                        color:widget.Iconcolor?.withValues(alpha: 0.2) ?? Colors.orange[200],
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Padding(
                         padding: EdgeInsets.all(5),
-                        child: Icon(Icons.fastfood, size: 30),
+                        child: Icon(
+                          widget.Icon ?? Icons.fastfood,
+                          size: 30,
+                          color: widget.Iconcolor??Colors.orange,
+                        ),
                       ),
                     ),
                     SizedBox(width: 3),
@@ -40,14 +68,14 @@ class _CardmanagerexpenseState extends State<Cardmanagerexpense> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Ăn uống",
+                          widget.title??"Ăn uống",
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 16,
                           ),
                         ),
                         Text(
-                          "15" + "giao dịch",
+                          (widget.total??"15") + " giao dịch",
                           style: TextStyle(fontSize: 14),
                         ),
                       ],
@@ -58,13 +86,16 @@ class _CardmanagerexpenseState extends State<Cardmanagerexpense> {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(
-                      "232,43243324.234",
+                      widget.allmoney ??"232,43243324.234",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
                       ),
                     ),
-                    Text("23%", style: TextStyle(fontSize: 14,color: Colors.red)),
+                    Text(
+                      (widget.percen.toString() ??"23") + "%",
+                      style: TextStyle(fontSize: 14, color: Colors.red),
+                    ),
                   ],
                 ),
               ],
@@ -80,10 +111,9 @@ class _CardmanagerexpenseState extends State<Cardmanagerexpense> {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(10),
               child: LinearProgressIndicator(
-
-                value: 0.4, 
+                value: widget.percen ?? 0.4,
                 backgroundColor: Colors.grey[200],
-                color: Colors.orange,
+                color: widget.Iconcolor ?? Colors.orange,
                 minHeight: 8,
               ),
             ),

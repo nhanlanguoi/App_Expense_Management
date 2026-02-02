@@ -70,7 +70,18 @@ class _MyHomeState extends State<MyHome> {
             child: Column(
               spacing: 10,
               children: [
-                Container(color: Colors.red, height: 30),
+                const Cardmanagerexpense(
+                  title: "Chơi nhởi",
+                  Icon: Icons.gamepad_outlined,
+                  allmoney: "2.324.223.234",
+                  percen: 0.13,
+                  total: "25",
+                  Iconcolor: Colors.green,
+                ),
+                const Cardmanagerexpense(),
+                const Cardmanagerexpense(),
+                const Cardmanagerexpense(),
+                const Cardmanagerexpense(),
                 const Cardmanagerexpense(),
               ],
             ),
