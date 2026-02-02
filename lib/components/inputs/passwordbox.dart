@@ -43,10 +43,10 @@ class _passwordboxState extends State<passwordbox> {
           Text(
             widget.label!,
             style: widget.labelStyle ?? const TextStyle(
-              fontSize: 16,
+              fontSize: 15,
               fontWeight: FontWeight.normal,
               color: Colors.black,
-              fontFamily: 'Roboto',
+              fontFamily: 'BeVietnamPro',
             ),
           ),
         SizedBox(height: widget.labelGap ),

@@ -45,10 +45,10 @@ class _textboxState extends State<textbox> {
           Text(
             widget.label!,
             style: widget.labelStyle ?? const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.normal,
+              fontSize: 15,
+              fontWeight: FontWeight.w600,
               color: Colors.black,
-              fontFamily: 'Roboto',
+              fontFamily: 'BeVietnamPro',
             ),
           ),
         SizedBox(height: widget.labelGap ?? 10),

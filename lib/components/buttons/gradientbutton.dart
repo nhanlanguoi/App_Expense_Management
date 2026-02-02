@@ -133,7 +133,7 @@ class _gradientbuttonState extends State<gradientbutton> {
           style: widget.labelStyle ?? TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.bold,
-            fontFamily: 'Roboto',
+            fontFamily: 'BeVietnamPro',
             color: color,
           ),
         ),

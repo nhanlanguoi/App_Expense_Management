@@ -1,8 +1,10 @@
 import 'package:expense_management/components/buttons/custombutton.dart';
 import 'package:expense_management/components/inputs/passwordbox.dart';
+import 'package:expense_management/components/logo.dart';
 import 'package:flutter/material.dart';
 import 'package:expense_management/components/buttons/gradientbutton.dart';
 import 'package:expense_management/components/inputs/textbox.dart';
+import 'package:expense_management/components/gradientbackground.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -23,87 +25,155 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+
+    final screenHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
-      appBar: AppBar(title: const Text("Đăng nhập hệ thống")),
-      body: Padding(
-        padding: const EdgeInsets.all(10),
-        child: Form(
-            key: _formKey,
+      body: gradientbackground(
+        child: SingleChildScrollView(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(minHeight: screenHeight),
             child: Column(
               children: [
-                textbox(
-                  label: 'Email hoặc Số điện thoại',
-                  controller: _usernameController,
-                  prefixIcon: Icon(
-                    Icons.mail,
-                    color: Colors.grey,
-                  ),
-                  hintText: 'moi@example.com',),
-                passwordbox(
-                  label: "Mật khẩu",
-                  controller: _passwordController,
-                  hintText: "●●●●●●●●●",
-                  prefixIcon: Icon(
-                    Icons.lock,
-                    color: Colors.grey,
-                  ),
+                const Padding(
+                  padding: EdgeInsets.only(top: 80),
+                  child: logo(
+                      icon: Icons.account_balance_wallet,
+                      size: 100,
+                      iconsize: 40,
+                      bordersize: 2),
                 ),
-                custombutton(
-                    label: "Đăng nhập",
-                    backgroundColor: Color(0xFF7B3FE4),
-                    labelStyle: TextStyle(
-                      fontSize: 20,
+                const Padding(
+                    padding: EdgeInsets.only(top: 30),
+                    child: Text("Xin chào!", style: TextStyle(
+                      fontSize: 45,
                       fontWeight: FontWeight.bold,
-                      fontFamily: 'Roboto',
-                      color: Colors.white,
-                    ),
-                    isLoading: _isLoading,
-                    height: 60,
-                    borderRadius: 40,
-                    width: 300,
-                  onPressed: () async {
-                      setState(() {
-                        _isLoading = true;
-                      });
-                      await Future.delayed(const Duration(seconds: 2));
-                      setState(() {
-                        _isLoading = false;
-                      });
-
-                  },
+                      fontFamily: 'BeVietnamPro',
+                      height: 1.1,
+                      color: Colors.black,
+                    ),)
                 ),
-                gradientbutton(
-                  label: "Đăng nhập",
-                  gradient: LinearGradient(
-                      colors: [
-                        Color(0xFF7B3FE4),
-                        Color(0xFF5A2DBD),
-                      ]
-                  ),
+                const Padding(padding: EdgeInsets.only(top: 9),
+                  child: Text("Đăng nhập để quản lý chi tiêu của bạn", style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.normal,
+                    fontFamily: 'BeVietnamPro',
+                    color: Color(0xFF6C7381),
+                  )),
+                ),
 
-                  labelStyle: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'Roboto',
-                    color: Colors.white,
-                  ),
-                  isLoading: _isLoading,
-                  height: 60,
-                  borderRadius: 40,
-                  width: 300,
-                  onPressed: () async {
-                    setState(() {
-                      _isLoading = true;
-                    });
-                    await Future.delayed(const Duration(seconds: 2));
-                    setState(() {
-                      _isLoading = false;
-                    });
+                // --- PHẦN FORM ---
+                Padding(
+                  padding: const EdgeInsets.only(top: 50, bottom: 50),
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 30),
+                    padding: const EdgeInsets.all(35),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.rectangle,
+                      borderRadius: BorderRadius.circular(30),
+                      border: Border.all(
+                        color: Colors.grey.shade200,
+                        width: 1,
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.15),
+                          blurRadius: 20,
+                          spreadRadius: 2,
+                          offset: const Offset(0, 10),
+                        ),
+                      ],
+                    ),
+                    child: Form(
+                        key: _formKey,
+                        child: Column(
+                          children: [
+                            textbox(
+                              keyboardType: TextInputType.emailAddress,
+                              label: 'Email hoặc Số điện thoại',
+                              controller: _usernameController,
+                              prefixIcon: const Icon(Icons.mail, color: Colors.grey),
+                              hintText: 'moi@example.com',
+                            ),
 
-                  },
+                            const SizedBox(height: 20),
+                            Padding(
+                                padding: const EdgeInsets.only(top: 10),
+                              child: Row(
+                                children: [
+                                  const Text(
+                                  "Mật khẩu",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                    fontFamily: "BeVietnamPro",
+                                    color: Colors.black,
+                                  ),
+                                ),
+                                  const Spacer(),
+                                  custombutton(
+                                      label: 'Quên mật khẩu?',
+                                      isOutline: true,
+                                      backgroundColor: Colors.transparent,
+                                      textColor: Colors.purple,
+                                      labelStyle: const TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600,
+                                        fontFamily: "BeVietnamPro",
+                                        color: Color(0xFF7B3FE4)
+                                      ),
+                                      height: 34,
+                                      borderRadius: 18,
+                                      width: 140),
+                                ],
+                              ),
+                            ),
+                            passwordbox(
+                              controller: _passwordController,
+                              hintText: "●●●●●●●●●",
+                              prefixIcon: const Icon(Icons.lock, color: Colors.grey),
+                            ),
+
+                            const SizedBox(height: 30),
+
+                            gradientbutton(
+                              label: "Đăng nhập",
+                              gradient: const LinearGradient(
+                                  colors: [Color(0xFF7B3FE4), Color(0xFF5A2DBD)]
+                              ),
+                              labelStyle: const TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'BeVietnamPro',
+                                color: Colors.white,
+                              ),
+                              isLoading: _isLoading,
+                              height: 55,
+                              borderRadius: 35,
+                              width: double.infinity,
+                              onPressed: () async {
+                                if (_isLoading) return;
+                                setState(() {
+                                  _isLoading = true;
+                                });
+
+                                await Future.delayed(const Duration(seconds: 2));
+                                if (mounted) {
+                                  setState(() {
+                                    _isLoading = false;
+                                  });
+                                }
+                              },
+                            ),
+                          ],
+                        )
+                    ),
+                  ),
                 ),
               ],
-            )
+            ),
+          ),
         ),
       ),
     );
