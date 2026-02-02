@@ -67,8 +67,13 @@ class _MyHomeState extends State<MyHome> {
           //Main
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 10),
-            child: Column(children: [Container(color: Colors.red, height: 30),
-            const Cardmanagerexpense()]),
+            child: Column(
+              spacing: 10,
+              children: [
+                Container(color: Colors.red, height: 30),
+                const Cardmanagerexpense(),
+              ],
+            ),
           ),
         ],
       ),
