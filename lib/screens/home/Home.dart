@@ -4,6 +4,7 @@ import 'package:expense_management/components/avatar/InfoAvatar.dart';
 import 'package:expense_management/components/cardshowvalue/CardGeneralTotal.dart';
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:expense_management/components/bottomnavbar/Bottomnavbar.dart';
+import 'package:expense_management/components/cardshowvalue/CardManagerExpense.dart';
 
 class MyHome extends StatefulWidget {
   const MyHome({super.key});
@@ -24,7 +25,7 @@ class _MyHomeState extends State<MyHome> {
         children: [
           //Header
           SizedBox(
-            height: 280,
+            height: 230,
             child: Stack(
               children: [
                 Container(
@@ -40,7 +41,10 @@ class _MyHomeState extends State<MyHome> {
                 ),
                 SafeArea(
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 20,
+                    ),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -60,7 +64,12 @@ class _MyHomeState extends State<MyHome> {
               ],
             ),
           ),
-
+          //Main
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 10),
+            child: Column(children: [Container(color: Colors.red, height: 30),
+            const Cardmanagerexpense()]),
+          ),
         ],
       ),
       floatingActionButton: FloatingActionButton(
@@ -69,7 +78,7 @@ class _MyHomeState extends State<MyHome> {
         },
         backgroundColor: Colors.blueAccent,
         shape: const CircleBorder(),
-        child: const Icon(Icons.add, color: Colors.white ,size: 30,),
+        child: const Icon(Icons.add, color: Colors.white, size: 30),
       ),
 
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -83,8 +92,5 @@ class _MyHomeState extends State<MyHome> {
         ],
       ),
     );
-
   }
-
-
 }
