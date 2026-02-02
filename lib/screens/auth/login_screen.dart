@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:expense_management/components/buttons/gradientbutton.dart';
 import 'package:expense_management/components/inputs/textbox.dart';
 import 'package:expense_management/components/gradientbackground.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -36,7 +37,7 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Column(
               children: [
                 const Padding(
-                  padding: EdgeInsets.only(top: 80),
+                  padding: EdgeInsets.only(top: 70),
                   child: logo(
                       icon: Icons.account_balance_wallet,
                       size: 100,
@@ -44,7 +45,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       bordersize: 2),
                 ),
                 const Padding(
-                    padding: EdgeInsets.only(top: 30),
+                    padding: EdgeInsets.only(top: 20),
                     child: Text("Xin chào!", style: TextStyle(
                       fontSize: 45,
                       fontWeight: FontWeight.bold,
@@ -64,7 +65,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                 // --- PHẦN FORM ---
                 Padding(
-                  padding: const EdgeInsets.only(top: 50, bottom: 50),
+                  padding: const EdgeInsets.only(top: 30, bottom: 20),
                   child: Container(
                     margin: const EdgeInsets.symmetric(horizontal: 30),
                     padding: const EdgeInsets.all(35),
@@ -135,7 +136,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               prefixIcon: const Icon(Icons.lock, color: Colors.grey),
                             ),
 
-                            const SizedBox(height: 30),
+                            const SizedBox(height: 20),
 
                             gradientbutton(
                               label: "Đăng nhập",
@@ -166,10 +167,102 @@ class _LoginScreenState extends State<LoginScreen> {
                                 }
                               },
                             ),
+                            Padding(padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 30),
+                              child:Row(
+                                children: [
+                                  Expanded(child: Divider(color: Colors.grey[300], thickness: 1,)),
+                                  //text
+                                   Padding(
+                                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                                      child: Text(
+                                        "Hoặc tiếp tục với",
+                                        style: TextStyle(
+                                        color: Colors.grey.shade600,
+                                          fontFamily: 'BeVietnamPro',
+                                          fontSize: 14,
+                                        ),
+                                      ),
+                                   ),
+                                  Expanded(child: Divider(color: Colors.grey[300], thickness: 1,)),
+                                ],
+                              )
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                  custombutton(
+                                      label: "Google",
+                                      height: 50,
+                                      borderRadius: 30,
+                                      width:120,
+                                    isOutline: true,
+                                    backgroundColor: Color(0xFFDB4437),
+                                    textColor: Color(0xFF1F1F1F),
+                                    icon: const Icon(
+                                      FontAwesomeIcons.google,
+                                      color: Color(0xFFDB4437),
+                                      size: 20,
+                                    ),
+                                  ),
+                                custombutton(
+                                  label: "Facebook",
+                                  labelStyle: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: 'BeVietnamPro',
+                                    color: const Color(0xFF1877F2)
+                                  ),
+                                  height: 50,
+                                  borderRadius: 30,
+                                  width: 120,
+                                  isOutline: true,
+                                  backgroundColor: const Color(0xFF1877F2),
+                                  textColor: Colors.black,
+                                  icon: const Icon(
+                                    FontAwesomeIcons.facebook,
+                                    color: Color(0xFF1877F2),
+                                    size: 20,
+                                  ),
+                                ),
+
+                              ],
+                            ),
                           ],
                         )
                     ),
                   ),
+                ),
+                Padding(
+                    padding: const EdgeInsets.only(top:1),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        "Chưa có tài khoản?",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.normal,
+                          fontFamily: 'BeVietnamPro',
+                        ),
+                      ),
+                      custombutton(
+                          label: 'Đăng ký ngay',
+                          isOutline: true,
+                          backgroundColor: Colors.transparent,
+                          textColor: Colors.purple,
+                          labelStyle: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              fontFamily: "BeVietnamPro",
+                              color: Color(0xFF7B3FE4)
+                          ),
+                          height: 34,
+                          borderRadius: 18,
+                          width: 140),
+
+
+                    ],
+                  )
                 ),
               ],
             ),
