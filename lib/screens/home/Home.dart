@@ -15,12 +15,6 @@ class MyHome extends StatefulWidget {
 class _MyHomeState extends State<MyHome> {
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-
-
-
-
-
     return Scaffold(
       backgroundColor: Colors.white,
       body: ListView(
