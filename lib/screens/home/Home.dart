@@ -17,9 +17,9 @@ class _MyHomeState extends State<MyHome> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
 
-    // Responsive header sizing
-    final headerHeight = (size.height * 0.28).clamp(200.0, 280.0);
-    final headerBgHeight = headerHeight;
+
+
+
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -27,54 +27,44 @@ class _MyHomeState extends State<MyHome> {
         padding: EdgeInsets.zero,
         children: [
           // Header (responsive)
-          SizedBox(
-            height: headerHeight,
-            child: Stack(
-              clipBehavior: Clip.none,
-              children: [
-                Container(
-                  height: headerBgHeight,
-                  width: double.infinity,
-                  decoration: const BoxDecoration(
-                    color: Colors.blueAccent,
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(30),
-                      bottomRight: Radius.circular(30),
-                    ),
-                  ),
+          Container(
+            width: double.infinity,
+            decoration: BoxDecoration(
+              color: Colors.blueAccent,
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(30),
+                bottomRight: Radius.circular(30),
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.blueAccent.shade100,
+                  blurRadius: 20,
+                  offset: const Offset(0, 5),
+                  spreadRadius: 1,
                 ),
-                SafeArea(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical: 5,
-                    ),
-                    child: Row(
+              ],
+            ),
+            child: SafeArea(
+              bottom: false,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Circleavatar(),
-                        const SizedBox(width: 5),
-                        const CardInfo(),
+                        const SizedBox(width: 15),
+                        const Expanded(child: CardInfo()),
                       ],
                     ),
-                  ),
+                    const SizedBox(height: 20),
+                    const Cardgeneraltotal(),
+                    const SizedBox(height: 20),
+                  ],
                 ),
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: FractionalTranslation(
-                    translation: const Offset(0, -0.15),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: ConstrainedBox(
-                        constraints: const BoxConstraints(
-                          maxWidth: 10000,
-                        ),
-                        child: const Cardgeneraltotal(),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
+              ),
             ),
           ),
 

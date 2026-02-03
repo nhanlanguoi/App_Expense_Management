@@ -26,9 +26,9 @@ class Cardgeneraltotal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(15),
+      padding: EdgeInsets.all(5),
       decoration: BoxDecoration(
-        color: Colors.grey.withValues(alpha: 0.4),
+        color: Colors.grey.withValues(alpha: 0.6),
         borderRadius: BorderRadius.circular(20),
       ),
 
@@ -70,13 +70,13 @@ class Cardgeneraltotal extends StatelessWidget {
                     child: Row(
                       children: [
                         const Icon(Icons.circle, size: 10, color: Colors.green),
-                        const SizedBox(width: 6),
-                        const Text("Tiết kiệm: ", style: TextStyle(color: Colors.white, fontSize: 12)),
+                        const SizedBox(width: 3),
+                        const Text("Tiết kiệm: ", style: TextStyle(color: Colors.white, fontSize: 10)),
 
                         Flexible(
                           child: Text(
-                            Tietkiem ?? "4.553.235.241 ₫",
-                            style: TextStyle(color: colormain ?? Colors.white, fontWeight: FontWeight.bold),
+                            Tietkiem ?? "14.553.235 ₫",
+                            style: TextStyle(color: colormain ?? Colors.white ,fontSize: 10),
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
@@ -92,12 +92,12 @@ class Cardgeneraltotal extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         const Icon(Icons.circle, size: 10, color: Colors.red),
-                        const SizedBox(width: 6),
-                        const Text("Đã tiêu: ", style: TextStyle(color: Colors.white, fontSize: 12)),
+                        const SizedBox(width: 3),
+                        const Text("Đã tiêu: ", style: TextStyle(color: Colors.white, fontSize: 10)),
                         Flexible(
                           child: Text(
                             Chitieu ?? "4.553.235.241 ₫",
-                            style: TextStyle(color: colormain ?? Colors.white, fontWeight: FontWeight.bold),
+                            style: TextStyle(color: colormain ?? Colors.white ,fontSize: 10),
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
