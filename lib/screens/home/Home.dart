@@ -7,7 +7,6 @@ import 'package:expense_management/components/cardshowvalue/CardManagerExpense.d
 
 class MyHome extends StatefulWidget {
   const MyHome({super.key});
-
   @override
   State<MyHome> createState() => _MyHomeState();
 }
@@ -16,6 +15,7 @@ class _MyHomeState extends State<MyHome> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       backgroundColor: Colors.white,
       body: ListView(
         padding: EdgeInsets.zero,

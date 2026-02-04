@@ -1,3 +1,4 @@
+import 'package:expense_management/screens/home/widgets/catrgoryDetail.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'screens/home/Home.dart';
@@ -12,7 +13,8 @@ class Main extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: MyHome(),
+      debugShowCheckedModeBanner: false,
+      home: categoryDetail(),
     );
   }
 }
