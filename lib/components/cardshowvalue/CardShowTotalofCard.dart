@@ -5,6 +5,7 @@ class Cardshowtotalofcard extends StatefulWidget {
   final double? percen;
   final IconData? Icon;
   final Color? Iconcolor;
+  final Color? Background;
 
   const Cardshowtotalofcard({
     super.key,
@@ -12,6 +13,7 @@ class Cardshowtotalofcard extends StatefulWidget {
     this.percen,
     this.Icon,
     this.Iconcolor,
+    this.Background,
   });
 
   @override
@@ -23,7 +25,7 @@ class _CardmanagerexpenseState extends State<Cardshowtotalofcard> {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.grey[150],
+        color: widget.Background ?? Colors.grey[150],
         borderRadius: BorderRadius.circular(15),
         border: Border.all(color: Colors.grey.withValues(alpha: 0.1), width: 2),
         boxShadow: [
@@ -39,7 +41,7 @@ class _CardmanagerexpenseState extends State<Cardshowtotalofcard> {
       child: Column(
         children: [
           Padding(
-            padding: EdgeInsetsGeometry.all(10),
+            padding: EdgeInsetsGeometry.all(20),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -48,7 +50,7 @@ class _CardmanagerexpenseState extends State<Cardshowtotalofcard> {
                     Container(
                       decoration: BoxDecoration(
                         color:
-                        widget.Iconcolor?.withValues(alpha: 0.2) ??
+                            widget.Iconcolor?.withValues(alpha: 0.2) ??
                             Colors.orange[200],
                         borderRadius: BorderRadius.circular(10),
                       ),
@@ -66,15 +68,15 @@ class _CardmanagerexpenseState extends State<Cardshowtotalofcard> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                           "Thống kê",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                          ),
+                          "Thống kê",
+                          style: TextStyle(fontSize: 14, color: Colors.grey),
                         ),
                         Text(
                           (widget.total ?? "15") + " giao dịch",
-                          style: TextStyle(fontSize: 14),
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ],
                     ),
@@ -85,14 +87,15 @@ class _CardmanagerexpenseState extends State<Cardshowtotalofcard> {
                   children: [
                     Text(
                       "Tỉ trọng",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                      ),
+                      style: TextStyle(fontSize: 14, color: Colors.grey),
                     ),
                     Text(
                       "${((widget.percen ?? 0.23) * 100).toInt()}%",
-                      style: TextStyle(fontSize: 14, color: Colors.red),
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: widget.Iconcolor ?? Colors.orange,
+                      ),
                     ),
                   ],
                 ),

@@ -87,21 +87,31 @@ class _categoryDetailState extends State<categoryDetail> {
                           ],
                         ),
                     ),
-                    SizedBox(height: cao*8/100),
-                    Cardshowtotalofcard(),
-                    custombutton(
-                      onPressed: (){
-                        setState(() {
-                          var backgroundColor = Colors.purple;
-                        });
-                      },
-                        label: "Tất cả",
-                        height: 30,
-                        borderRadius: 30,
-                        width: 100,
-                      backgroundColor: Colors.white,
-                      textColor: Colors.black,
+                    SizedBox(height: 40,),
+                    Cardshowtotalofcard(
+                      Background: Colors.white,
+                    ),
+                    SizedBox(height: 20,),
+
+                    Row(
+                      spacing: 20,
+                      children: [
+                        custombutton(
+                          onPressed: (){
+                            setState(() {
+                              var backgroundColor = Colors.purple;
+                            });
+                          },
+                          label: "Tất cả",
+                          height: 30,
+                          borderRadius: 30,
+                          width: 100,
+                          backgroundColor: Colors.white,
+                          textColor: Colors.black,
+                        )
+                      ],
                     )
+
                   ],
                 ),
 
