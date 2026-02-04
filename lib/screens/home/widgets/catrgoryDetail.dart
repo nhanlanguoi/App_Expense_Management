@@ -4,6 +4,8 @@ import 'package:expense_management/components/widget/purple_header.dart';
 import 'package:expense_management/screens/home/Home.dart';
 import 'package:flutter/material.dart';
 
+import '../../../components/cardshowvalue/CardShowHistoryTrade.dart';
+
 class categoryDetail extends StatefulWidget {
   const categoryDetail({super.key});
 
@@ -110,8 +112,16 @@ class _categoryDetailState extends State<categoryDetail> {
                           textColor: Colors.black,
                         )
                       ],
-                    )
+                    ),
+                    SizedBox(height: 20),
 
+
+                    Expanded(
+                      child: SingleChildScrollView(
+                        padding: EdgeInsets.only(bottom: 20), // Padding đáy để không bị sát lề
+                        child: Cardshowhistorytrade(), // Gọi widget vừa sửa
+                      ),
+                    )
                   ],
                 ),
 

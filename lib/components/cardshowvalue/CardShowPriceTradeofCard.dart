@@ -26,20 +26,6 @@ class _CardmanagerexpenseState extends State<Cardshowpricetrade> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        color: Colors.grey[150],
-        borderRadius: BorderRadius.circular(15),
-        border: Border.all(color: Colors.grey.withValues(alpha: 0.1), width: 2),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
-            blurRadius: 20,
-            spreadRadius: 10,
-            offset: const Offset(4, 4),
-          ),
-        ],
-      ),
-
       child: Column(
         children: [
           Padding(
