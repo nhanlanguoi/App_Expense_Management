@@ -79,9 +79,8 @@ class _MyHomeState extends State<MyHome> {
                 ),
                 const Cardmanagerexpense(),
                 const Cardmanagerexpense(),
-                const Cardmanagerexpense(),
-                const Cardmanagerexpense(),
-                const Cardmanagerexpense(),
+
+
               ],
             ),
           ),

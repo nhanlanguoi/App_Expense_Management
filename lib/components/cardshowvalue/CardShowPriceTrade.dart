@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 
-class Cardmanagerexpense extends StatefulWidget {
+class Cardshowpricetrade extends StatefulWidget {
   final String? title;
-  final String? total;
+  final String? time;
   final String? allmoney;
   final double? percen;
   final IconData? Icon;
   final Color? Iconcolor;
 
-  const Cardmanagerexpense({
+  const Cardshowpricetrade({
     super.key,
     this.title,
-    this.total,
+    this.time,
     this.allmoney,
     this.percen,
     this.Icon,
@@ -19,10 +19,10 @@ class Cardmanagerexpense extends StatefulWidget {
   });
 
   @override
-  State<Cardmanagerexpense> createState() => _CardmanagerexpenseState();
+  State<Cardshowpricetrade> createState() => _CardmanagerexpenseState();
 }
 
-class _CardmanagerexpenseState extends State<Cardmanagerexpense> {
+class _CardmanagerexpenseState extends State<Cardshowpricetrade> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -77,47 +77,19 @@ class _CardmanagerexpenseState extends State<Cardmanagerexpense> {
                           ),
                         ),
                         Text(
-                          (widget.total ?? "15") + " giao dịch",
+                          (widget.time ?? "8:30") + "AM",
                           style: TextStyle(fontSize: 14),
                         ),
                       ],
                     ),
                   ],
                 ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Text(
-                      widget.allmoney ?? "232,43243324.234",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                      ),
-                    ),
-                    Text(
-                      "${((widget.percen ?? 0.23) * 100).toInt()}%",
-                      style: TextStyle(fontSize: 14, color: Colors.red),
-                    ),
-                  ],
+
+                Text(
+                  "-" + (widget.allmoney ?? "232,43243324.234"),
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16 , color: Colors.red),
                 ),
               ],
-            ),
-          ),
-          Padding(
-            padding: EdgeInsetsGeometry.only(
-              left: 12,
-              right: 12,
-              top: 5,
-              bottom: 15,
-            ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: LinearProgressIndicator(
-                value: widget.percen ?? 0.4,
-                backgroundColor: Colors.grey[200],
-                color: widget.Iconcolor ?? Colors.orange,
-                minHeight: 8,
-              ),
             ),
           ),
         ],
