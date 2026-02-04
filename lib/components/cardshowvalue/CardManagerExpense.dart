@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Cardmanagerexpense extends StatefulWidget {
+  final VoidCallback? onPressed;
   final String? title;
   final String? total;
   final String? allmoney;
@@ -15,7 +16,7 @@ class Cardmanagerexpense extends StatefulWidget {
     this.allmoney,
     this.percen,
     this.Icon,
-    this.Iconcolor,
+    this.Iconcolor, this.onPressed,
   });
 
   @override

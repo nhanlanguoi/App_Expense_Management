@@ -1,3 +1,4 @@
+import 'package:expense_management/screens/home/widgets/catrgoryDetail.dart';
 import 'package:flutter/material.dart';
 import 'package:expense_management/components/avatar/CircleAvatar.dart';
 import 'package:expense_management/components/avatar/InfoAvatar.dart';
@@ -69,7 +70,13 @@ class _MyHomeState extends State<MyHome> {
             child: Column(
               spacing: 10,
               children: [
-                const Cardmanagerexpense(
+                Cardmanagerexpense(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const categoryDetail()),
+                    );
+                  },
                   title: "Chơi nhởi",
                   Icon: Icons.gamepad_outlined,
                   allmoney: "2.324.223.234",
