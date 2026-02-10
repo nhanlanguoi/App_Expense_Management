@@ -1,6 +1,5 @@
 import 'package:expense_management/components/cardshowvalue/CardShowPriceTradeofCard.dart';
 import 'package:flutter/material.dart';
-import 'package:expense_management/components/cardshowvalue/CardShowHistoryTrade.dart';
 class Cardshowhistorytrade extends StatelessWidget {
 
 
@@ -68,7 +67,6 @@ class Cardshowhistorytrade extends StatelessWidget {
                 Iconcolor: item['color'],
 
               ),
-              // Thêm đường kẻ, trừ phần tử cuối cùng
               if (index != fakeData.length - 1)
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
