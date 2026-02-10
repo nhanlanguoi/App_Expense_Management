@@ -37,7 +37,7 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Column(
               children: [
                 const Padding(
-                  padding: EdgeInsets.only(top: 70),
+                  padding: EdgeInsets.only(top: 30),
                   child: logo(
                       icon: Icons.account_balance_wallet,
                       size: 100,
@@ -65,7 +65,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                 // --- PHẦN FORM ---
                 Padding(
-                  padding: const EdgeInsets.only(top: 30, bottom: 20),
+                  padding: const EdgeInsets.only(top: 30, bottom: 5),
                   child: Container(
                     margin: const EdgeInsets.symmetric(horizontal: 30),
                     padding: const EdgeInsets.all(35),
