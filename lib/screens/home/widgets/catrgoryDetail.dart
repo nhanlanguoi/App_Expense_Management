@@ -127,8 +127,6 @@ class _categoryDetailState extends State<categoryDetail> {
 
               ),
           ),
-
-
         ],
 
       ),

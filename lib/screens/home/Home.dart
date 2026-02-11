@@ -16,19 +16,16 @@ class _MyHomeState extends State<MyHome> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       backgroundColor: Colors.white,
-      body: ListView(
-        padding: EdgeInsets.zero,
+      body: Column(
         children: [
-          // Header (responsive)
           Container(
             width: double.infinity,
             decoration: BoxDecoration(
               color: Colors.blueAccent,
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(30),
-                bottomRight: Radius.circular(30),
+              borderRadius: const BorderRadius.only(
+                bottomLeft: Radius.circular(20),
+                bottomRight: Radius.circular(20),
               ),
               boxShadow: [
                 BoxShadow(
@@ -48,15 +45,15 @@ class _MyHomeState extends State<MyHome> {
                   children: [
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Circleavatar(),
-                        const SizedBox(width: 15),
-                        const Expanded(child: CardInfo()),
+                      children: const [
+                        Circleavatar(),
+                        SizedBox(width: 15),
+                        Expanded(child: CardInfo()),
                       ],
                     ),
                     const SizedBox(height: 20),
                     const Cardgeneraltotal(),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 5),
                   ],
                 ),
               ),
@@ -64,35 +61,41 @@ class _MyHomeState extends State<MyHome> {
           ),
 
           const SizedBox(height: 24),
-          //Main
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10),
-            child: Column(
-              spacing: 10,
-              children: [
-                Cardmanagerexpense(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const categoryDetail()),
-                    );
-                  },
-                  title: "Chơi nhởi",
-                  Icon: Icons.gamepad_outlined,
-                  allmoney: "2.324.223.234",
-                  percen: 0.13,
-                  total: "25",
-                  Iconcolor: Colors.green,
-                ),
-                const Cardmanagerexpense(),
-                const Cardmanagerexpense(),
-
-
-              ],
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: ListView(
+                padding: EdgeInsets.zero,
+                children: [
+                  Cardmanagerexpense(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const categoryDetail()),
+                      );
+                    },
+                    title: "Chơi nhởi",
+                    Icon: Icons.gamepad_outlined,
+                    allmoney: "2.324.223.234",
+                    percen: 0.13,
+                    total: "25",
+                    Iconcolor: Colors.green,
+                  ),
+                  const SizedBox(height: 10),
+                  const Cardmanagerexpense(),
+                  const SizedBox(height: 10),
+                  const Cardmanagerexpense(),
+                  const SizedBox(height: 10),
+                  const Cardmanagerexpense(),
+                  const SizedBox(height: 10),
+                  const Cardmanagerexpense(),
+                ],
+              ),
             ),
           ),
         ],
       ),
+
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           print("Bấm nút thêm mới!");
@@ -101,11 +104,9 @@ class _MyHomeState extends State<MyHome> {
         shape: const CircleBorder(),
         child: const Icon(Icons.add, color: Colors.white, size: 30),
       ),
-
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-
       bottomNavigationBar: Bottomnavbar(
-        listicon: [
+        listicon: const [
           Icons.home,
           Icons.analytics_outlined,
           Icons.history_sharp,
