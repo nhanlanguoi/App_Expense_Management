@@ -131,7 +131,6 @@ class _AuthFormState extends State<AuthForm> {
                             });
                           },
                         ),
-
                         Expanded(
                           child: RichText(
                             text: const TextSpan(
@@ -154,11 +153,7 @@ class _AuthFormState extends State<AuthForm> {
                       ],
                     ),
                   ],
-
-
-
                   const SizedBox(height: 20),
-
                   gradientbutton(
                     label: isLogin ? 'Đăng nhập' : 'Đăng ký',
                     gradient: const LinearGradient(

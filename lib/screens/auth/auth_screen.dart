@@ -10,22 +10,19 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../enum/authtype.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
-
+class AuthScreen extends StatefulWidget {
+  const AuthScreen({super.key});
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<AuthScreen> createState() => _AuthScreenState();
 }
+class _AuthScreenState extends State<AuthScreen> {
+  AuthType _mode = AuthType.login;
+  void toggleMode() {
+    _mode = _mode == AuthType.login ? AuthType.register : AuthType.login;
+  }
 
-class _LoginScreenState extends State<LoginScreen> {
 
-  final _usernameController = TextEditingController();
-  final _passwordController = TextEditingController();
 
-  final _formKey = GlobalKey<FormState>();
-
-  bool _isObscure = true;
-  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -39,14 +36,30 @@ class _LoginScreenState extends State<LoginScreen> {
             constraints: BoxConstraints(minHeight: screenHeight),
             child: Column(
               children: [
-                const Padding(
-                  padding: EdgeInsets.only(top: 30),
-                  child: logo(
-                      icon: Icons.account_balance_wallet,
-                      size: 100,
-                      iconsize: 40,
-                      bordersize: 2),
+                AnimatedAlign(
+                    alignment: _mode == AuthType.register
+                        ? Alignment.topCenter
+                        : Alignment.center,
+                    duration: const Duration(milliseconds: 600),
+                  child: AnimatedContainer(
+                      duration: const Duration(milliseconds: 600),
+                      padding: EdgeInsets.only(top: _mode == AuthType.login? 20 : 0),
+                      child: logo(
+                          icon: Icons.account_balance_wallet,
+                          size: 100,
+                          iconsize: 40,
+                          bordersize: 2
+                      ),
+                  ),
                 ),
+                // const Padding(
+                //   padding: EdgeInsets.only(top: 30),
+                //   child: logo(
+                //       icon: Icons.account_balance_wallet,
+                //       size: 100,
+                //       iconsize: 40,
+                //       bordersize: 2),
+                // ),
                 const Padding(
                     padding: EdgeInsets.only(top: 20),
                     child: Text("Xin chào!", style: TextStyle(
@@ -89,7 +102,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ],
                     ),
-                    child: AuthForm(type: AuthType.register,)
+                    child: AuthForm(type: AuthType.login,)
                   ),
                 ),
                 Padding(
@@ -97,16 +110,25 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text(
-                        "Chưa có tài khoản?",
-                        style: TextStyle(
+                      Text(
+                        _mode == AuthType.login
+                            ? "Bạn chưa có tài khoản?"
+                            : "Bạn đã có tài khoản?",
+                        style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.normal,
                           fontFamily: 'BeVietnamPro',
                         ),
                       ),
                       custombutton(
-                          label: 'Đăng ký ngay',
+                          label: _mode==AuthType.login? "Đăng ký ngay" : "Đăng nhập",
+                          onPressed: () {
+                            setState(() {
+                              _mode = _mode == AuthType.login
+                                  ? AuthType.register
+                                  : AuthType.login;
+                            });
+                          },
                           isOutline: true,
                           backgroundColor: Colors.transparent,
                           textColor: Colors.purple,

@@ -18,9 +18,10 @@ class logo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    return Container(
+    return AnimatedContainer(
       width: size,
       height: size,
+
       decoration: BoxDecoration(
         color: color,
         shape: BoxShape.rectangle,
@@ -38,6 +39,7 @@ class logo extends StatelessWidget {
           ),
         ],
       ),
+      duration:const Duration(milliseconds: 500),
       child: Center(
         child: Icon(
           icon,
