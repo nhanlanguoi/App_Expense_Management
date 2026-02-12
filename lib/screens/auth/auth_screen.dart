@@ -24,51 +24,54 @@ class _AuthScreenState extends State<AuthScreen> {
   }
 
 
-  // chỗ này là header tím gradient
-  Widget _buildHeader() {
-    return AnimatedContainer(
-      duration: const Duration(milliseconds: 600),
-      curve: Curves.easeInOutCubic,
-      height: _mode == AuthType.register ? 300 : 0,
-      width: double.infinity,
+  // chỗ này là header + logo tím gradient + chuyển động
 
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
+  Widget _buildMorphingHeader() {
+    final isRegister = _mode == AuthType.register;
+
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 700),
+      curve: Curves.easeInOutCubic,
+
+      height: isRegister ? 260 : 100,
+      width: isRegister ? MediaQuery.of(context).size.width : 100,
+
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
           colors: [
             Color(0xFF7B3FE4),
             Color(0xFF5A2DBD),
           ],
         ),
         borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(40),
-          bottomRight: Radius.circular(40),
+          topLeft: Radius.circular(isRegister ? 0 : 30),
+          topRight: Radius.circular(isRegister ? 0 : 30),
+          bottomLeft: Radius.circular(isRegister ? 35 : 30),
+          bottomRight: Radius.circular(isRegister ? 35 : 30),
         ),
       ),
-    );
-  }
 
-
-  // chỗ này là logo
-  Widget _buildLogo() {
-    return AnimatedAlign(
-      duration: const Duration(milliseconds: 600),
-      curve: Curves.fastOutSlowIn,
-
-      alignment: _mode == AuthType.login
-          ? Alignment.center
-          : Alignment.topCenter,
-
-      child: AnimatedPadding(
+      child: AnimatedAlign(
+        alignment: isRegister
+            ? const Alignment(0, -0.75)
+            : Alignment.center,
         duration: const Duration(milliseconds: 600),
-        padding: EdgeInsets.only(
-          top: _mode == AuthType.login ? 80 : 40,
-        ),
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 600),
 
-        child: logo(
-          icon: Icons.account_balance_wallet,
-          size: _mode == AuthType.login ? 100 : 70,
-          iconsize: _mode == AuthType.login ? 40 : 30,
-          bordersize: 2,
+          width: isRegister ? 70 : 100,
+          height: isRegister ? 70 : 100,
+
+          decoration: BoxDecoration(
+            color: Colors.white.withOpacity(0.15),
+            borderRadius: BorderRadius.circular(24),
+          ),
+
+          child: const Icon(
+            Icons.account_balance_wallet,
+            color: Colors.white,
+            size: 40,
+          ),
         ),
       ),
     );
@@ -93,7 +96,9 @@ class _AuthScreenState extends State<AuthScreen> {
 
       child: Container(
           margin: const EdgeInsets.symmetric(horizontal: 30),
-          padding: const EdgeInsets.all(35),
+          padding: _mode == AuthType.login
+              ? const EdgeInsets.all(35)
+              : const EdgeInsets.only(left: 30, right: 30, top: 20, bottom: 20),
           decoration: BoxDecoration(
             color: Colors.white,
             shape: BoxShape.rectangle,
@@ -117,97 +122,91 @@ class _AuthScreenState extends State<AuthScreen> {
   }
 
 
-
-
-
   @override
   Widget build(BuildContext context) {
-
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
-
     return Scaffold(
       body: gradientbackground(
         child: SingleChildScrollView(
-          child: ConstrainedBox(
-            constraints: BoxConstraints(minHeight: screenHeight),
-            child: Stack(
-              children: [
-                _buildHeader(),
-                Column(
-                  children: [
-                    // const Padding(
-                    //   padding: EdgeInsets.only(top: 30),
-                    _buildLogo(),
-                    Padding(
-                        padding: const EdgeInsets.only(top: 20),
-                        child: Text("Xin chào!", style: TextStyle(
-                          fontSize: 45,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: 'BeVietnamPro',
-                          height: 1.1,
-                          color:  _mode ==AuthType.login ? Colors.black : Colors.white,
-                        ),)
-                    ),
-                    Padding(padding: const EdgeInsets.only(top: 9),
-                      child: Text( _mode == AuthType.login
-                          ? "Đăng nhập để quản lý chi tiểu của bạn"
-                          : "Tạo tài khoản để quản lý chi tiêu hiệu quả",
-                          style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.normal,
+          child: Stack(
+            children: [
+
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // --- PHẦN HEADER ---
+                  _buildMorphingHeader(),
+
+                  // --- PHẦN LOGO ---
+                  Padding(
+                      padding: const EdgeInsets.only(top: 10),
+                      child: Text("Xin chào!", style: TextStyle(
+                        fontSize: 45,
+                        fontWeight: FontWeight.bold,
                         fontFamily: 'BeVietnamPro',
-                        color:  _mode == AuthType.login ?const Color(0xFF6C7381): Colors.white,
-                      )),
-                    ),
+                        height: 1.1,
+                        color:  _mode ==AuthType.login ? Colors.black : Colors.white,
+                      ),)
+                  ),
+                  Padding(padding: const EdgeInsets.only(top: 9),
+                    child: Text( _mode == AuthType.login
+                        ? "Đăng nhập để quản lý chi tiểu của bạn"
+                        : "Tạo tài khoản để quản lý chi tiêu hiệu quả",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.normal,
+                          fontFamily: 'BeVietnamPro',
+                          color:  _mode == AuthType.login ?const Color(0xFF6C7381): Colors.white,
+                        )),
+                  ),
 
-                    // --- PHẦN FORM ---
-                    Padding(
-                      padding: const EdgeInsets.only(top: 30, bottom: 5),
-                      child: _buildForm(),
-                    ),
-                    Padding(
-                        padding: const EdgeInsets.only(top:1),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              _mode == AuthType.login
-                                  ? "Bạn chưa có tài khoản?"
-                                  : "Bạn đã có tài khoản?",
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.normal,
-                                fontFamily: 'BeVietnamPro',
-                              ),
+                  // --- PHẦN FORM ---
+                  Padding(
+                    padding: const EdgeInsets.only(top: 20, bottom: 5),
+                    child: _buildForm(),
+                  ),
+
+                  // phần footer đăng ký tài khoản
+                  Padding(
+                      padding: const EdgeInsets.only(top:1, bottom: 10),
+                      child: Row(
+                         mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            _mode == AuthType.login
+                                ? "Bạn chưa có tài khoản?"
+                                : "Bạn đã có tài khoản?",
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.normal,
+                              fontFamily: 'BeVietnamPro',
                             ),
-                            custombutton(
-                                label: _mode==AuthType.login? "Đăng ký ngay" : "Đăng nhập",
-                                onPressed: () {
-                                  toggleMode();
-                                },
-                                isOutline: true,
-                                backgroundColor: Colors.transparent,
-                                textColor: Colors.purple,
-                                labelStyle: const TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600,
-                                    fontFamily: "BeVietnamPro",
-                                    color: Color(0xFF7B3FE4)
-                                ),
-                                height: 34,
-                                borderRadius: 18,
-                                width: 140),
-
-
-                          ],
-                        )
-                    ),
-                  ],
-                )
-              ],
-            ),
-          ),
+                          ),
+                          custombutton(
+                              label: _mode==AuthType.login? "Đăng ký ngay" : "Đăng nhập",
+                              onPressed: () {
+                                toggleMode();
+                              },
+                              isOutline: true,
+                              backgroundColor: Colors.transparent,
+                              textColor: Colors.purple,
+                              labelStyle: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                  fontFamily: "BeVietnamPro",
+                                  color: Color(0xFF7B3FE4)
+                              ),
+                              height: 34,
+                              borderRadius: 18,
+                              width: 140),
+                        ],
+                      )
+                  ),
+                ],
+              )
+            ],
+          )
         ),
       ),
     );
