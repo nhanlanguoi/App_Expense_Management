@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 class logo extends StatelessWidget {
@@ -9,23 +11,23 @@ class logo extends StatelessWidget {
   const logo({
     super.key,
     required this.icon,
-    required this.size,
+
     required this.iconsize,
     required this.bordersize,
     this.color  = const Color(0xFF6D31D1),
+    required this.size,
   });
 
   @override
   Widget build(BuildContext context) {
 
-    return AnimatedContainer(
+    return Container(
       width: size,
       height: size,
 
       decoration: BoxDecoration(
         color: color,
-        shape: BoxShape.rectangle,
-        borderRadius: BorderRadius.circular(size / 3),
+        borderRadius: BorderRadius.circular(size*0.3),
         border: Border.all(
           color: color,
           width: bordersize,
@@ -39,7 +41,7 @@ class logo extends StatelessWidget {
           ),
         ],
       ),
-      duration:const Duration(milliseconds: 500),
+
       child: Center(
         child: Icon(
           icon,

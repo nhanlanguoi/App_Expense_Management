@@ -18,16 +18,16 @@ class AuthScreen extends StatefulWidget {
 class _AuthScreenState extends State<AuthScreen> {
   AuthType _mode = AuthType.login;
   void toggleMode() {
-    _mode = _mode == AuthType.login ? AuthType.register : AuthType.login;
+    setState(() {
+      _mode = _mode == AuthType.login ? AuthType.register : AuthType.login;
+    });
   }
-
-
-
 
   @override
   Widget build(BuildContext context) {
 
     final screenHeight = MediaQuery.of(context).size.height;
+    final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
       body: gradientbackground(
@@ -43,6 +43,7 @@ class _AuthScreenState extends State<AuthScreen> {
                     duration: const Duration(milliseconds: 600),
                   child: AnimatedContainer(
                       duration: const Duration(milliseconds: 600),
+                      curve: Curves.easeInOutCubic,
                       padding: EdgeInsets.only(top: _mode == AuthType.login? 20 : 0),
                       child: logo(
                           icon: Icons.account_balance_wallet,
@@ -123,11 +124,7 @@ class _AuthScreenState extends State<AuthScreen> {
                       custombutton(
                           label: _mode==AuthType.login? "Đăng ký ngay" : "Đăng nhập",
                           onPressed: () {
-                            setState(() {
-                              _mode = _mode == AuthType.login
-                                  ? AuthType.register
-                                  : AuthType.login;
-                            });
+                            toggleMode();
                           },
                           isOutline: true,
                           backgroundColor: Colors.transparent,
