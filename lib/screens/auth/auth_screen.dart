@@ -23,7 +23,6 @@ class _AuthScreenState extends State<AuthScreen> {
     });
   }
 
-
   // chỗ này là header + logo tím gradient + chuyển động
 
   Widget _buildMorphingHeader() {
@@ -121,6 +120,71 @@ class _AuthScreenState extends State<AuthScreen> {
     );
   }
 
+  Widget _buildTitle(){
+    return Column(
+      children: [
+        Padding(
+            padding: const EdgeInsets.only(top: 10),
+            child: Text("Xin chào!", style: TextStyle(
+              fontSize: 45,
+              fontWeight: FontWeight.bold,
+              fontFamily: 'BeVietnamPro',
+              height: 1.1,
+              color:  _mode ==AuthType.login ? Colors.black : Colors.white,
+            ),)
+        ),
+        Padding(padding: const EdgeInsets.only(top: 9),
+          child: Text( _mode == AuthType.login
+              ? "Đăng nhập để quản lý chi tiểu của bạn"
+              : "Tạo tài khoản để quản lý chi tiêu hiệu quả",
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.normal,
+                fontFamily: 'BeVietnamPro',
+                color:  _mode == AuthType.login ?const Color(0xFF6C7381): Colors.white,
+              )),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildFooter(){
+    return                   Padding(
+        padding: const EdgeInsets.only(top:1, bottom: 10),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              _mode == AuthType.login
+                  ? "Bạn chưa có tài khoản?"
+                  : "Bạn đã có tài khoản?",
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.normal,
+                fontFamily: 'BeVietnamPro',
+              ),
+            ),
+            custombutton(
+                label: _mode==AuthType.login? "Đăng ký ngay" : "Đăng nhập",
+                onPressed: () {
+                  toggleMode();
+                },
+                isOutline: true,
+                backgroundColor: Colors.transparent,
+                textColor: Colors.purple,
+                labelStyle: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    fontFamily: "BeVietnamPro",
+                    color: Color(0xFF7B3FE4)
+                ),
+                height: 34,
+                borderRadius: 18,
+                width: 140),
+          ],
+        )
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -135,74 +199,21 @@ class _AuthScreenState extends State<AuthScreen> {
               Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  // --- PHẦN HEADER ---
+                  // --- PHẦN HEADER + LOGO ---
                   _buildMorphingHeader(),
 
-                  // --- PHẦN LOGO ---
-                  Padding(
-                      padding: const EdgeInsets.only(top: 10),
-                      child: Text("Xin chào!", style: TextStyle(
-                        fontSize: 45,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'BeVietnamPro',
-                        height: 1.1,
-                        color:  _mode ==AuthType.login ? Colors.black : Colors.white,
-                      ),)
-                  ),
-                  Padding(padding: const EdgeInsets.only(top: 9),
-                    child: Text( _mode == AuthType.login
-                        ? "Đăng nhập để quản lý chi tiểu của bạn"
-                        : "Tạo tài khoản để quản lý chi tiêu hiệu quả",
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.normal,
-                          fontFamily: 'BeVietnamPro',
-                          color:  _mode == AuthType.login ?const Color(0xFF6C7381): Colors.white,
-                        )),
-                  ),
-
                   // --- PHẦN FORM ---
+                  _buildTitle(),
                   Padding(
                     padding: const EdgeInsets.only(top: 20, bottom: 5),
                     child: _buildForm(),
                   ),
 
                   // phần footer đăng ký tài khoản
-                  Padding(
-                      padding: const EdgeInsets.only(top:1, bottom: 10),
-                      child: Row(
-                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            _mode == AuthType.login
-                                ? "Bạn chưa có tài khoản?"
-                                : "Bạn đã có tài khoản?",
-                            style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.normal,
-                              fontFamily: 'BeVietnamPro',
-                            ),
-                          ),
-                          custombutton(
-                              label: _mode==AuthType.login? "Đăng ký ngay" : "Đăng nhập",
-                              onPressed: () {
-                                toggleMode();
-                              },
-                              isOutline: true,
-                              backgroundColor: Colors.transparent,
-                              textColor: Colors.purple,
-                              labelStyle: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                                  fontFamily: "BeVietnamPro",
-                                  color: Color(0xFF7B3FE4)
-                              ),
-                              height: 34,
-                              borderRadius: 18,
-                              width: 140),
-                        ],
-                      )
-                  ),
+
+                  _buildFooter(),
+
+
                 ],
               )
             ],
