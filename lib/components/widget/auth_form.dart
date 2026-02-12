@@ -27,7 +27,6 @@ class _AuthFormState extends State<AuthForm> {
   final _identifierController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
-
   final _formKey = GlobalKey<FormState>();
 
   bool _isLoading = false;
@@ -41,6 +40,8 @@ class _AuthFormState extends State<AuthForm> {
   }
   @override
   Widget build(BuildContext context) {
+    final _heightMode = widget.type == AuthType.login ? 15.0 : 8.0;
+    final _padingMode = widget.type == AuthType.login ? 14.0 : 10.0;
     return Column(
       children: [
         Form(
@@ -54,7 +55,7 @@ class _AuthFormState extends State<AuthForm> {
                     prefixIcon: const Icon(Icons.person, color: Colors.grey),
                     hintText: "Nguyễn Văn A",
                   ),
-                  const SizedBox(height: 8),
+                  SizedBox(height: _heightMode),
                 ],
                 textbox(
                   keyboardType: TextInputType.emailAddress,
@@ -64,7 +65,7 @@ class _AuthFormState extends State<AuthForm> {
                   hintText: 'moi@example.com',
                 ),
 
-                const SizedBox(height: 8),
+                SizedBox(height: _heightMode),
                 Row(
                   children: [
                     const Text(
@@ -101,7 +102,7 @@ class _AuthFormState extends State<AuthForm> {
                   prefixIcon: const Icon(Icons.lock, color: Colors.grey),
                 ),
                 if(isRegister)...[
-                  const SizedBox(height: 8),
+                  SizedBox(height: _heightMode ),
                   passwordbox(
                     label: "Nhập lại mật khẩu",
                     labelStyle: const TextStyle(
@@ -116,7 +117,7 @@ class _AuthFormState extends State<AuthForm> {
                   ),
                 ],
                 if (isRegister) ...[
-                  const SizedBox(height: 8),
+                  SizedBox(height: _heightMode),
                   Row(
                     children: [
                       Checkbox(
@@ -149,7 +150,7 @@ class _AuthFormState extends State<AuthForm> {
                     ],
                   ),
                 ],
-                const SizedBox(height: 8),
+                SizedBox(height: _heightMode),
                 gradientbutton(
                   label: isLogin ? 'Đăng nhập' : 'Đăng ký',
                   gradient: const LinearGradient(
@@ -182,7 +183,7 @@ class _AuthFormState extends State<AuthForm> {
               ],
             )
         ),
-        Padding(padding: const EdgeInsets.symmetric(vertical: 10),
+        Padding(padding: EdgeInsets.symmetric(vertical: _padingMode),
             child:Row(
               children: [
                 Expanded(child: Divider(color: Colors.grey[300], thickness: 1,)),

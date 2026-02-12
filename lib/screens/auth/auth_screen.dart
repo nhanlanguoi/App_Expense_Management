@@ -78,62 +78,63 @@ class _AuthScreenState extends State<AuthScreen> {
 
   // chỗ này là form đăng nhập, đăng ký
   Widget _buildForm() {
-    return AnimatedSwitcher(
-        duration: const Duration(milliseconds: 600),
-      transitionBuilder: (child, animation) {
-        return FadeTransition(
-          opacity: animation,
-          child: SlideTransition(
-              position:Tween(
-                begin: const Offset(0, 0.08),
-                end: Offset.zero,
-              ).animate(animation),
-              child: child
-          ),
-        );
-      },
-
-      child: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 30),
-          padding: _mode == AuthType.login
-              ? const EdgeInsets.all(35)
-              : const EdgeInsets.only(left: 30, right: 30, top: 20, bottom: 20),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            shape: BoxShape.rectangle,
-            borderRadius: BorderRadius.circular(30),
-            border: Border.all(
-              color: Colors.grey.shade200,
-              width: 1,
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.15),
-                blurRadius: 20,
-                spreadRadius: 2,
-                offset: const Offset(0, 10),
+    return Padding(
+        padding: const EdgeInsets.only(top: 10, bottom: 5),
+      child: AnimatedSwitcher(
+          duration: const Duration(milliseconds: 600),
+          transitionBuilder: (child, animation) {
+            return FadeTransition(
+              opacity: animation,
+              child: SlideTransition(
+                  position:Tween(
+                    begin: const Offset(0, 0.08),
+                    end: Offset.zero,
+                  ).animate(animation),
+                  child: child
               ),
-            ],
-          ),
-          child: AuthForm(type: _mode ,)
-      )
+            );
+          },
+
+          child: Container(
+              margin: const EdgeInsets.symmetric(horizontal: 30),
+              padding: _mode == AuthType.login
+                  ? const EdgeInsets.all(35)
+                  : const EdgeInsets.only(left: 30, right: 30, top: 20, bottom: 20),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                shape: BoxShape.rectangle,
+                borderRadius: BorderRadius.circular(30),
+                border: Border.all(
+                  color: Colors.grey.shade200,
+                  width: 1,
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.15),
+                    blurRadius: 20,
+                    spreadRadius: 2,
+                    offset: const Offset(0, 10),
+                  ),
+                ],
+              ),
+              child: AuthForm(type: _mode ,)
+          )
+      ),
     );
   }
 
   Widget _buildTitle(){
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
-        Padding(
-            padding: const EdgeInsets.only(top: 10),
-            child: Text("Xin chào!", style: TextStyle(
-              fontSize: 45,
-              fontWeight: FontWeight.bold,
-              fontFamily: 'BeVietnamPro',
-              height: 1.1,
-              color:  _mode ==AuthType.login ? Colors.black : Colors.white,
-            ),)
-        ),
-        Padding(padding: const EdgeInsets.only(top: 9),
+        Text("Xin chào!", style: TextStyle(
+          fontSize: 45,
+          fontWeight: FontWeight.bold,
+          fontFamily: 'BeVietnamPro',
+          height: 1.1,
+          color:  _mode ==AuthType.login ? Colors.black : Colors.white,
+        ),),
+        Padding(padding: const EdgeInsets.only(top: 5),
           child: Text( _mode == AuthType.login
               ? "Đăng nhập để quản lý chi tiểu của bạn"
               : "Tạo tài khoản để quản lý chi tiêu hiệu quả",
@@ -190,36 +191,45 @@ class _AuthScreenState extends State<AuthScreen> {
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
-    return Scaffold(
+    return SafeArea(
+    child: Scaffold(
       body: gradientbackground(
         child: SingleChildScrollView(
-          child: Stack(
-            children: [
+            child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  minHeight: screenHeight,
+                ),
+                child:Stack(
+                  alignment: Alignment.topCenter,
+                  children: [
+                    // --- PHẦN HEADER + LOGO ---
+                    Positioned(
+                      top: _mode == AuthType.login ? 20 : 0,
+                      left: 0,
+                      right: 0,
 
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  // --- PHẦN HEADER + LOGO ---
-                  _buildMorphingHeader(),
-
-                  // --- PHẦN FORM ---
-                  _buildTitle(),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 20, bottom: 5),
-                    child: _buildForm(),
-                  ),
-
-                  // phần footer đăng ký tài khoản
-
-                  _buildFooter(),
-
-
-                ],
-              )
-            ],
-          )
+                      child: Column(
+                          children: [_buildMorphingHeader()]
+                      ),
+                    ),
+                    Padding(
+                        padding:  EdgeInsets.only(top: _mode == AuthType.login ? 160 : 100),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          // --- PHẦN FORM ---
+                          _buildTitle(),
+                          _buildForm(),
+                          // phần footer đăng ký tài khoản
+                          _buildFooter(),
+                        ],
+                      ),
+                    )
+                  ],
+                )
+)
         ),
       ),
-    );
+    ));
   }
 }
