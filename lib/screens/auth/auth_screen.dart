@@ -61,7 +61,7 @@ class _AuthScreenState extends State<AuthScreen> {
       child: AnimatedPadding(
         duration: const Duration(milliseconds: 600),
         padding: EdgeInsets.only(
-          top: _mode == AuthType.login ? 80 : 120,
+          top: _mode == AuthType.login ? 80 : 40,
         ),
 
         child: logo(
@@ -139,22 +139,25 @@ class _AuthScreenState extends State<AuthScreen> {
                     // const Padding(
                     //   padding: EdgeInsets.only(top: 30),
                     _buildLogo(),
-                    const Padding(
-                        padding: EdgeInsets.only(top: 20),
+                    Padding(
+                        padding: const EdgeInsets.only(top: 20),
                         child: Text("Xin chào!", style: TextStyle(
                           fontSize: 45,
                           fontWeight: FontWeight.bold,
                           fontFamily: 'BeVietnamPro',
                           height: 1.1,
-                          color: Colors.black,
+                          color:  _mode ==AuthType.login ? Colors.black : Colors.white,
                         ),)
                     ),
-                    const Padding(padding: EdgeInsets.only(top: 9),
-                      child: Text("Đăng nhập để quản lý chi tiêu của bạn", style: TextStyle(
+                    Padding(padding: const EdgeInsets.only(top: 9),
+                      child: Text( _mode == AuthType.login
+                          ? "Đăng nhập để quản lý chi tiểu của bạn"
+                          : "Tạo tài khoản để quản lý chi tiêu hiệu quả",
+                          style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.normal,
                         fontFamily: 'BeVietnamPro',
-                        color: Color(0xFF6C7381),
+                        color:  _mode == AuthType.login ?const Color(0xFF6C7381): Colors.white,
                       )),
                     ),
 
