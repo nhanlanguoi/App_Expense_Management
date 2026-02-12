@@ -164,28 +164,7 @@ class _AuthScreenState extends State<AuthScreen> {
                     // --- PHẦN FORM ---
                     Padding(
                       padding: const EdgeInsets.only(top: 30, bottom: 5),
-                      child: Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 30),
-                          padding: const EdgeInsets.all(35),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            shape: BoxShape.rectangle,
-                            borderRadius: BorderRadius.circular(30),
-                            border: Border.all(
-                              color: Colors.grey.shade200,
-                              width: 1,
-                            ),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.15),
-                                blurRadius: 20,
-                                spreadRadius: 2,
-                                offset: const Offset(0, 10),
-                              ),
-                            ],
-                          ),
-                          child: AuthForm(type: AuthType.login,)
-                      ),
+                      child: _buildForm(),
                     ),
                     Padding(
                         padding: const EdgeInsets.only(top:1),
