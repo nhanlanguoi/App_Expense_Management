@@ -23,6 +23,103 @@ class _AuthScreenState extends State<AuthScreen> {
     });
   }
 
+
+  // chỗ này là header tím gradient
+  Widget _buildHeader() {
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 600),
+      curve: Curves.easeInOutCubic,
+      height: _mode == AuthType.register ? 300 : 0,
+      width: double.infinity,
+
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            Color(0xFF7B3FE4),
+            Color(0xFF5A2DBD),
+          ],
+        ),
+        borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(40),
+          bottomRight: Radius.circular(40),
+        ),
+      ),
+    );
+  }
+
+
+  // chỗ này là logo
+  Widget _buildLogo() {
+    return AnimatedAlign(
+      duration: const Duration(milliseconds: 600),
+      curve: Curves.fastOutSlowIn,
+
+      alignment: _mode == AuthType.login
+          ? Alignment.center
+          : Alignment.topCenter,
+
+      child: AnimatedPadding(
+        duration: const Duration(milliseconds: 600),
+        padding: EdgeInsets.only(
+          top: _mode == AuthType.login ? 80 : 120,
+        ),
+
+        child: logo(
+          icon: Icons.account_balance_wallet,
+          size: _mode == AuthType.login ? 100 : 70,
+          iconsize: _mode == AuthType.login ? 40 : 30,
+          bordersize: 2,
+        ),
+      ),
+    );
+  }
+
+  // chỗ này là form đăng nhập, đăng ký
+  Widget _buildForm() {
+    return AnimatedSwitcher(
+        duration: const Duration(milliseconds: 600),
+      transitionBuilder: (child, animation) {
+        return FadeTransition(
+          opacity: animation,
+          child: SlideTransition(
+              position:Tween(
+                begin: const Offset(0, 0.08),
+                end: Offset.zero,
+              ).animate(animation),
+              child: child
+          ),
+        );
+      },
+
+      child: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 30),
+          padding: const EdgeInsets.all(35),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            shape: BoxShape.rectangle,
+            borderRadius: BorderRadius.circular(30),
+            border: Border.all(
+              color: Colors.grey.shade200,
+              width: 1,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.15),
+                blurRadius: 20,
+                spreadRadius: 2,
+                offset: const Offset(0, 10),
+              ),
+            ],
+          ),
+          child: AuthForm(type: _mode ,)
+      )
+    );
+  }
+
+
+
+
+
   @override
   Widget build(BuildContext context) {
 
