@@ -25,7 +25,7 @@ class _categoryDetailState extends State<categoryDetail> {
       body: Stack(
         children: [
           // header tím
-          PurpleHeader(height: 300,),
+          PurpleHeader(height: 250,),
           // content nằm trên header
           SafeArea(
               child: Padding(padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -108,8 +108,8 @@ class _categoryDetailState extends State<categoryDetail> {
                           height: 30,
                           borderRadius: 30,
                           width: 100,
-                          backgroundColor: Colors.white,
-                          textColor: Colors.black,
+                          backgroundColor: Colors.purple[500],
+                          textColor: Colors.white,
                         )
                       ],
                     ),
@@ -118,8 +118,14 @@ class _categoryDetailState extends State<categoryDetail> {
 
                     Expanded(
                       child: SingleChildScrollView(
-                        padding: EdgeInsets.only(bottom: 20), // Padding đáy để không bị sát lề
-                        child: Cardshowhistorytrade(), // Gọi widget vừa sửa
+                        padding: EdgeInsets.only(bottom: 20),
+                        child: Column(
+                          children: [
+                            Cardshowhistorytrade(),
+                            Cardshowhistorytrade(),
+                            Cardshowhistorytrade()
+                          ],
+                        ),
                       ),
                     )
                   ],
