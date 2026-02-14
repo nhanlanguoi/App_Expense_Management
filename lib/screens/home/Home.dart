@@ -5,6 +5,7 @@ import 'package:expense_management/components/avatar/InfoAvatar.dart';
 import 'package:expense_management/components/cardshowvalue/CardGeneralTotal.dart';
 import 'package:expense_management/components/bottomnavbar/Bottomnavbar.dart';
 import 'package:expense_management/components/cardshowvalue/CardManagerExpense.dart';
+import 'package:expense_management/configs/routes/routesname.dart';
 
 class MyHome extends StatefulWidget {
   const MyHome({super.key});
@@ -69,9 +70,9 @@ class _MyHomeState extends State<MyHome> {
                 children: [
                   Cardmanagerexpense(
                     onPressed: () {
-                      Navigator.push(
+                      Navigator.pushNamed(
                         context,
-                        MaterialPageRoute(builder: (context) => const categoryDetail()),
+                        Routesname.detail,
                       );
                     },
                     title: "Chơi nhởi",
