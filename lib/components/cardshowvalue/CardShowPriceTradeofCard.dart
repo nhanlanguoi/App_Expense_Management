@@ -72,7 +72,7 @@ class _CardmanagerexpenseState extends State<Cardshowpricetrade> {
                 ),
 
                 Text(
-                  "-" + (widget.allmoney ?? "232,43243324.234"),
+                  "-" + (widget.allmoney ?? "232,43243324.234") + " ₫",
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16 , color: Colors.red),
                 ),
               ],
