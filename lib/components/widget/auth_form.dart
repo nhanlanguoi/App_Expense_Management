@@ -7,6 +7,8 @@ import '../buttons/gradientbutton.dart';
 import '../inputs/passwordbox.dart';
 import '../inputs/textbox.dart';
 import 'package:expense_management/configs/routes/routesname.dart';
+import 'package:expense_management/model/users.dart';
+
 
 class AuthForm extends StatefulWidget {
    final AuthType type;
@@ -169,6 +171,9 @@ class _AuthFormState extends State<AuthForm> {
                   width: double.infinity,
                   onPressed: () async {
                     if (_isLoading) return;
+
+                    final testUser = Users.testUser();
+
                     setState(() {
                       _isLoading = true;
                     });
@@ -178,19 +183,32 @@ class _AuthFormState extends State<AuthForm> {
                       setState(() {
                         _isLoading = false;
                       });
-                    }
+                      if (isLogin) {
 
-                    if (isLogin) {
-                      Navigator.pushNamed(
-                        context,
-                        Routesname.home,
-                      );
-                    } else {
-
-                      Navigator.pushNamed(
-                        context,
-                        Routesname.home,
-                      );
+                        if (_identifierController.text == testUser.email &&
+                            _passwordController.text == testUser.password) {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const MyHome(),
+                            ),
+                          );
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text(
+                                "Sai tài khoản hoặc mật khẩu! (Thử: admin / 123)",
+                              ),
+                              backgroundColor: Colors.red,
+                            ),
+                          );
+                        }
+                      } else {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (context) => const MyHome()),
+                        );
+                      }
                     }
                   },
                 ),
