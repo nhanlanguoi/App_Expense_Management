@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:expense_management/configs/routes/routesname.dart';
 import 'package:expense_management/screens/home/Home.dart';
 import 'package:expense_management/screens/home/widgets/catrgoryDetail.dart';
-
+import 'package:expense_management/screens/auth/auth_screen.dart';
 
 class Routes {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -13,6 +13,10 @@ class Routes {
 
       case Routesname.detail:
         return MaterialPageRoute(builder: (context) => const  categoryDetail());
+
+
+      case Routesname.auth:
+        return MaterialPageRoute(builder: (context) => const AuthScreen());
 
       default:
         return MaterialPageRoute(builder: (_) {

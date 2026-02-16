@@ -13,25 +13,24 @@ import 'package:expense_management/screens/auth/auth_screen.dart';
 //   runApp(const Main());
 // }
 //
-// class Main extends StatelessWidget {
-//   const Main({super.key});
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       debugShowCheckedModeBanner: false,
-//       initialRoute: Routesname.home,
-//       onGenerateRoute: Routes.generateRoute,
-//     );
-//   }
-// }
+
 
 
 
 void main(){
-  runApp(MaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: const AuthScreen(),
-  ));
+  runApp(const Main());
 }
 
+
+class Main extends StatelessWidget {
+  const Main({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      initialRoute: Routesname.auth,
+      onGenerateRoute: Routes.generateRoute,
+    );
+  }
+}

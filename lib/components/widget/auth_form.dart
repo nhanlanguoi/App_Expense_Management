@@ -1,11 +1,12 @@
 import 'package:expense_management/enum/authtype.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
+import 'package:expense_management/screens/home/Home.dart';
 import '../buttons/custombutton.dart';
 import '../buttons/gradientbutton.dart';
 import '../inputs/passwordbox.dart';
 import '../inputs/textbox.dart';
+import 'package:expense_management/configs/routes/routesname.dart';
 
 class AuthForm extends StatefulWidget {
    final AuthType type;
@@ -177,6 +178,19 @@ class _AuthFormState extends State<AuthForm> {
                       setState(() {
                         _isLoading = false;
                       });
+                    }
+
+                    if (isLogin) {
+                      Navigator.pushNamed(
+                        context,
+                        Routesname.home,
+                      );
+                    } else {
+
+                      Navigator.pushNamed(
+                        context,
+                        Routesname.home,
+                      );
                     }
                   },
                 ),

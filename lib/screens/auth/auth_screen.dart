@@ -7,8 +7,9 @@ import 'package:expense_management/components/buttons/gradientbutton.dart';
 import 'package:expense_management/components/inputs/textbox.dart';
 import 'package:expense_management/components/gradientbackground.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
+import 'package:expense_management/configs/routes/routesname.dart';
 import '../../enum/authtype.dart';
+import 'package:expense_management/screens/home/Home.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
