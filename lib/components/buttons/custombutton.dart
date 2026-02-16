@@ -58,7 +58,7 @@ class _custombuttonState extends State<custombutton> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(widget.borderRadius),
         ),
-        disabledBackgroundColor: Colors.grey[300],
+      disabledBackgroundColor: Colors.grey[300],
 
       ), child: _buildChild(textColor),
 
@@ -85,8 +85,8 @@ class _custombuttonState extends State<custombutton> {
         height: 20,
         width: 20,
         child: CircularProgressIndicator(
-          strokeWidth: 2,
-          valueColor: AlwaysStoppedAnimation<Color>(color),
+            strokeWidth: 2,
+            valueColor: AlwaysStoppedAnimation<Color>(color),
         ),
       );
     }
@@ -99,13 +99,13 @@ class _custombuttonState extends State<custombutton> {
           const SizedBox(width: 8),
         ],
         Text(
-            widget.label,
-            style: widget.labelStyle ?? TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              fontFamily: 'BeVietnamPro',
-              color: color,
-            )
+          widget.label,
+          style: widget.labelStyle ?? TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            fontFamily: 'BeVietnamPro',
+            color: color,
+          )
         ),
       ],
     );
