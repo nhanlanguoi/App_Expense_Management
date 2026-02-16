@@ -3,13 +3,14 @@ import 'package:expense_management/configs/routes/routesname.dart';
 import 'package:expense_management/screens/home/Home.dart';
 import 'package:expense_management/screens/home/widgets/catrgoryDetail.dart';
 import 'package:expense_management/screens/auth/auth_screen.dart';
+import '../../screens/mainlayoutcontrol.dart';
 
 class Routes {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
 
       case Routesname.home:
-        return MaterialPageRoute(builder: (context) => const MyHome());
+        return MaterialPageRoute(builder: (context) => const MainLayout());
 
       case Routesname.detail:
         return MaterialPageRoute(builder: (context) => const  categoryDetail());

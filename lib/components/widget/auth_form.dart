@@ -8,7 +8,7 @@ import '../inputs/passwordbox.dart';
 import '../inputs/textbox.dart';
 import 'package:expense_management/configs/routes/routesname.dart';
 import 'package:expense_management/model/users.dart';
-
+import 'package:expense_management/screens/mainlayoutcontrol.dart';
 
 class AuthForm extends StatefulWidget {
    final AuthType type;
@@ -190,7 +190,7 @@ class _AuthFormState extends State<AuthForm> {
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const MyHome(),
+                              builder: (context) => const MainLayout(),
                             ),
                           );
                         } else {
