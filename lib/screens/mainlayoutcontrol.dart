@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:expense_management/components/bottomnavbar/Bottomnavbar.dart';
 import 'package:expense_management/screens/home/Home.dart';
 
+import '../model/users.dart';
+
 class MainLayout extends StatefulWidget {
-  const MainLayout({super.key});
+  final Users user;
+  const MainLayout({super.key, required this.user});
 
   @override
   State<MainLayout> createState() => _MainLayoutState();
@@ -12,15 +15,18 @@ class MainLayout extends StatefulWidget {
 class _MainLayoutState extends State<MainLayout> {
   int _currentIndex = 0;
 
-  final List<Widget> _screens = [
-    const MyHome(),
-    const Center(child: Text("Thống kê")),
-    const Center(child: Text("Lịch sử")),
-    const Center(child: Text("Cá nhân")),
-  ];
+
 
   @override
   Widget build(BuildContext context) {
+
+    final List<Widget> _screens = [
+      MyHome(users: widget.user,),
+      const Center(child: Text("Thống kê")),
+      const Center(child: Text("Lịch sử")),
+      const Center(child: Text("Cá nhân")),
+    ];
+    
     return Scaffold(
 
       body: IndexedStack(

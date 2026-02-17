@@ -41,10 +41,7 @@ class _categoryDetailState extends State<categoryDetail> {
                             alignment: Alignment.centerLeft,
                             child: IconButton(
                               onPressed: () => {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(builder: (context) => MainLayout()),
-                                )
+                                Navigator.pop(context),
                               },
                               icon: const Icon(
                                 Icons.arrow_back,

@@ -10,13 +10,14 @@ import 'package:expense_management/model/users.dart';
 
 
 class MyHome extends StatefulWidget {
-  const MyHome({super.key});
+  final Users users;
+  const MyHome({super.key, required this.users});
   @override
   State<MyHome> createState() => _MyHomeState();
 }
 
 class _MyHomeState extends State<MyHome> {
-  final currentUser = Users.testUser();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,12 +54,12 @@ class _MyHomeState extends State<MyHome> {
                         const Circleavatar(),
                         const SizedBox(width: 15),
                         Expanded(child: CardInfo(
-                          username: currentUser.username,
+                          username: widget.users.username,
                         )),
                       ],
                     ),
                     const SizedBox(height: 20),
-                    const Cardgeneraltotal(),
+                    Cardgeneraltotal(Tongsodu: widget.users.totalBalance,),
                     const SizedBox(height: 5),
                   ],
                 ),

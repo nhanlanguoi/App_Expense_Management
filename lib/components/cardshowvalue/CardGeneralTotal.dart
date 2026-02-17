@@ -49,7 +49,7 @@ class Cardgeneraltotal extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  Tongsodu ?? "3.254.325" + " ₫",
+                  (Tongsodu ?? "3.254.325") + " ₫",
                   style: TextStyle(
                     fontSize: kichthuocmain2 ?? 30,
                     fontWeight: FontWeight.bold,

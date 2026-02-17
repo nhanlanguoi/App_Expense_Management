@@ -3,6 +3,7 @@ import 'package:expense_management/configs/routes/routesname.dart';
 import 'package:expense_management/screens/home/Home.dart';
 import 'package:expense_management/screens/home/widgets/catrgoryDetail.dart';
 import 'package:expense_management/screens/auth/auth_screen.dart';
+import '../../model/users.dart';
 import '../../screens/mainlayoutcontrol.dart';
 
 class Routes {
@@ -10,7 +11,9 @@ class Routes {
     switch (settings.name) {
 
       case Routesname.home:
-        return MaterialPageRoute(builder: (context) => const MainLayout());
+        final userArg = settings.arguments as Users?;
+        final safeUser = userArg ?? Users.testUser();
+        return MaterialPageRoute(builder: (context) => MainLayout(user: safeUser));
 
       case Routesname.detail:
         return MaterialPageRoute(builder: (context) => const  categoryDetail());

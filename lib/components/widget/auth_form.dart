@@ -191,7 +191,7 @@ class _AuthFormState extends State<AuthForm> {
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const MainLayout(),
+                              builder: (context) => MainLayout(user: user,),
                             ),
                           );
 
@@ -206,7 +206,11 @@ class _AuthFormState extends State<AuthForm> {
                       } else {
                         Navigator.pushReplacement(
                           context,
-                          MaterialPageRoute(builder: (context) => const MainLayout()),
+                          MaterialPageRoute(
+                            builder: (context) => MainLayout(
+                                user: Users.testUser()
+                            ),
+                          ),
                         );
                       }
                     }
