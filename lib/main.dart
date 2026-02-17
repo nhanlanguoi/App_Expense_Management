@@ -12,7 +12,8 @@ import 'package:expense_management/data/dataseeder.dart';
 
 void main() async {
   await HiveConfig.init();
-  await DataSeeder.seed();
+  await DataSeeder.seedusers();
+  await DataSeeder.seedwallet();
 
   runApp(const Main());
 }

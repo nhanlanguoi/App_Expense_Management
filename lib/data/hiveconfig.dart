@@ -5,6 +5,7 @@ class HiveConfig {
     await Hive.initFlutter();
 
     await Hive.openBox('users');
+    await Hive.openBox('wallets');
 
     print("tạo xong Box.");
   }

@@ -29,9 +29,7 @@ class Users {
     username: json['username'],
     email: json['email'],
     password: json['password'],
-    totalBalance: json['total_balance'] is String
-        ? double.tryParse(json['total_balance'].toString().replaceAll('.', '').replaceAll(',', '')) ?? 0.0
-        : (json['total_balance'] as num?)?.toDouble() ?? 0.0,
+    totalBalance: (json['total_balance'] ?? 0).toDouble(),
     avatarUrl: json['avatar_url'],
   );
 

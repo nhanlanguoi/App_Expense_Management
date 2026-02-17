@@ -3,11 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:expense_management/components/avatar/CircleAvatar.dart';
 import 'package:expense_management/components/avatar/InfoAvatar.dart';
 import 'package:expense_management/components/cardshowvalue/CardGeneralTotal.dart';
-import 'package:expense_management/components/bottomnavbar/Bottomnavbar.dart';
 import 'package:expense_management/components/cardshowvalue/CardManagerExpense.dart';
-import 'package:expense_management/configs/routes/routesname.dart';
 import 'package:expense_management/model/users.dart';
-
+import 'package:expense_management/data/service/walletservice.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 class MyHome extends StatefulWidget {
   final Users users;
@@ -17,6 +16,24 @@ class MyHome extends StatefulWidget {
 }
 
 class _MyHomeState extends State<MyHome> {
+
+  IconData _getIconData(String iconName) {
+    switch (iconName) {
+      case 'wallet': return Icons.account_balance_wallet;
+      case 'bank': return Icons.account_balance;
+      case 'credit_card': return Icons.credit_card;
+      case 'piggy_bank': return Icons.savings;
+      default: return Icons.attach_money;
+    }
+  }
+
+  Color _getColor(String hexColor) {
+    try {
+      return Color(int.parse(hexColor.replaceAll('#', '0xff')));
+    } catch (e) {
+      return Colors.blue;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,32 +88,43 @@ class _MyHomeState extends State<MyHome> {
           Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: ListView(
-                padding: EdgeInsets.zero,
-                children: [
-                  Cardmanagerexpense(
-                    onPressed: () {
-                      Navigator.pushNamed(
-                        context,
-                        Routesname.detail,
+              child: ValueListenableBuilder(
+                valueListenable: Hive.box('wallets').listenable(),
+                builder: (context, Box box, widget) {
+
+                  final myWallets = WalletService().getWallets(this.widget.users.email);
+
+                  if (myWallets.isEmpty) {
+                    return const Center(child: Text("Chưa có ví nào."));
+                  }
+
+                  return ListView.builder(
+                    padding: EdgeInsets.zero,
+                    itemCount: myWallets.length,
+                    itemBuilder: (context, index) {
+                      final wallet = myWallets[index];
+
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 10),
+                        child: Cardmanagerexpense(
+                          title: wallet.name,
+
+                          allmoney: "${wallet.balance}",
+
+                          Icon: _getIconData(wallet.icon),
+                          Iconcolor: _getColor(wallet.color),
+
+                          total: "0 giao dịch",
+                          percen: 0.0,
+
+                          onPressed: () {
+                            print("Đã chọn ví: ${wallet.name}");
+                          },
+                        ),
                       );
                     },
-                    title: "Chơi nhởi",
-                    Icon: Icons.gamepad_outlined,
-                    allmoney: "2.324.223.234",
-                    percen: 0.13,
-                    total: "25",
-                    Iconcolor: Colors.green,
-                  ),
-                  const SizedBox(height: 10),
-                  const Cardmanagerexpense(),
-                  const SizedBox(height: 10),
-                  const Cardmanagerexpense(),
-                  const SizedBox(height: 10),
-                  const Cardmanagerexpense(),
-                  const SizedBox(height: 10),
-                  const Cardmanagerexpense(),
-                ],
+                  );
+                },
               ),
             ),
           ),
