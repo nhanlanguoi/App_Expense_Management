@@ -2,7 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CardInfo extends StatelessWidget {
-  const CardInfo({super.key});
+  final String? username;
+
+  const CardInfo({super.key, this.username});
 
   @override
   Widget build(BuildContext context) {
@@ -14,15 +16,15 @@ class CardInfo extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: const [
-          Text(
+        children: [
+          const Text(
             "Xin chào,",
             style: TextStyle(fontSize: 14, color: Colors.white70),
           ),
-          SizedBox(height: 4),
+          const SizedBox(height: 4),
           Text(
-            "Nhan",
-            style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.white),
+            username ??"User",
+            style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.white),
           ),
         ],
       ),

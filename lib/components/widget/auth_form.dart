@@ -9,6 +9,8 @@ import '../inputs/textbox.dart';
 import 'package:expense_management/configs/routes/routesname.dart';
 import 'package:expense_management/model/users.dart';
 import 'package:expense_management/screens/mainlayoutcontrol.dart';
+import 'package:expense_management/data/service/authservice.dart';
+
 
 class AuthForm extends StatefulWidget {
    final AuthType type;
@@ -171,13 +173,13 @@ class _AuthFormState extends State<AuthForm> {
                   width: double.infinity,
                   onPressed: () async {
                     if (_isLoading) return;
-
-                    final testUser = Users.testUser();
-
                     setState(() {
                       _isLoading = true;
                     });
-
+                    Users? user = await AuthService().login(
+                        _identifierController.text,
+                        _passwordController.text
+                    );
                     await Future.delayed(const Duration(seconds: 2));
                     if (mounted) {
                       setState(() {
@@ -185,20 +187,18 @@ class _AuthFormState extends State<AuthForm> {
                       });
                       if (isLogin) {
 
-                        if (_identifierController.text == testUser.email &&
-                            _passwordController.text == testUser.password) {
+                        if (user != null) {
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                               builder: (context) => const MainLayout(),
                             ),
                           );
+
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
-                              content: Text(
-                                "Sai tài khoản hoặc mật khẩu! (Thử: admin / 123)",
-                              ),
+                              content: Text("Sai tài khoản hoặc mật khẩu! (Thử: admin / 123)"),
                               backgroundColor: Colors.red,
                             ),
                           );
@@ -206,7 +206,7 @@ class _AuthFormState extends State<AuthForm> {
                       } else {
                         Navigator.pushReplacement(
                           context,
-                          MaterialPageRoute(builder: (context) => const MyHome()),
+                          MaterialPageRoute(builder: (context) => const MainLayout()),
                         );
                       }
                     }

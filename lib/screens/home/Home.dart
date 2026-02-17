@@ -6,6 +6,8 @@ import 'package:expense_management/components/cardshowvalue/CardGeneralTotal.dar
 import 'package:expense_management/components/bottomnavbar/Bottomnavbar.dart';
 import 'package:expense_management/components/cardshowvalue/CardManagerExpense.dart';
 import 'package:expense_management/configs/routes/routesname.dart';
+import 'package:expense_management/model/users.dart';
+
 
 class MyHome extends StatefulWidget {
   const MyHome({super.key});
@@ -14,6 +16,7 @@ class MyHome extends StatefulWidget {
 }
 
 class _MyHomeState extends State<MyHome> {
+  final currentUser = Users.testUser();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,10 +49,12 @@ class _MyHomeState extends State<MyHome> {
                   children: [
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
-                        Circleavatar(),
-                        SizedBox(width: 15),
-                        Expanded(child: CardInfo()),
+                      children: [
+                        const Circleavatar(),
+                        const SizedBox(width: 15),
+                        Expanded(child: CardInfo(
+                          username: currentUser.username,
+                        )),
                       ],
                     ),
                     const SizedBox(height: 20),
