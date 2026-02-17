@@ -4,7 +4,7 @@ class Users {
   final String email;
   final String password;
   final String? avatarUrl;
-  final String totalBalance;
+  final double totalBalance;
 
   Users({
     this.id,
@@ -12,7 +12,7 @@ class Users {
     required this.email,
     required this.password,
     this.avatarUrl,
-    this.totalBalance = '0',
+    this.totalBalance = 0,
   });
 
   factory Users.testUser() {
@@ -20,7 +20,7 @@ class Users {
       username: "Tester Pro",
       email: "admin",
       password: "123",
-      totalBalance: '12.000.000',
+      totalBalance: 12000000,
       avatarUrl: "assets/images/avatar_default.png",
     );
   }
@@ -29,7 +29,9 @@ class Users {
     username: json['username'],
     email: json['email'],
     password: json['password'],
-    totalBalance: json['total_balance'],
+    totalBalance: json['total_balance'] is String
+        ? double.tryParse(json['total_balance'].toString().replaceAll('.', '').replaceAll(',', '')) ?? 0.0
+        : (json['total_balance'] as num?)?.toDouble() ?? 0.0,
     avatarUrl: json['avatar_url'],
   );
 

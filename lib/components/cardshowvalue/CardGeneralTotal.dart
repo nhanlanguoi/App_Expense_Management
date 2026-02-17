@@ -7,7 +7,7 @@ class Cardgeneraltotal extends StatelessWidget {
   final double? kichthuocphu11;
   final double? kichthuocphu12;
   final Color? colormain;
-  final String? Tongsodu;
+  final double? Tongsodu;
   final String? Tietkiem;
   final String? Chitieu;
 
@@ -49,7 +49,7 @@ class Cardgeneraltotal extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  (Tongsodu ?? "3.254.325") + " ₫",
+                  (Tongsodu?.toString() ?? "3.254.325") + " ₫",
                   style: TextStyle(
                     fontSize: kichthuocmain2 ?? 30,
                     fontWeight: FontWeight.bold,
