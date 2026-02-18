@@ -5,9 +5,12 @@ import 'package:expense_management/screens/home/Home.dart';
 import 'package:flutter/material.dart';
 import 'package:expense_management/screens/mainlayoutcontrol.dart';
 import '../../../components/cardshowvalue/CardShowHistoryTrade.dart';
+import '../../../model/wallet.dart';
 
 class categoryDetail extends StatefulWidget {
-  const categoryDetail({super.key});
+  final Wallet? wallet;
+
+  const categoryDetail({super.key,  this.wallet});
 
   @override
   State<categoryDetail> createState() => _categoryDetailState();
@@ -15,17 +18,23 @@ class categoryDetail extends StatefulWidget {
 
 class _categoryDetailState extends State<categoryDetail> {
 
-
+  Color _getColor(String hexColor) {
+    try {
+      return Color(int.parse(hexColor.replaceAll('#', '0xff')));
+    } catch (e) {
+      return Colors.blue;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    final cao  = MediaQuery.of(context).size.height;
-
+    final walletColor = _getColor(widget.wallet!.color);
     return Scaffold(
       body: Stack(
         children: [
           // header tím
-          PurpleHeader(height: 250,),
+          PurpleHeader(height: 250,color: walletColor,
+          ),
           // content nằm trên header
           SafeArea(
               child: Padding(padding: const EdgeInsets.symmetric(horizontal: 20),
