@@ -6,6 +6,7 @@ class HiveConfig {
 
     await Hive.openBox('users');
     await Hive.openBox('wallets');
+    await Hive.openBox('transactions');
 
     print("tạo xong Box.");
   }
