@@ -4,7 +4,10 @@ import 'package:expense_management/components/widget/purple_header.dart';
 import 'package:expense_management/screens/home/Home.dart';
 import 'package:flutter/material.dart';
 import 'package:expense_management/screens/mainlayoutcontrol.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import '../../../components/cardshowvalue/CardShowHistoryTrade.dart';
+import '../../../data/service/transactionservice.dart';
 import '../../../model/wallet.dart';
 
 class categoryDetail extends StatefulWidget {
@@ -116,15 +119,65 @@ class _categoryDetailState extends State<categoryDetail> {
 
 
                     Expanded(
-                      child: SingleChildScrollView(
-                        padding: EdgeInsets.only(bottom: 20),
-                        child: Column(
-                          children: [
-                            Cardshowhistorytrade(),
-                            Cardshowhistorytrade(),
-                            Cardshowhistorytrade()
-                          ],
-                        ),
+                      child: ValueListenableBuilder(
+                        valueListenable: Hive.box('transactions').listenable(),
+                        builder: (context, box, widgetUI) {
+
+                          final listTrans = TransactionService().getTransactionsByWallet(widget.wallet.id!);
+
+                          if (listTrans.isEmpty) {
+                            return const Center(child: Text("Chưa có giao dịch nào."));
+                          }
+
+                          Map<String, List<dynamic>> groupedTrans = {};
+
+                          for (var t in listTrans) {
+                            String dateString = "${t.date.day}/${t.date.month}/${t.date.year}";
+
+                            if (!groupedTrans.containsKey(dateString)) {
+                              groupedTrans[dateString] = [];
+                            }
+                            groupedTrans[dateString]!.add(t);
+                          }
+
+                          final dateKeys = groupedTrans.keys.toList();
+
+                          return ListView.builder(
+                            padding: const EdgeInsets.only(bottom: 20),
+                            itemCount: dateKeys.length,
+                            itemBuilder: (context, index) {
+
+                              String currentDate = dateKeys[index];
+                              List<dynamic> dailyTrans = groupedTrans[currentDate]!;
+
+                              List<Map<String, dynamic>> mappedTransactions = dailyTrans.map((t) {
+
+                                String minute = t.date.minute.toString().padLeft(2, '0');
+                                String timeString = "${t.date.hour}:$minute";
+
+                                String sign = t.type == 'income' ? '+' : '-';
+                                Color moneyColor = t.type == 'income' ? Colors.green : Colors.red;
+
+                                IconData iconData = Icons.fastfood;
+                                if (t.icon == 'local_cafe') iconData = Icons.local_cafe;
+                                if (t.icon == 'payments') iconData = Icons.payments;
+
+                                return {
+                                  "title": t.title,
+                                  "time": timeString,
+                                  "money": "$sign${t.amount} đ",
+                                  "icon": iconData,
+                                  "color": moneyColor,
+                                };
+                              }).toList();
+
+                              return Cardshowhistorytrade(
+                                date: currentDate,
+                                transactions: mappedTransactions,
+                              );
+                            },
+                          );
+                        },
                       ),
                     )
                   ],

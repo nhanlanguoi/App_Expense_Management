@@ -2,39 +2,27 @@ import 'package:expense_management/components/cardshowvalue/CardShowPriceTradeof
 import 'package:flutter/material.dart';
 
 class Cardshowhistorytrade extends StatelessWidget {
-  const Cardshowhistorytrade({super.key});
+  final String date;
+  final List<Map<String, dynamic>> transactions;
 
-  final List<Map<String, dynamic>> fakeData = const [
-    {
-      "title": "Phở bò",
-      "time": "7:30",
-      "money": "45.000",
-      "icon": Icons.rice_bowl,
-      "color": Colors.orange,
-    },
-    {
-      "title": "Cà phê",
-      "time": "8:15",
-      "money": "25.000",
-      "icon": Icons.local_cafe,
-      "color": Colors.brown,
-    },
-    {
-      "title": "Grab đi làm",
-      "time": "8:45",
-      "money": "32.000",
-      "icon": Icons.directions_car,
-      "color": Colors.green,
-    },
-  ];
+  const Cardshowhistorytrade({
+    super.key,
+    required this.date,
+    required this.transactions,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(padding: EdgeInsetsGeometry.only(left: 10),
-          child: Text("Hôm nay , 24/1",style: TextStyle(fontWeight: FontWeight.bold),),),
+        Padding(
+          padding: EdgeInsetsGeometry.only(left: 10),
+          child: Text(
+            date,
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ),
         SizedBox(height: 10,),
         Container(
           decoration: BoxDecoration(
@@ -53,10 +41,9 @@ class Cardshowhistorytrade extends StatelessWidget {
               ),
             ],
           ),
-
           child: Column(
-            children: List.generate(fakeData.length, (index) {
-              final item = fakeData[index];
+            children: List.generate(transactions.length, (index) {
+              final item = transactions[index];
               return Column(
                 children: [
                   Cardshowpricetrade(
@@ -66,7 +53,7 @@ class Cardshowhistorytrade extends StatelessWidget {
                     Icon: item['icon'],
                     Iconcolor: item['color'],
                   ),
-                  if (index != fakeData.length - 1)
+                  if (index != transactions.length - 1)
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 10),
                       child: const Divider(thickness: 1, height: 0.7),

@@ -15,6 +15,8 @@ void main() async {
   await DataSeeder.seedusers();
   await DataSeeder.seedwallet();
 
+  await DataSeeder.seedTransactions();
+
   runApp(const Main());
 }
 

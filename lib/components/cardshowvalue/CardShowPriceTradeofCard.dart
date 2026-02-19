@@ -63,7 +63,7 @@ class _CardmanagerexpenseState extends State<Cardshowpricetrade> {
                           ),
                         ),
                         Text(
-                          (widget.time ?? "8:30") + "AM",
+                          (widget.time ?? "8:30"),
                           style: TextStyle(fontSize: 14),
                         ),
                       ],
@@ -72,8 +72,12 @@ class _CardmanagerexpenseState extends State<Cardshowpricetrade> {
                 ),
 
                 Text(
-                  "-" + (widget.allmoney ?? "232,43243324.234") + " ₫",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16 , color: Colors.red),
+                  (widget.allmoney ?? "-25.000 đ"),
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                    color: widget.Iconcolor ?? Colors.red,
+                  ),
                 ),
               ],
             ),
