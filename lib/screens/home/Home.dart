@@ -118,7 +118,12 @@ class _MyHomeState extends State<MyHome> {
                           percen: 0.0,
 
                           onPressed: () {
-                            print("Đã chọn ví: ${wallet.name}");
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => categoryDetail(wallet: wallet),
+                              ),
+                            );
                           },
                         ),
                       );

@@ -15,10 +15,6 @@ class Routes {
         final safeUser = userArg ?? Users.testUser();
         return MaterialPageRoute(builder: (context) => MainLayout(user: safeUser));
 
-      case Routesname.detail:
-        return MaterialPageRoute(builder: (context) => const  categoryDetail());
-
-
       case Routesname.auth:
         return MaterialPageRoute(builder: (context) => const AuthScreen());
 

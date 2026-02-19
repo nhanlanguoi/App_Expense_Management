@@ -8,9 +8,9 @@ import '../../../components/cardshowvalue/CardShowHistoryTrade.dart';
 import '../../../model/wallet.dart';
 
 class categoryDetail extends StatefulWidget {
-  final Wallet? wallet;
+  final Wallet wallet;
 
-  const categoryDetail({super.key,  this.wallet});
+  const categoryDetail({super.key,  required this.wallet});
 
   @override
   State<categoryDetail> createState() => _categoryDetailState();
@@ -45,24 +45,16 @@ class _categoryDetailState extends State<categoryDetail> {
                       child: Stack(
                         alignment: Alignment.center,
                         children: [
-                          // nút back về trang chủ
                           Align(
                             alignment: Alignment.centerLeft,
                             child: IconButton(
-                              onPressed: () => {
-                                Navigator.pop(context),
-                              },
-                              icon: const Icon(
-                                Icons.arrow_back,
-                                color: Colors.white,
-                                size: 30,
-                              ),
+                              onPressed: () => Navigator.pop(context),
+                              icon: const Icon(Icons.arrow_back, color: Colors.white, size: 30),
                             ),
                           ),
-                          // title của trang
-                          const Text(
-                            "Chi tiết Ăn Uống",
-                            style: TextStyle(
+                          Text(
+                            "Chi tiết ${widget.wallet.name}",
+                            style: const TextStyle(
                               color: Colors.white,
                               fontSize: 20,
                               fontWeight: FontWeight.w800,
@@ -75,17 +67,18 @@ class _categoryDetailState extends State<categoryDetail> {
                     SizedBox(
                         child: Column(
                           children: [
-                            SizedBox(height: 25),
-                            Text("Tổng chi tháng này",
-                              style:TextStyle(
+                            const SizedBox(height: 25),
+                            const Text("Tổng chi tháng này",
+                              style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 14,
                                 fontWeight: FontWeight.w500,
                                 fontFamily: 'BeVietnamPro',
                               ),
                             ),
-                            Text("2.450.000 "+ "₫",
-                              style: TextStyle(
+                            Text(
+                              "${widget.wallet.balance} ₫",
+                              style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 40,
                                 fontWeight: FontWeight.w800,
