@@ -59,7 +59,7 @@ class TransactionRecord {
       ),
       TransactionRecord(
         id: 'trans_002',
-        walletId: 'wallet_001', // Thuộc về ví Tiền mặt
+        walletId: 'wallet_001', 
         title: 'Mua cafe',
         amount: 35000,
         type: 'expense',
