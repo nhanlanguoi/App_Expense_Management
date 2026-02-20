@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../../components/buttons/custombutton.dart';
+import '../../../components/inputs/CustomTextField.dart';
+
 class Addwallet extends StatefulWidget {
   const Addwallet({super.key});
 
@@ -12,59 +15,80 @@ class _AddwalletState extends State<Addwallet> {
   Widget build(BuildContext context) {
     return Dialog(
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(25),
+        borderRadius: BorderRadius.circular(30),
       ),
       backgroundColor: Colors.white,
       elevation: 10,
+      insetPadding: const EdgeInsets.all(20),
 
       child: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(24),
         child: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Stack(
+                alignment: Alignment.center,
+                children: [
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: IconButton(
+                      icon: const Icon(Icons.close, color: Colors.grey),
+                      onPressed: () => Navigator.pop(context),
+                    ),
+                  ),
+                  const Text(
+                    "Thêm Ví Mới",
+                    style: TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'BeVietnamPro',
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
               const Center(
-                child: Text("Thêm ví mới", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-              ),
-              const SizedBox(height: 20),
-
-
-              const TextField(
-                decoration: InputDecoration(
-                    labelText: "Tên ví ",
-                    border: OutlineInputBorder()
+                child: Text(
+                  "Tạo ví mới để quản lý chi tiêu hiệu quả hơn",
+                  style: TextStyle(color: Colors.grey, fontSize: 14),
+                  textAlign: TextAlign.center,
                 ),
               ),
-              const SizedBox(height: 15),
+              const SizedBox(height: 30),
 
-
-              const TextField(
+              const CustomTextField(
+                hintText: "Tên ví",
+                suffixIcon: Icons.account_balance_wallet_outlined,
+              ),
+              const SizedBox(height: 16),
+              const CustomTextField(
+                hintText: "Số dư ban đầu (VNĐ)",
+                suffixIcon: Icons.attach_money,
                 keyboardType: TextInputType.number,
-                decoration: InputDecoration(
-                    labelText: "Số dư ban đầu (VNĐ)",
-                    border: OutlineInputBorder()
-                ),
               ),
-              const SizedBox(height: 20),
+
+              const SizedBox(height: 24),
 
               const Text("Chọn màu sắc", style: TextStyle(fontWeight: FontWeight.bold)),
               const SizedBox(height: 10),
+
+              const SizedBox(height: 10),
               const Text("Chọn biểu tượng", style: TextStyle(fontWeight: FontWeight.bold)),
               const SizedBox(height: 10),
-              SizedBox(
+              custombutton(
+                label: "Lưu Ví",
+                icon: const Icon(Icons.check_circle_outline, color: Colors.white),
+                height: 55,
                 width: double.infinity,
-                height: 50,
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blueAccent,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15))
-                  ),
-                  child: const Text("Lưu Ví", style: TextStyle(fontSize: 18, color: Colors.white)),
-                ),
+                borderRadius: 16,
+                backgroundColor: const Color(0xFF3B82F6),
+                textColor: Colors.white,
+                onPressed: () {
+                  print("Đã bấm lưu ví");
+                  Navigator.pop(context);
+                },
               ),
             ],
           ),
