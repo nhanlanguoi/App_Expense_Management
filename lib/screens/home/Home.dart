@@ -7,6 +7,7 @@ import 'package:expense_management/components/cardshowvalue/CardManagerExpense.d
 import 'package:expense_management/model/users.dart';
 import 'package:expense_management/data/service/walletservice.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:expense_management/data/service/transactionservice.dart';
 
 class MyHome extends StatefulWidget {
   final Users users;
@@ -103,7 +104,6 @@ class _MyHomeState extends State<MyHome> {
                     itemCount: myWallets.length,
                     itemBuilder: (context, index) {
                       final wallet = myWallets[index];
-
                       return Padding(
                         padding: const EdgeInsets.only(bottom: 10),
                         child: Cardmanagerexpense(
@@ -114,7 +114,7 @@ class _MyHomeState extends State<MyHome> {
                           Icon: _getIconData(wallet.icon),
                           Iconcolor: _getColor(wallet.color),
 
-                          total: "0 giao dịch",
+                          total: TransactionService().gettotalTransaction(wallet.id!).toString() +" giao dịch",
                           percen: 0.0,
 
                           onPressed: () {
