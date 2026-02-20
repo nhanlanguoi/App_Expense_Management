@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:expense_management/components/bottomnavbar/Bottomnavbar.dart';
 import 'package:expense_management/screens/home/Home.dart';
-
 import '../model/users.dart';
+import 'package:expense_management/screens/home/widgets/AddWallet.dart';
 
 class MainLayout extends StatefulWidget {
   final Users user;
@@ -35,7 +35,15 @@ class _MainLayoutState extends State<MainLayout> {
       ),
 
       floatingActionButton: FloatingActionButton(
-        onPressed: () { print("Add Transaction"); },
+        onPressed: () {
+          showDialog(
+            context: context,
+            barrierColor: Colors.black54,
+            builder: (context) {
+              return Addwallet();
+            },
+          );
+        },
         backgroundColor: Colors.blueAccent,
         shape: const CircleBorder(),
         child: const Icon(Icons.add, color: Colors.white, size: 30),
