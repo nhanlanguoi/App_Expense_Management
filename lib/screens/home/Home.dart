@@ -115,7 +115,7 @@ class _MyHomeState extends State<MyHome> {
                           Iconcolor: _getColor(wallet.color),
 
                           total: TransactionService().gettotalTransaction(wallet.id!).toString() +" giao dịch",
-                          percen: 0.0,
+                          percen: TransactionService().getpriceTransaction(wallet.id!)/wallet.balance,
 
                           onPressed: () {
                             Navigator.push(

@@ -34,4 +34,21 @@ class TransactionService {
     int total = results.length;
     return total;
   }
+
+  double getpriceTransaction(String walletId){
+    var box = Hive.box('transactions');
+
+    double totalprice =0;
+
+    for (var key in box.keys) {
+      var value = box.get(key);
+      var transaction = TransactionRecord.fromMap(key.toString(), Map<dynamic, dynamic>.from(value));
+
+      if (transaction.walletId == walletId) {
+        totalprice += transaction.amount.toDouble();
+      }
+    }
+
+    return totalprice;
+  }
 }
