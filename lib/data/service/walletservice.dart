@@ -22,4 +22,8 @@ class WalletService {
   Future<void> addWallet(Wallet wallet) async {
     await box.put(wallet.id, wallet.toMap());
   }
+
+  Future<void> deleteWallet(String id) async {
+    await box.delete(id);
+  }
 }
