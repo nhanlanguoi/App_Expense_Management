@@ -8,6 +8,8 @@ import 'package:expense_management/model/users.dart';
 import 'package:expense_management/data/service/walletservice.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:expense_management/data/service/transactionservice.dart';
+import 'package:expense_management/configs/theme/color.dart';
+import 'package:expense_management/configs/theme/icon.dart';
 
 class MyHome extends StatefulWidget {
   final Users users;
@@ -17,24 +19,6 @@ class MyHome extends StatefulWidget {
 }
 
 class _MyHomeState extends State<MyHome> {
-
-  IconData _getIconData(String iconName) {
-    switch (iconName) {
-      case 'wallet': return Icons.account_balance_wallet;
-      case 'bank': return Icons.account_balance;
-      case 'credit_card': return Icons.credit_card;
-      case 'piggy_bank': return Icons.savings;
-      default: return Icons.attach_money;
-    }
-  }
-
-  Color _getColor(String hexColor) {
-    try {
-      return Color(int.parse(hexColor.replaceAll('#', '0xff')));
-    } catch (e) {
-      return Colors.blue;
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -111,8 +95,8 @@ class _MyHomeState extends State<MyHome> {
 
                           allmoney: "${wallet.balance}",
 
-                          Icon: _getIconData(wallet.icon),
-                          Iconcolor: _getColor(wallet.color),
+                          Icon: AppIcons.getIconFromData(wallet.icon),
+                          Iconcolor: AppColors.getColorFromHex(wallet.color),
 
                           total: TransactionService().gettotalTransaction(wallet.id!).toString() +" giao dịch",
                           percen: TransactionService().getpriceTransaction(wallet.id!)/wallet.balance,
