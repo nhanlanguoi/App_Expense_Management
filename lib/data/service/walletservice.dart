@@ -2,8 +2,8 @@ import 'package:hive_flutter/hive_flutter.dart';
 import '../../model/wallet.dart';
 
 class WalletService {
+  final box = Hive.box('wallets');
   List<Wallet> getWallets(String userEmail) {
-    var box = Hive.box('wallets');
 
     List<Wallet> results = [];
 
@@ -17,5 +17,9 @@ class WalletService {
       }
     }
     return results;
+  }
+
+  Future<void> addWallet(Wallet wallet) async {
+    await box.put(wallet.id, wallet.toMap());
   }
 }

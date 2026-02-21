@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 
 import '../../../components/buttons/custombutton.dart';
 import '../../../components/inputs/CustomTextField.dart';
+import '../../../model/wallet.dart';
+import '../../../data/service/walletservice.dart';
+import '../../../data/service/authservice.dart';
 
 class Addwallet extends StatefulWidget {
   const Addwallet({super.key});
@@ -11,6 +14,9 @@ class Addwallet extends StatefulWidget {
 }
 
 class _AddwalletState extends State<Addwallet> {
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _balanceController = TextEditingController();
+
   Color selectedColor = const Color(0xFF3B82F6);
   IconData selectedIcon = Icons.account_balance_wallet_outlined;
 
@@ -142,6 +148,50 @@ class _AddwalletState extends State<Addwallet> {
     );
   }
 
+  void saveWallet() {
+    String name = _nameController.text.trim();
+    String balanceStr = _balanceController.text.trim();
+
+    if (name.isEmpty || balanceStr.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Vui lòng nhập đầy đủ Tên ví và Số dư")),
+      );
+      return;
+    }
+
+    double? balance = double.tryParse(balanceStr);
+    if (balance == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Số dư phải là một số hợp lệ")),
+      );
+      return;
+    }
+
+    final currentUser = AuthService().currentUser;
+    if (currentUser == null) return;
+
+    String colorString = '0x${selectedColor.value.toRadixString(16)}';
+    String iconString = selectedIcon.codePoint.toString();
+
+    Wallet newWallet = Wallet(
+      id: "w_${DateTime.now().millisecondsSinceEpoch}",
+      name: name,
+      balance: balance,
+      icon: iconString,
+      color: colorString,
+      userEmail: currentUser.email,
+    );
+
+    WalletService().addWallet(newWallet);
+    Navigator.pop(context, true);
+  }
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _balanceController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -184,12 +234,14 @@ class _AddwalletState extends State<Addwallet> {
               ),
               const SizedBox(height: 30),
 
-              const CustomTextField(
+              CustomTextField(
+                controller: _nameController,
                 hintText: "Tên ví",
                 suffixIcon: Icons.account_balance_wallet_outlined,
               ),
               const SizedBox(height: 16),
-              const CustomTextField(
+              CustomTextField(
+                controller: _balanceController,
                 hintText: "Số dư ban đầu (VNĐ)",
                 suffixIcon: Icons.attach_money,
                 keyboardType: TextInputType.number,
@@ -274,10 +326,7 @@ class _AddwalletState extends State<Addwallet> {
                 icon: const Icon(Icons.check_circle_outline, color: Colors.white),
                 height: 55, width: double.infinity, borderRadius: 16,
                 backgroundColor: const Color(0xFF3B82F6), textColor: Colors.white,
-                onPressed: () {
-                  print("Đã Lưu Ví - Icon: $selectedIcon, Màu: $selectedColor");
-                  Navigator.pop(context);
-                },
+                onPressed: saveWallet,
               ),
             ],
           ),

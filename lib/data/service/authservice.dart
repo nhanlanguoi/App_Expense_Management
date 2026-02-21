@@ -8,6 +8,7 @@ class AuthService {
 
   final userBox = Hive.box('users');
 
+  Users? currentUser;
 
   Future<Users?> login(String email, String password) async {
     var userData = userBox.get(email);
@@ -15,12 +16,12 @@ class AuthService {
     if (userData != null) {
       final userMap = Map<String, dynamic>.from(userData);
       if (userMap['password'] == password) {
-        return Users.fromMap(userMap);
+        currentUser = Users.fromMap(userMap);
+        return currentUser;
       }
     }
     return null;
   }
-
 
   Future<void> register(Users user) async {
     await userBox.put(user.email, user.toMap());
