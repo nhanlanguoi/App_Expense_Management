@@ -31,7 +31,7 @@ class _categoryDetailState extends State<categoryDetail> {
 
   @override
   Widget build(BuildContext context) {
-    final walletColor = _getColor(widget.wallet!.color);
+    final walletColor = _getColor(widget.wallet.color);
     return Scaffold(
       body: Stack(
         children: [
@@ -99,6 +99,7 @@ class _categoryDetailState extends State<categoryDetail> {
 
                     Row(
                       spacing: 20,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         custombutton(
                           onPressed: (){
@@ -111,6 +112,17 @@ class _categoryDetailState extends State<categoryDetail> {
                           borderRadius: 30,
                           width: 100,
                           backgroundColor: Colors.purple[500],
+                          textColor: Colors.white,
+                        ),
+                        custombutton(
+                          onPressed: (){
+                            print("Bấm nút Xóa ví");
+                          },
+                          label: "Xóa",
+                          height: 30,
+                          borderRadius: 30,
+                          width: 100,
+                          backgroundColor: Colors.red[500],
                           textColor: Colors.white,
                         )
                       ],
@@ -187,6 +199,16 @@ class _categoryDetailState extends State<categoryDetail> {
           ),
         ],
 
+      ),
+      floatingActionButton: FloatingActionButton(
+        heroTag: null,
+        onPressed: () {
+          print("Bấm thêm giao dịch cho ví: ${widget.wallet.name}");
+        },
+        backgroundColor: walletColor,
+        elevation: 4,
+        shape: const CircleBorder(),
+        child: const Icon(Icons.add, color: Colors.white, size: 32),
       ),
     );
   }
