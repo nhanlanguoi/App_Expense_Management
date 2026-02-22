@@ -51,4 +51,8 @@ class TransactionService {
 
     return totalprice;
   }
+  Future<void> deleteTransactions(List<String> transactionIds) async {
+    var box = Hive.box('transactions');
+    await box.deleteAll(transactionIds);
+  }
 }

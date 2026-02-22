@@ -20,6 +20,8 @@ class categoryDetail extends StatefulWidget {
 }
 
 class _categoryDetailState extends State<categoryDetail> {
+  bool isSelectionMode = false;
+  List<String> selectedTransIds = [];
 
   Color _getColor(String hexColor) {
     try {
@@ -51,17 +53,20 @@ class _categoryDetailState extends State<categoryDetail> {
                           Align(
                             alignment: Alignment.centerLeft,
                             child: IconButton(
-                              onPressed: () => Navigator.pop(context),
-                              icon: const Icon(Icons.arrow_back, color: Colors.white, size: 30),
-                            ),
-                          ),
-                          Text(
-                            "Chi tiết ${widget.wallet.name}",
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 20,
-                              fontWeight: FontWeight.w800,
-                              fontFamily: 'BeVietnamPro',
+                              onPressed: () {
+                                if (isSelectionMode) {
+                                  setState(() {
+                                    isSelectionMode = false;
+                                    selectedTransIds.clear();
+                                  });
+                                } else {
+                                  Navigator.pop(context);
+                                }
+                              },
+                              icon: Icon(
+                                  isSelectionMode ? Icons.close : Icons.arrow_back,
+                                  color: Colors.white, size: 30
+                              ),
                             ),
                           ),
                         ],
@@ -114,17 +119,26 @@ class _categoryDetailState extends State<categoryDetail> {
                           backgroundColor: Colors.purple[500],
                           textColor: Colors.white,
                         ),
-                        custombutton(
-                          onPressed: (){
-                            print("Bấm nút Xóa ví");
-                          },
-                          label: "Xóa",
-                          height: 30,
-                          borderRadius: 30,
-                          width: 100,
-                          backgroundColor: Colors.red[500],
-                          textColor: Colors.white,
-                        )
+                        if (isSelectionMode)
+                          custombutton(
+                            onPressed: () async {
+                              if (selectedTransIds.isEmpty) return;
+                              await TransactionService().deleteTransactions(selectedTransIds);
+                              setState(() {
+                                isSelectionMode = false;
+                                selectedTransIds.clear();
+                              });
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text("Đã xóa giao dịch thành công!")),
+                              );
+                            },
+                            label: "Xóa",
+                            height: 30,
+                            borderRadius: 30,
+                            width: 100,
+                            backgroundColor: Colors.red[500],
+                            textColor: Colors.white,
+                          )
                       ],
                     ),
                     SizedBox(height: 20),
@@ -175,6 +189,7 @@ class _categoryDetailState extends State<categoryDetail> {
                                 if (t.icon == 'payments') iconData = Icons.payments;
 
                                 return {
+                                  "id": t.id,
                                   "title": t.title,
                                   "time": timeString,
                                   "money": "$sign${t.amount} đ",
@@ -182,10 +197,36 @@ class _categoryDetailState extends State<categoryDetail> {
                                   "color": moneyColor,
                                 };
                               }).toList();
-
                               return Cardshowhistorytrade(
                                 date: currentDate,
                                 transactions: mappedTransactions,
+                                isSelectionMode: isSelectionMode,
+                                selectedIds: selectedTransIds,
+                                onLongPress: (id) {
+                                  setState(() {
+                                    isSelectionMode = true;
+                                    if (!selectedTransIds.contains(id)) {
+                                      selectedTransIds.add(id);
+                                    }
+                                  });
+                                },
+                                onSelect: (id, isSelected) {
+                                  setState(() {
+                                    if (isSelected) selectedTransIds.add(id);
+                                    else selectedTransIds.remove(id);
+                                  });
+                                },
+                                onSelectAll: (isSelected) {
+                                  setState(() {
+                                    for (var t in dailyTrans) {
+                                      if (isSelected && !selectedTransIds.contains(t.id)) {
+                                        selectedTransIds.add(t.id);
+                                      } else if (!isSelected) {
+                                        selectedTransIds.remove(t.id);
+                                      }
+                                    }
+                                  });
+                                },
                               );
                             },
                           );
