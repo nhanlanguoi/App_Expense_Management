@@ -55,4 +55,8 @@ class TransactionService {
     var box = Hive.box('transactions');
     await box.deleteAll(transactionIds);
   }
+  Future<void> addTransaction(TransactionRecord transaction) async {
+    var box = Hive.box('transactions');
+    await box.put(transaction.id, transaction.toMap());
+  }
 }

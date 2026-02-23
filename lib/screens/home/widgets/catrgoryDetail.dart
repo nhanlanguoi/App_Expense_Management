@@ -9,6 +9,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import '../../../components/cardshowvalue/CardShowHistoryTrade.dart';
 import '../../../data/service/transactionservice.dart';
 import '../../../model/wallet.dart';
+import 'package:expense_management/screens/home/widgets/AddTransaction.dart';
 
 class categoryDetail extends StatefulWidget {
   final Wallet wallet;
@@ -241,10 +242,15 @@ class _categoryDetailState extends State<categoryDetail> {
         ],
 
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: isSelectionMode ? null : FloatingActionButton(
         heroTag: null,
         onPressed: () {
-          print("Bấm thêm giao dịch cho ví: ${widget.wallet.name}");
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AddTransaction(walletId: widget.wallet.id!);
+            },
+          );
         },
         backgroundColor: walletColor,
         elevation: 4,
