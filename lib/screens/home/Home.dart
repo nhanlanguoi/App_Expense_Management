@@ -213,23 +213,28 @@ class _MyHomeState extends State<MyHome> {
                             );
                           },
 
-                          child: Cardmanagerexpense(
-                            title: wallet.name,
-                            allmoney: "${wallet.balance}",
-                            Icon: AppIcons.getIconFromData(wallet.icon),
-                            Iconcolor: AppColors.getColorFromHex(wallet.color),
-                            total: "${TransactionService().gettotalTransaction(wallet.id!)} giao dịch",
-                            percen: wallet.balance > 0
-                                ? (TransactionService().getpriceTransaction(wallet.id!) / wallet.balance)
-                                : 0.0,
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => categoryDetail(wallet: wallet),
-                                ),
-                              );
-                            },
+                          child: ValueListenableBuilder(
+                              valueListenable: Hive.box('transactions').listenable(),
+                              builder: (context, transactionBox, widgetChild) {
+                                return Cardmanagerexpense(
+                                  title: wallet.name,
+                                  allmoney: "${wallet.balance}",
+                                  Icon: AppIcons.getIconFromData(wallet.icon),
+                                  Iconcolor: AppColors.getColorFromHex(wallet.color),
+                                  total: "${TransactionService().gettotalTransaction(wallet.id!)} giao dịch",
+                                  percen: wallet.balance > 0
+                                      ? (TransactionService().getpriceTransaction(wallet.id!) / wallet.balance)
+                                      : 0.0,
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => categoryDetail(wallet: wallet),
+                                      ),
+                                    );
+                                  },
+                                );
+                              }
                           ),
                         ),
                       );
