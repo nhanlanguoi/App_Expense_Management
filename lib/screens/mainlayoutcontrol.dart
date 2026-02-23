@@ -3,6 +3,7 @@ import 'package:expense_management/components/bottomnavbar/Bottomnavbar.dart';
 import 'package:expense_management/screens/home/Home.dart';
 import '../model/users.dart';
 import 'package:expense_management/screens/home/widgets/AddWallet.dart';
+import 'package:expense_management/screens/history/history.dart';
 
 class MainLayout extends StatefulWidget {
   final Users user;
@@ -23,7 +24,7 @@ class _MainLayoutState extends State<MainLayout> {
     final List<Widget> _screens = [
       MyHome(users: widget.user,),
       const Center(child: Text("Thống kê")),
-      const Center(child: Text("Lịch sử")),
+      History(),
       const Center(child: Text("Cá nhân")),
     ];
     
