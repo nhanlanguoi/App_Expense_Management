@@ -4,6 +4,7 @@ import 'package:expense_management/screens/home/Home.dart';
 import '../model/users.dart';
 import 'package:expense_management/screens/home/widgets/AddWallet.dart';
 import 'package:expense_management/screens/history/history.dart';
+import 'package:expense_management/screens/character/profile.dart';
 
 class MainLayout extends StatefulWidget {
   final Users user;
@@ -25,7 +26,7 @@ class _MainLayoutState extends State<MainLayout> {
       MyHome(users: widget.user,),
       const Center(child: Text("Thống kê")),
       History(),
-      const Center(child: Text("Cá nhân")),
+      Character(),
     ];
     
     return Scaffold(
