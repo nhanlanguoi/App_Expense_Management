@@ -1,5 +1,6 @@
 import 'package:hive_flutter/hive_flutter.dart';
 import '../../model/transactions.dart';
+import 'walletservice.dart';
 
 class TransactionService {
   List<TransactionRecord> getTransactionsByWallet(String walletId) {
@@ -58,5 +59,31 @@ class TransactionService {
   Future<void> addTransaction(TransactionRecord transaction) async {
     var box = Hive.box('transactions');
     await box.put(transaction.id, transaction.toMap());
+  }
+
+  List<TransactionRecord> getAllUserTransactions(String email) {
+    final myWallets = WalletService().getWallets(email);
+    List<TransactionRecord> allTransactions = [];
+
+    for (var wallet in myWallets) {
+      if (wallet.id != null) {
+        allTransactions.addAll(getTransactionsByWallet(wallet.id!));
+      }
+    }
+    allTransactions.sort((a, b) => b.date.compareTo(a.date));
+    return allTransactions;
+  }
+
+
+  double getTotalNetBalance(List<TransactionRecord> transactions) {
+    double totalAmount = 0;
+    for (var t in transactions) {
+      if (t.type == 'income') {
+        totalAmount += t.amount;
+      } else {
+        totalAmount -= t.amount;
+      }
+    }
+    return totalAmount;
   }
 }
