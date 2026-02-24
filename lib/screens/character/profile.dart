@@ -1,8 +1,10 @@
 import 'package:expense_management/screens/character/widget/LanguageSetting.dart';
+import 'package:expense_management/screens/character/widget/BalanceSetting.dart';
 import 'package:flutter/material.dart';
 import '../../components/buttons/custombutton.dart';
 import '../../components/buttons/settingiteam.dart';
 import '../../data/service/authservice.dart';
+
 
 class Character extends StatefulWidget {
   const Character({super.key});
@@ -119,7 +121,7 @@ class _CharacterState extends State<Character> {
                   title: "Thiết lập số dư tài khoản",
                   iconColor: Colors.blueAccent,
                   onTap: () {
-                    print("Chuyển sang trang Thiết lập số dư");
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const BalanceSettingScreen()));
                   },
                 ),
 
