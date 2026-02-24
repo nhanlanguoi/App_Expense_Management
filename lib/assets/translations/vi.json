@@ -3,7 +3,7 @@
   "profile": {
     "title": "Hồ sơ của tôi",
     "general_settings": "Cài đặt chung",
-    "language": "Ngôn ngữ (Language)",
+    "language": "Ngôn ngữ",
     "balance_setup": "Thiết lập số dư tài khoản",
     "logout": "Đăng xuất",
     "anonymous_user": "Người dùng ẩn danh",
@@ -44,13 +44,14 @@
     "lang_title": "Ngôn ngữ",
     "lang_saved": "Đã lưu ngôn ngữ",
     "vietnamese": "Tiếng Việt",
-    "english": "English",
+    "english": "Tiếng Anh",
     "balance_title": "Thiết lập số dư",
     "balance_empty_error": "Vui lòng nhập số dư!",
     "balance_saved": "Đã cập nhật số dư thành công!",
     "enter_balance": "Nhập số dư hiện tại của bạn",
     "balance_desc": "Số dư này sẽ được dùng làm mức cơ sở ban đầu để tính toán tổng tài sản và phân tích chi tiêu của bạn.",
     "balance_label": "Số dư (₫)",
-    "balance_hint": "VD: 1.000.000"
+    "balance_hint": "VD: 1.000.000",
+    "save_change" : "Lưu thay đổi"
   }
 }

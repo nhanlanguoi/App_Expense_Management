@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import '../buttons/custombutton.dart';
 
@@ -55,7 +56,7 @@ class BaseSettingLayout extends StatelessWidget {
               padding: const EdgeInsets.all(20),
               child: custombutton(
                 onPressed: onSave,
-                label: "Lưu thay đổi",
+                label: "settings.save_change".tr(),
                 backgroundColor: Colors.blueAccent,
                 textColor: Colors.white,
                 height: 50,

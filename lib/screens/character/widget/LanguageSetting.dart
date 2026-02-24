@@ -21,7 +21,7 @@ class _LanguageSettingScreenState extends State<LanguageSettingScreen> {
   @override
   Widget build(BuildContext context) {
     return BaseSettingLayout(
-      title: "language".tr(),
+      title: "settings.lang_title".tr(),
       onSave: () {
         if (selectedLang == 'vi') {
           context.setLocale(const Locale('vi', 'VN'));
@@ -29,14 +29,14 @@ class _LanguageSettingScreenState extends State<LanguageSettingScreen> {
           context.setLocale(const Locale('en', 'US'));
         }
 
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Đã lưu ngôn ngữ")));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("settings.lang_saved".tr())));
         Navigator.pop(context);
       },
       body: Column(
         children: [
-          LangOption('vi', 'Tiếng Việt', '🇻🇳'),
+          LangOption('vi', 'settings.vietnamese'.tr(), '🇻🇳'),
           const SizedBox(height: 15),
-          LangOption('en', 'English', '🇬🇧'),
+          LangOption('en', 'settings.english'.tr(), '🇬🇧'),
         ],
       ),
     );

@@ -51,6 +51,7 @@
     "enter_balance": "Enter your current balance",
     "balance_desc": "This balance will be used as a baseline to calculate your total assets and analyze your spending.",
     "balance_label": "Balance (₫)",
-    "balance_hint": "Ex: 1,000,000"
+    "balance_hint": "Ex: 1,000,000",
+    "save_change" : "Save changes"
   }
 }

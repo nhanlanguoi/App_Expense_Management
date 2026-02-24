@@ -48,7 +48,7 @@ class _CharacterState extends State<Character> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
-                      "profile_title".tr(),
+                      "profile.title".tr(),
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 22,
@@ -71,7 +71,7 @@ class _CharacterState extends State<Character> {
                     ),
                     const SizedBox(height: 15),
                     Text(
-                      "Người dùng ẩn danh",
+                      "profile.anonymous_user".tr(),
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 22,
@@ -81,7 +81,7 @@ class _CharacterState extends State<Character> {
                     ),
                     const SizedBox(height: 5),
                     Text(
-                      currentUser?.email ?? "Chưa có email",
+                      currentUser?.email ?? "profile.no_email".tr(),
                       style: const TextStyle(
                         color: Colors.white70,
                         fontSize: 14,
@@ -97,9 +97,9 @@ class _CharacterState extends State<Character> {
             child: ListView(
               padding: const EdgeInsets.all(20),
               children: [
-                const Text(
-                  "Cài đặt chung",
-                  style: TextStyle(
+                Text(
+                  "profile.general_settings".tr(),
+                  style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                     color: Colors.grey,
@@ -110,7 +110,7 @@ class _CharacterState extends State<Character> {
 
                 SettingItem(
                   icon: Icons.language,
-                  title: "Ngôn ngữ (Language)",
+                  title: "profile.language".tr(),
                   iconColor: Colors.blueAccent,
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => const LanguageSettingScreen()));
@@ -119,7 +119,7 @@ class _CharacterState extends State<Character> {
 
                 SettingItem(
                   icon: Icons.account_balance_wallet,
-                  title: "Thiết lập số dư tài khoản",
+                  title: "profile.balance_setup".tr(),
                   iconColor: Colors.blueAccent,
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => const BalanceSettingScreen()));
@@ -127,7 +127,7 @@ class _CharacterState extends State<Character> {
                 ),
 
                 custombutton(
-                  label: "Đăng xuất",
+                  label: "profile.logout".tr(),
                   backgroundColor: Colors.redAccent,
                   textColor: Colors.white,
                   height: 45,

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 import '../../../components/inputs/CustomTextField.dart';
@@ -23,12 +24,12 @@ class _BalanceSettingScreenState extends State<BalanceSettingScreen> {
   @override
   Widget build(BuildContext context) {
     return BaseSettingLayout(
-      title: "Thiết lập số dư",
+      title: "settings.balance_title".tr(),
       onSave: () {
         if (_balanceController.text.isEmpty) {
           ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                  content: Text("Vui lòng nhập số dư!"),
+              SnackBar(
+                  content: Text("settings.balance_empty_error".tr()),
                   backgroundColor: Colors.red
               )
           );
@@ -37,25 +38,25 @@ class _BalanceSettingScreenState extends State<BalanceSettingScreen> {
 
         print("Số dư thiết lập: ${_balanceController.text}");
         ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Đã cập nhật số dư thành công!"))
+            SnackBar(content: Text("settings.balance_saved".tr()))
         );
         Navigator.pop(context);
       },
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            "Nhập số dư hiện tại của bạn",
-            style: TextStyle(
+          Text(
+            "settings.enter_balance".tr(),
+            style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
                 fontFamily: 'BeVietnamPro'
             ),
           ),
           const SizedBox(height: 10),
-          const Text(
-            "Số dư này sẽ được dùng làm mức cơ sở ban đầu để tính toán tổng tài sản và phân tích chi tiêu của bạn.",
-            style: TextStyle(
+          Text(
+            "settings.balance_desc".tr(),
+            style: const TextStyle(
                 fontSize: 14,
                 color: Colors.grey,
                 fontFamily: 'BeVietnamPro',
@@ -63,9 +64,9 @@ class _BalanceSettingScreenState extends State<BalanceSettingScreen> {
             ),
           ),
           const SizedBox(height: 30),
-          const Text(
-              "Số dư (₫)",
-              style: TextStyle(
+          Text(
+              "settings.balance_label".tr(),
+              style: const TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w600,
                   color: Colors.grey,
@@ -75,7 +76,7 @@ class _BalanceSettingScreenState extends State<BalanceSettingScreen> {
           const SizedBox(height: 8),
           CustomTextField(
             controller: _balanceController,
-            hintText: "VD: 1.000.000",
+            hintText: "settings.balance_hint".tr(),
             keyboardType: TextInputType.number,
             suffixIcon: Icons.account_balance_wallet_outlined,
           ),
