@@ -1,3 +1,4 @@
+import 'package:expense_management/screens/character/widget/LanguageSetting.dart';
 import 'package:flutter/material.dart';
 import '../../components/buttons/custombutton.dart';
 import '../../components/buttons/settingiteam.dart';
@@ -109,7 +110,7 @@ class _CharacterState extends State<Character> {
                   title: "Ngôn ngữ (Language)",
                   iconColor: Colors.blueAccent,
                   onTap: () {
-                    print("Chuyển sang trang Ngôn ngữ");
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const LanguageSettingScreen()));
                   },
                 ),
 
