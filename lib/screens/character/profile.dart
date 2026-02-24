@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../components/buttons/settingiteam.dart';
 import '../../data/service/authservice.dart';
 
 class Character extends StatefulWidget {
@@ -91,7 +92,34 @@ class _CharacterState extends State<Character> {
             child: ListView(
               padding: const EdgeInsets.all(20),
               children: [
+                const Text(
+                  "Cài đặt chung",
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey,
+                    fontFamily: 'BeVietnamPro',
+                  ),
+                ),
+                const SizedBox(height: 15),
 
+                SettingItem(
+                  icon: Icons.language,
+                  title: "Ngôn ngữ (Language)",
+                  iconColor: Colors.blueAccent,
+                  onTap: () {
+                    print("Chuyển sang trang Ngôn ngữ");
+                  },
+                ),
+
+                SettingItem(
+                  icon: Icons.account_balance_wallet,
+                  title: "Thiết lập số dư tài khoản",
+                  iconColor: Colors.blueAccent,
+                  onTap: () {
+                    print("Chuyển sang trang Thiết lập số dư");
+                  },
+                ),
               ],
             ),
           ),
