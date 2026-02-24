@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:expense_management/screens/character/widget/LanguageSetting.dart';
 import 'package:expense_management/screens/character/widget/BalanceSetting.dart';
 import 'package:flutter/material.dart';
@@ -46,9 +47,9 @@ class _CharacterState extends State<Character> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    const Text(
-                      "Hồ sơ của tôi",
-                      style: TextStyle(
+                    Text(
+                      "profile_title".tr(),
+                      style: const TextStyle(
                         color: Colors.white,
                         fontSize: 22,
                         fontWeight: FontWeight.bold,

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 import '../../../components/widget/BaseSettingLayout.dart';
-
 
 class LanguageSettingScreen extends StatefulWidget {
   const LanguageSettingScreen({super.key});
@@ -10,14 +10,26 @@ class LanguageSettingScreen extends StatefulWidget {
 }
 
 class _LanguageSettingScreenState extends State<LanguageSettingScreen> {
-  String selectedLang = 'vi';
+  late String selectedLang;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    selectedLang = context.locale.languageCode;
+  }
 
   @override
   Widget build(BuildContext context) {
     return BaseSettingLayout(
-      title: "Ngôn ngữ",
+      title: "language".tr(),
       onSave: () {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Đã lưu ngôn ngữ")));
+        if (selectedLang == 'vi') {
+          context.setLocale(const Locale('vi', 'VN'));
+        } else {
+          context.setLocale(const Locale('en', 'US'));
+        }
+
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Đã lưu ngôn ngữ")));
         Navigator.pop(context);
       },
       body: Column(
