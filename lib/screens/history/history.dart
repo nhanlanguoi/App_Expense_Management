@@ -138,7 +138,7 @@ class _HistoryState extends State<History> {
                           "time": timeString,
                           "money": "$tSign${t.amount.toStringAsFixed(0)} đ",
                           "icon": AppIcons.getIconFromData(t.icon),
-                          "color": AppColors.getColorFromHex(t.color),
+                          "color": t.type == 'income' ? Colors.green : Colors.red,
                         };
                       }).toList();
 

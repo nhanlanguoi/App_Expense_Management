@@ -7,6 +7,7 @@ import 'package:expense_management/screens/mainlayoutcontrol.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import '../../../components/cardshowvalue/CardShowHistoryTrade.dart';
+import '../../../configs/theme/icon.dart';
 import '../../../data/service/transactionservice.dart';
 import '../../../model/wallet.dart';
 import 'package:expense_management/screens/home/widgets/AddTransaction.dart';
@@ -184,17 +185,12 @@ class _categoryDetailState extends State<categoryDetail> {
 
                                 String sign = t.type == 'income' ? '+' : '-';
                                 Color moneyColor = t.type == 'income' ? Colors.green : Colors.red;
-
-                                IconData iconData = Icons.fastfood;
-                                if (t.icon == 'local_cafe') iconData = Icons.local_cafe;
-                                if (t.icon == 'payments') iconData = Icons.payments;
-
                                 return {
                                   "id": t.id,
                                   "title": t.title,
                                   "time": timeString,
                                   "money": "$sign${t.amount} đ",
-                                  "icon": iconData,
+                                  "icon": AppIcons.getIconFromData(t.icon),
                                   "color": moneyColor,
                                 };
                               }).toList();
