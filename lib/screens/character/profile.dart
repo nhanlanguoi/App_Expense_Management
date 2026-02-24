@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../components/buttons/custombutton.dart';
 import '../../components/buttons/settingiteam.dart';
 import '../../data/service/authservice.dart';
 
@@ -119,6 +120,15 @@ class _CharacterState extends State<Character> {
                   onTap: () {
                     print("Chuyển sang trang Thiết lập số dư");
                   },
+                ),
+
+                custombutton(
+                  label: "Đăng xuất",
+                  backgroundColor: Colors.redAccent,
+                  textColor: Colors.white,
+                  height: 45,
+                  width: 160,
+                  borderRadius: 25,
                 ),
               ],
             ),

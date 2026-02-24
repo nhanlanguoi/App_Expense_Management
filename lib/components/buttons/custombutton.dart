@@ -34,10 +34,10 @@ class custombutton extends StatefulWidget {
 class _custombuttonState extends State<custombutton> {
   @override
   Widget build(BuildContext context) {
-    final primaryColor = widget.backgroundColor ?? Colors.purple; // Màu mặc định giống viền focus của bạn
+    final primaryColor = widget.backgroundColor ?? Colors.purple;
     final onPrimaryColor = widget.textColor ?? Colors.white;
     return SizedBox(
-      width: widget.width, // Luôn full chiều ngang
+      width: widget.width,
       height: widget.height,
       child: widget.isOutline
           ? _buildOutlineButton(primaryColor)
@@ -70,7 +70,7 @@ class _custombuttonState extends State<custombutton> {
       onPressed: widget.isLoading ? null : widget.onPressed,
       style: OutlinedButton.styleFrom(
         foregroundColor: color,
-        side: BorderSide(color: color, width: 1.5), // Độ dày viền
+        side: BorderSide(color: color, width: 1.5),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(widget.borderRadius),
         ),
