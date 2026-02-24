@@ -1,4 +1,56 @@
 {
-  "profile_title": "My Profile",
-  "hello": "Hi,"
+  "hello": "Hi,",
+  "profile": {
+    "title": "My Profile",
+    "general_settings": "General Settings",
+    "language": "Language",
+    "balance_setup": "Set Account Balance",
+    "logout": "Logout",
+    "anonymous_user": "Anonymous User",
+    "no_email": "No email provided"
+  },
+  "home": {
+    "no_wallet": "No wallets yet.",
+    "delete_wallet": "Delete Wallet",
+    "delete_wallet_confirm": "Delete this wallet?",
+    "cancel": "Cancel",
+    "delete_now": "Delete Now",
+    "deleted_wallet": "Deleted wallet",
+    "transactions_count": "transactions"
+  },
+  "add_transaction": {
+    "title": "Add Transaction",
+    "expense": "Expense (-)",
+    "income": "Income (+)",
+    "transaction_name": "Transaction Name",
+    "transaction_name_hint": "Ex: Lunch, Gas...",
+    "amount": "Amount (₫)",
+    "amount_hint": "0",
+    "choose_icon": "Choose Icon",
+    "cancel_btn": "Cancel",
+    "save_btn": "Save Transaction",
+    "error_empty": "Please enter name and amount",
+    "error_invalid_amount": "Invalid amount"
+  },
+  "history": {
+    "today": "Today",
+    "yesterday": "Yesterday",
+    "please_login": "Please login again",
+    "title": "Transaction History",
+    "total": "Total Transaction",
+    "no_transaction": "No transactions yet."
+  },
+  "settings": {
+    "lang_title": "Language",
+    "lang_saved": "Language saved successfully",
+    "vietnamese": "Vietnamese",
+    "english": "English",
+    "balance_title": "Balance Setup",
+    "balance_empty_error": "Please enter your balance!",
+    "balance_saved": "Balance updated successfully!",
+    "enter_balance": "Enter your current balance",
+    "balance_desc": "This balance will be used as a baseline to calculate your total assets and analyze your spending.",
+    "balance_label": "Balance (₫)",
+    "balance_hint": "Ex: 1,000,000"
+  }
 }

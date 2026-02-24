@@ -1,4 +1,56 @@
 {
-  "profile_title": "Hồ sơ của tôi",
-  "hello": "Xin chào,"
+  "hello": "Xin chào,",
+  "profile": {
+    "title": "Hồ sơ của tôi",
+    "general_settings": "Cài đặt chung",
+    "language": "Ngôn ngữ (Language)",
+    "balance_setup": "Thiết lập số dư tài khoản",
+    "logout": "Đăng xuất",
+    "anonymous_user": "Người dùng ẩn danh",
+    "no_email": "Chưa có email"
+  },
+  "home": {
+    "no_wallet": "Chưa có ví nào.",
+    "delete_wallet": "Xóa ví",
+    "delete_wallet_confirm": "Xóa ví này?",
+    "cancel": "Hủy",
+    "delete_now": "Xóa ngay",
+    "deleted_wallet": "Đã xóa ví",
+    "transactions_count": "giao dịch"
+  },
+  "add_transaction": {
+    "title": "Thêm giao dịch",
+    "expense": "Khoản chi (-)",
+    "income": "Khoản thu (+)",
+    "transaction_name": "Tên giao dịch",
+    "transaction_name_hint": "VD: Ăn trưa, Đổ xăng...",
+    "amount": "Số tiền (₫)",
+    "amount_hint": "0",
+    "choose_icon": "Chọn biểu tượng",
+    "cancel_btn": "Hủy bỏ",
+    "save_btn": "Lưu giao dịch",
+    "error_empty": "Vui lòng nhập đầy đủ tên và số tiền",
+    "error_invalid_amount": "Số tiền không hợp lệ"
+  },
+  "history": {
+    "today": "Hôm nay",
+    "yesterday": "Hôm qua",
+    "please_login": "Vui lòng đăng nhập lại",
+    "title": "Lịch sử giao dịch",
+    "total": "Tổng giao dịch",
+    "no_transaction": "Chưa có giao dịch nào."
+  },
+  "settings": {
+    "lang_title": "Ngôn ngữ",
+    "lang_saved": "Đã lưu ngôn ngữ",
+    "vietnamese": "Tiếng Việt",
+    "english": "English",
+    "balance_title": "Thiết lập số dư",
+    "balance_empty_error": "Vui lòng nhập số dư!",
+    "balance_saved": "Đã cập nhật số dư thành công!",
+    "enter_balance": "Nhập số dư hiện tại của bạn",
+    "balance_desc": "Số dư này sẽ được dùng làm mức cơ sở ban đầu để tính toán tổng tài sản và phân tích chi tiêu của bạn.",
+    "balance_label": "Số dư (₫)",
+    "balance_hint": "VD: 1.000.000"
+  }
 }
