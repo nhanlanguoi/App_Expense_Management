@@ -33,8 +33,8 @@
     "error_invalid_amount": "Invalid amount"
   },
   "history": {
-    "today": "Today",
-    "yesterday": "Yesterday",
+    "today": "Today, ",
+    "yesterday": "Yesterday, ",
     "please_login": "Please login again",
     "title": "Transaction History",
     "total": "Total Transaction",

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import '../../components/cardshowvalue/CardShowHistoryTrade.dart';
@@ -24,8 +25,8 @@ class _HistoryState extends State<History> {
 
     String dateString = "${date.day.toString().padLeft(2, '0')}/${date.month.toString().padLeft(2, '0')}/${date.year}";
 
-    if (aDate == today) return "Hôm nay, $dateString";
-    if (aDate == yesterday) return "Hôm qua, $dateString";
+    if (aDate == today) return "history.today".tr() + "$dateString";
+    if (aDate == yesterday) return "history.yesterday".tr() + "$dateString";
     return dateString;
   }
 
@@ -38,7 +39,7 @@ class _HistoryState extends State<History> {
         builder: (context, box, child) {
           final currentUser = AuthService().currentUser;
           if (currentUser == null) {
-            return const Center(child: Text("Vui lòng đăng nhập lại"));
+            return Center(child: Text("history.please_login".tr()));
           }
           final transService = TransactionService();
           List<TransactionRecord> allTransactions = transService.getAllUserTransactions(currentUser.email);
@@ -81,9 +82,9 @@ class _HistoryState extends State<History> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        const Text(
-                          "Lịch sử giao dịch",
-                          style: TextStyle(
+                        Text(
+                          "history.title".tr(),
+                          style: const TextStyle(
                             color: Colors.white,
                             fontSize: 22,
                             fontWeight: FontWeight.bold,
@@ -91,9 +92,9 @@ class _HistoryState extends State<History> {
                           ),
                         ),
                         const SizedBox(height: 35),
-                        const Text(
-                          "Tổng giao dịch",
-                          style: TextStyle(
+                        Text(
+                          "history.total".tr(),
+                          style: const TextStyle(
                             color: Colors.white70,
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
@@ -117,7 +118,7 @@ class _HistoryState extends State<History> {
               ),
               Expanded(
                 child: allTransactions.isEmpty
-                    ? const Center(child: Text("Chưa có giao dịch nào.", style: TextStyle(color: Colors.grey)))
+                    ? Center(child: Text("history.no_transaction".tr(), style: const TextStyle(color: Colors.grey)))
                     : Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: ListView.builder(
