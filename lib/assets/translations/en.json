@@ -55,5 +55,16 @@
     "balance_label": "Balance (₫)",
     "balance_hint": "Ex: 1,000,000",
     "save_change" : "Save changes"
+  },
+  "add_wallet": {
+    "title": "Add New Wallet",
+    "subtitle": "Create a new wallet to manage spending effectively",
+    "name_hint": "Wallet Name",
+    "balance_hint": "Initial Balance",
+    "choose_color": "Choose Color",
+    "choose_icon": "Choose Icon",
+    "save_btn": "Save Wallet",
+    "error_missing": "Please enter Wallet Name and Balance",
+    "error_invalid": "Balance must be a valid number"
   }
 }

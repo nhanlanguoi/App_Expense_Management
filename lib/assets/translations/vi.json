@@ -55,5 +55,16 @@
     "balance_label": "Số dư (₫)",
     "balance_hint": "VD: 1.000.000",
     "save_change" : "Lưu thay đổi"
+  },
+  "add_wallet": {
+    "title": "Thêm Ví Mới",
+    "subtitle": "Tạo ví mới để quản lý chi tiêu hiệu quả hơn",
+    "name_hint": "Tên ví",
+    "balance_hint": "Số dư ban đầu (VNĐ)",
+    "choose_color": "Chọn màu sắc",
+    "choose_icon": "Chọn biểu tượng",
+    "save_btn": "Lưu Ví",
+    "error_missing": "Vui lòng nhập đầy đủ Tên ví và Số dư",
+    "error_invalid": "Số dư phải là một số hợp lệ"
   }
 }

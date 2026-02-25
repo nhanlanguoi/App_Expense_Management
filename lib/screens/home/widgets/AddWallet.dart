@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 import '../../../components/buttons/custombutton.dart';
@@ -133,7 +134,7 @@ class _AddwalletState extends State<Addwallet> {
 
     if (name.isEmpty || balanceStr.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Vui lòng nhập đầy đủ Tên ví và Số dư")),
+        SnackBar(content: Text("add_wallet.error_missing".tr())),
       );
       return;
     }
@@ -141,7 +142,7 @@ class _AddwalletState extends State<Addwallet> {
     double? balance = double.tryParse(balanceStr);
     if (balance == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Số dư phải là một số hợp lệ")),
+        SnackBar(content: Text("add_wallet.error_invalid".tr())),
       );
       return;
     }
@@ -197,17 +198,17 @@ class _AddwalletState extends State<Addwallet> {
                       onPressed: () => Navigator.pop(context),
                     ),
                   ),
-                  const Text(
-                    "Thêm Ví Mới",
-                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, fontFamily: 'BeVietnamPro'),
+                  Text(
+                    "add_wallet.title".tr(),
+                    style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold, fontFamily: 'BeVietnamPro'),
                   ),
                 ],
               ),
               const SizedBox(height: 8),
-              const Center(
+              Center(
                 child: Text(
-                  "Tạo ví mới để quản lý chi tiêu hiệu quả hơn",
-                  style: TextStyle(color: Colors.grey, fontSize: 14),
+                  "add_wallet.subtitle".tr(),
+                  style: const TextStyle(color: Colors.grey, fontSize: 14),
                   textAlign: TextAlign.center,
                 ),
               ),
@@ -215,18 +216,18 @@ class _AddwalletState extends State<Addwallet> {
 
               CustomTextField(
                 controller: _nameController,
-                hintText: "Tên ví",
+                hintText: "add_wallet.name_hint".tr(),
                 suffixIcon: Icons.account_balance_wallet_outlined,
               ),
               const SizedBox(height: 16),
               CustomTextField(
                 controller: _balanceController,
-                hintText: "Số dư ban đầu (VNĐ)",
+                hintText: "add_wallet.balance_hint".tr(),
                 suffixIcon: Icons.attach_money,
                 keyboardType: TextInputType.number,
               ),
               const SizedBox(height: 24),
-              const Text("Chọn màu sắc", style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15)),
+              Text("add_wallet.choose_color".tr(), style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 15)),
               const SizedBox(height: 12),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -261,7 +262,7 @@ class _AddwalletState extends State<Addwallet> {
 
               const SizedBox(height: 24),
 
-              const Text("Chọn biểu tượng", style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15)),
+              Text("add_wallet.choose_icon".tr(), style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 15)),
               const SizedBox(height: 12),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -301,7 +302,7 @@ class _AddwalletState extends State<Addwallet> {
               const SizedBox(height: 32),
 
               custombutton(
-                label: "Lưu Ví",
+                label: "add_wallet.save_btn".tr(),
                 icon: const Icon(Icons.check_circle_outline, color: Colors.white),
                 height: 55, width: double.infinity, borderRadius: 16,
                 backgroundColor: const Color(0xFF3B82F6), textColor: Colors.white,
