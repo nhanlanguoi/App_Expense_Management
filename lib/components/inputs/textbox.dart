@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:expense_management/core/utils/responsive.dart';
 
 class textbox extends StatefulWidget {
   final String? label;
   final TextEditingController? controller;
-  final TextInputType? keyboardType; // Thêm thuộc tính kiểu bàn phím
-
+  final TextInputType? keyboardType;
   final String? hintText;
-  final TextInputAction? textInputAction; // Hành động nút ( ấn vào là sang ô nhập mới
+  final TextInputAction? textInputAction;
   final FormFieldValidator<String>? validator;
-  final ValueChanged<String>? onChanged; // kiểm tra dữ liệu nhập vào realtime
+  final ValueChanged<String>? onChanged;
   final int? maxLines;
   final Widget? prefixIcon;
   final TextStyle? labelStyle;
   final double labelGap;
+
   const textbox({
     super.key,
     this.label,
@@ -33,9 +34,6 @@ class textbox extends StatefulWidget {
 }
 
 class _textboxState extends State<textbox> {
-
-
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -44,14 +42,17 @@ class _textboxState extends State<textbox> {
         if (widget.label != null)
           Text(
             widget.label!,
-            style: widget.labelStyle ?? const TextStyle(
-              fontSize: 15,
-              fontWeight: FontWeight.w600,
-              color: Colors.black,
-              fontFamily: 'BeVietnamPro',
-            ),
+            style: widget.labelStyle ??
+                TextStyle(
+                  fontSize: Responsive.sp(15),
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black,
+                  fontFamily: 'BeVietnamPro',
+                ),
           ),
-        SizedBox(height: widget.labelGap ?? 10),
+
+        SizedBox(height: Responsive.h(widget.labelGap)),
+
         TextFormField(
           controller: widget.controller,
           keyboardType: widget.keyboardType,
@@ -59,34 +60,46 @@ class _textboxState extends State<textbox> {
           validator: widget.validator,
           onChanged: widget.onChanged,
           maxLines: widget.maxLines,
-          style: const TextStyle(fontSize: 14,),
+          style: TextStyle(
+            fontSize: Responsive.sp(14),
+          ),
           decoration: InputDecoration(
             hintText: widget.hintText,
-            hintStyle: TextStyle(color: Colors.grey),
+            hintStyle: TextStyle(
+              color: Colors.grey,
+              fontSize: Responsive.sp(13),
+            ),
             prefixIcon: Padding(
-                padding: const EdgeInsets.only(left: 20, right: 5),
-                child: widget.prefixIcon
+              padding: EdgeInsets.only(
+                left: Responsive.w(20),
+                right: Responsive.w(5),
+              ),
+              child: widget.prefixIcon,
             ),
             filled: true,
             fillColor: Colors.grey[100],
-            contentPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+            contentPadding: EdgeInsets.symmetric(
+              vertical: Responsive.h(10),
+              horizontal: Responsive.w(10),
+            ),
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(40),
+              borderRadius: BorderRadius.circular(Responsive.w(40)),
               borderSide: BorderSide.none,
             ),
             enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(40),
+              borderRadius: BorderRadius.circular(Responsive.w(40)),
               borderSide: BorderSide.none,
             ),
             focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(40),
-              borderSide: const BorderSide(color: Colors.purple,width: 2),
+              borderRadius: BorderRadius.circular(Responsive.w(40)),
+              borderSide: BorderSide(
+                color: Colors.purple,
+                width: Responsive.w(2),
+              ),
             ),
           ),
-
         ),
       ],
-
     );
   }
 }

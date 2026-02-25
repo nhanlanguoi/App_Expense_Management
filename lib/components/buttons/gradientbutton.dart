@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../core/utils/responsive.dart';
 
 // Đổi tên thành PascalCase theo chuẩn Flutter
 class gradientbutton extends StatefulWidget {
@@ -14,7 +15,6 @@ class gradientbutton extends StatefulWidget {
   final double width;
   final double borderRadius;
 
-  // 1. Thêm thuộc tính Gradient
   final Gradient? gradient;
 
   const gradientbutton({
@@ -30,7 +30,7 @@ class gradientbutton extends StatefulWidget {
     required this.borderRadius,
     required this.width,
     this.labelStyle,
-    this.gradient, // 2. Nhận vào từ constructor
+    this.gradient,
   });
 
   @override
@@ -43,7 +43,6 @@ class _gradientbuttonState extends State<gradientbutton> {
     final primaryColor = widget.backgroundColor ?? Colors.purple;
     final onPrimaryColor = widget.textColor ?? Colors.white;
 
-    // Nếu là nút Outline thì giữ nguyên logic cũ
     if (widget.isOutline) {
       return SizedBox(
         width: widget.width,
@@ -52,26 +51,22 @@ class _gradientbuttonState extends State<gradientbutton> {
       );
     }
 
-    // Nếu là nút thường (hoặc Gradient), ta bọc trong Container
     return Container(
       width: widget.width,
       height: widget.height,
-      // 3. Trang trí Container (Gradient nằm ở đây)
       decoration: BoxDecoration(
         gradient: widget.gradient,
-        // Nếu không có gradient thì dùng màu backgroundColor, nếu có thì null
         color: widget.gradient == null ? primaryColor : null,
         borderRadius: BorderRadius.circular(widget.borderRadius),
-        // Thêm bóng đổ nhẹ nếu muốn đẹp hơn
         boxShadow: [
           BoxShadow(
-            color: (widget.gradient != null ? Colors.black : primaryColor).withOpacity(0.3),
-            blurRadius: 8,
-            offset: const Offset(0, 4),
+            color: (widget.gradient != null ? Colors.black : primaryColor)
+                .withOpacity(0.3),
+            blurRadius: Responsive.w(8),
+            offset: Offset(0, Responsive.h(4)),
           )
         ],
       ),
-      // 4. Gọi hàm build nút (nhưng với màu trong suốt)
       child: _buildElevatedButton(Colors.transparent, onPrimaryColor),
     );
   }
@@ -80,12 +75,11 @@ class _gradientbuttonState extends State<gradientbutton> {
     return ElevatedButton(
       onPressed: widget.isLoading ? null : widget.onPressed,
       style: ElevatedButton.styleFrom(
-        // QUAN TRỌNG: Màu nền phải trong suốt để lộ Gradient của Container
         backgroundColor: bgColor,
-        shadowColor: Colors.transparent, // Tắt bóng đổ mặc định của nút để dùng bóng của Container
+        shadowColor: Colors.transparent,
         foregroundColor: textColor,
         elevation: 0,
-        padding: EdgeInsets.zero, // Xóa padding để nút full container
+        padding: EdgeInsets.zero,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(widget.borderRadius),
         ),
@@ -100,7 +94,7 @@ class _gradientbuttonState extends State<gradientbutton> {
       onPressed: widget.isLoading ? null : widget.onPressed,
       style: OutlinedButton.styleFrom(
         foregroundColor: color,
-        side: BorderSide(color: color, width: 1.5),
+        side: BorderSide(color: color, width: Responsive.w(1.5)),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(widget.borderRadius),
         ),
@@ -113,10 +107,10 @@ class _gradientbuttonState extends State<gradientbutton> {
   Widget _buildChild(Color color) {
     if (widget.isLoading) {
       return SizedBox(
-        height: 20,
-        width: 20,
+        height: Responsive.w(20),
+        width: Responsive.w(20),
         child: CircularProgressIndicator(
-          strokeWidth: 2,
+          strokeWidth: Responsive.w(2),
           valueColor: AlwaysStoppedAnimation<Color>(color),
         ),
       );
@@ -126,16 +120,17 @@ class _gradientbuttonState extends State<gradientbutton> {
       children: [
         if (widget.icon != null) ...[
           widget.icon!,
-          const SizedBox(width: 8),
+          SizedBox(width: Responsive.w(8)),
         ],
         Text(
           widget.label,
-          style: widget.labelStyle ?? TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-            fontFamily: 'BeVietnamPro',
-            color: color,
-          ),
+          style: widget.labelStyle ??
+              TextStyle(
+                fontSize: Responsive.sp(16),
+                fontWeight: FontWeight.bold,
+                fontFamily: 'BeVietnamPro',
+                color: color,
+              ),
         ),
       ],
     );

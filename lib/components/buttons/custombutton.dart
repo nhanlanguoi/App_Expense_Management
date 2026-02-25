@@ -1,3 +1,4 @@
+import 'package:expense_management/core/utils/responsive.dart';
 import 'package:flutter/material.dart';
 
 class custombutton extends StatefulWidget {
@@ -5,13 +6,14 @@ class custombutton extends StatefulWidget {
   final TextStyle? labelStyle;
   final VoidCallback? onPressed;
   final bool isLoading;
-  final bool isOutline; // Biến xác định là nút viền hay nút đặc
+  final bool isOutline;
   final Color? backgroundColor;
   final Color? textColor;
   final Widget? icon;
   final double height;
   final double width;
   final double borderRadius;
+
   const custombutton({
     super.key,
     required this.label,
@@ -34,10 +36,11 @@ class custombutton extends StatefulWidget {
 class _custombuttonState extends State<custombutton> {
   @override
   Widget build(BuildContext context) {
-    final primaryColor = widget.backgroundColor ?? Colors.purple; // Màu mặc định giống viền focus của bạn
+    final primaryColor = widget.backgroundColor ?? Colors.purple;
     final onPrimaryColor = widget.textColor ?? Colors.white;
+
     return SizedBox(
-      width: widget.width, // Luôn full chiều ngang
+      width: widget.width,
       height: widget.height,
       child: widget.isOutline
           ? _buildOutlineButton(primaryColor)
@@ -45,10 +48,9 @@ class _custombuttonState extends State<custombutton> {
     );
   }
 
-
-
-
   Widget _buildElevatedButton(Color bgColor, Color textColor) {
+    Responsive.init(context);
+
     return ElevatedButton(
       onPressed: widget.isLoading ? null : widget.onPressed,
       style: ElevatedButton.styleFrom(
@@ -58,19 +60,21 @@ class _custombuttonState extends State<custombutton> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(widget.borderRadius),
         ),
-      disabledBackgroundColor: Colors.grey[300],
-
-      ), child: _buildChild(textColor),
-
+        disabledBackgroundColor: Colors.grey[300],
+      ),
+      child: _buildChild(textColor),
     );
-
   }
+
   Widget _buildOutlineButton(Color color) {
     return OutlinedButton(
       onPressed: widget.isLoading ? null : widget.onPressed,
       style: OutlinedButton.styleFrom(
         foregroundColor: color,
-        side: BorderSide(color: color, width: 1.5), // Độ dày viền
+        side: BorderSide(
+          color: color,
+          width: Responsive.w(1.5),
+        ),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(widget.borderRadius),
         ),
@@ -79,14 +83,15 @@ class _custombuttonState extends State<custombutton> {
       child: _buildChild(color),
     );
   }
+
   Widget _buildChild(Color color) {
-    if(widget.isLoading){
+    if (widget.isLoading) {
       return SizedBox(
-        height: 20,
-        width: 20,
+        height: Responsive.w(20),
+        width: Responsive.w(20),
         child: CircularProgressIndicator(
-            strokeWidth: 2,
-            valueColor: AlwaysStoppedAnimation<Color>(color),
+          strokeWidth: Responsive.w(2),
+          valueColor: AlwaysStoppedAnimation<Color>(color),
         ),
       );
     }
@@ -94,22 +99,21 @@ class _custombuttonState extends State<custombutton> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        if (widget.icon != null)...[
+        if (widget.icon != null) ...[
           widget.icon!,
-          const SizedBox(width: 8),
+          SizedBox(width: Responsive.w(8)),
         ],
         Text(
           widget.label,
-          style: widget.labelStyle ?? TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-            fontFamily: 'BeVietnamPro',
-            color: color,
-          )
+          style: widget.labelStyle ??
+              TextStyle(
+                fontSize: Responsive.sp(16),
+                fontWeight: FontWeight.bold,
+                fontFamily: 'BeVietnamPro',
+                color: color,
+              ),
         ),
       ],
     );
   }
-
-
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:expense_management/core/utils/responsive.dart';
 
 class PurpleHeader extends StatelessWidget {
   final double height;
@@ -10,11 +11,13 @@ class PurpleHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Responsive.init(context);
+
     return Container(
       width: double.infinity,
-      height: height,
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
+      height: Responsive.h(height),
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
           colors: [
             Color(0xFF7F3DFF),
             Color(0xFF5B2EFF),
@@ -23,8 +26,8 @@ class PurpleHeader extends StatelessWidget {
           end: Alignment.bottomCenter,
         ),
         borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(40),
-          bottomRight: Radius.circular(40),
+          bottomLeft: Radius.circular(Responsive.w(40)),
+          bottomRight: Radius.circular(Responsive.w(40)),
         ),
       ),
     );
