@@ -80,46 +80,63 @@ class _AuthScreenState extends State<AuthScreen> {
   Widget _buildForm() {
     return Padding(
         padding: const EdgeInsets.only(top: 10, bottom: 5),
-      child: AnimatedSwitcher(
-          duration: const Duration(milliseconds: 600),
-          transitionBuilder: (child, animation) {
-            return FadeTransition(
-              opacity: animation,
-              child: SlideTransition(
-                  position:Tween(
-                    begin: const Offset(0, 0.08),
-                    end: Offset.zero,
-                  ).animate(animation),
-                  child: child
+      child: AnimatedSize(
+          duration: const Duration(milliseconds: 500),
+          curve: Curves.easeInOut,
+        alignment: Alignment.topCenter,
+        child: AnimatedSwitcher(
+          duration: const Duration(microseconds: 500) ,
+          switchInCurve: Curves.easeOutCubic,
+          switchOutCurve: Curves.easeInCubic,
+          transitionBuilder: (child, animation){
+            final slideAnimation = Tween<Offset>(
+              begin: const Offset(0.12, 0),
+              end: Offset.zero,
+            ).animate(
+                CurvedAnimation(
+                    parent: animation,
+                    curve: Curves.easeInOutCubic)
+            );
+            return SlideTransition(
+              position: slideAnimation,
+              child: FadeTransition(
+                opacity: animation,
+                child: child,
               ),
             );
           },
-
           child: Container(
-              margin: const EdgeInsets.symmetric(horizontal: 30),
-              padding: _mode == AuthType.login
-                  ? const EdgeInsets.all(35)
-                  : const EdgeInsets.only(left: 30, right: 30, top: 20, bottom: 20),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                shape: BoxShape.rectangle,
-                borderRadius: BorderRadius.circular(30),
-                border: Border.all(
-                  color: Colors.grey.shade200,
-                  width: 1,
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.15),
-                    blurRadius: 20,
-                    spreadRadius: 2,
-                    offset: const Offset(0, 10),
-                  ),
-                ],
+            key: ValueKey(_mode),
+
+            margin: const EdgeInsets.symmetric(horizontal: 30),
+
+            padding: _mode == AuthType.login
+                ? const EdgeInsets.all(35)
+                : const EdgeInsets.symmetric(
+              horizontal: 30,
+              vertical: 20,
+            ),
+
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(30),
+              border: Border.all(
+                color: Colors.grey.shade200,
               ),
-              child: AuthForm(type: _mode ,)
-          )
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.15),
+                  blurRadius: 20,
+                  spreadRadius: 2,
+                  offset: const Offset(0, 10),
+                ),
+              ],
+            ),
+            child: AuthForm(type: _mode),
+
+          ),
       ),
+    ),
     );
   }
 
