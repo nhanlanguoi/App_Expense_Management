@@ -4,7 +4,8 @@ import 'package:expense_management/screens/character/widget/BalanceSetting.dart'
 import 'package:flutter/material.dart';
 import '../../components/buttons/custombutton.dart';
 import '../../components/buttons/settingiteam.dart';
-import '../../data/service/authservice.dart';
+import '../../core/data/service/authservice.dart';
+
 
 
 class Character extends StatefulWidget {

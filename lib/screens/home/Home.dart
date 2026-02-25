@@ -5,12 +5,13 @@ import 'package:expense_management/components/avatar/CircleAvatar.dart';
 import 'package:expense_management/components/avatar/InfoAvatar.dart';
 import 'package:expense_management/components/cardshowvalue/CardGeneralTotal.dart';
 import 'package:expense_management/components/cardshowvalue/CardManagerExpense.dart';
-import 'package:expense_management/model/users.dart';
-import 'package:expense_management/data/service/walletservice.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:expense_management/data/service/transactionservice.dart';
 import 'package:expense_management/configs/theme/color.dart';
 import 'package:expense_management/configs/theme/icon.dart';
+
+import '../../core/data/service/transactionservice.dart';
+import '../../core/data/service/walletservice.dart';
+import '../../core/model/users.dart';
 
 class MyHome extends StatefulWidget {
   final Users users;

@@ -3,7 +3,7 @@ import 'package:expense_management/configs/routes/routesname.dart';
 import 'package:expense_management/screens/home/Home.dart';
 import 'package:expense_management/screens/home/widgets/catrgoryDetail.dart';
 import 'package:expense_management/screens/auth/auth_screen.dart';
-import '../../model/users.dart';
+import '../../core/model/users.dart';
 import '../../screens/mainlayoutcontrol.dart';
 
 class Routes {

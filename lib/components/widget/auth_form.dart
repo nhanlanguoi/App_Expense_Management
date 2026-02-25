@@ -1,20 +1,17 @@
 import 'package:expense_management/enum/authtype.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
 import 'package:expense_management/core/utils/responsive.dart';
-
-
 import 'package:expense_management/screens/home/Home.dart';
-
+import '../../core/data/service/authservice.dart';
+import '../../core/model/users.dart';
 import '../buttons/custombutton.dart';
 import '../buttons/gradientbutton.dart';
 import '../inputs/passwordbox.dart';
 import '../inputs/textbox.dart';
 import 'package:expense_management/configs/routes/routesname.dart';
-import 'package:expense_management/model/users.dart';
 import 'package:expense_management/screens/mainlayoutcontrol.dart';
-import 'package:expense_management/data/service/authservice.dart';
+
 
 
 class AuthForm extends StatefulWidget {

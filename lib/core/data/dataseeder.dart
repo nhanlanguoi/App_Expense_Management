@@ -1,7 +1,7 @@
 import 'package:hive_flutter/hive_flutter.dart';
 import '../model/transactions.dart';
 import '../model/users.dart';
-import 'package:expense_management/model/wallet.dart';
+import '../model/wallet.dart';
 
 class DataSeeder {
   static Future<void> seedusers() async {

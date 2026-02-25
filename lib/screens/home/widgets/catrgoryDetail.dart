@@ -8,8 +8,8 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import '../../../components/cardshowvalue/CardShowHistoryTrade.dart';
 import '../../../configs/theme/icon.dart';
-import '../../../data/service/transactionservice.dart';
-import '../../../model/wallet.dart';
+import '../../../core/data/service/transactionservice.dart';
+import '../../../core/model/wallet.dart';
 import 'package:expense_management/screens/home/widgets/AddTransaction.dart';
 
 class categoryDetail extends StatefulWidget {

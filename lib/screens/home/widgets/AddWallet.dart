@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 
 import '../../../components/buttons/custombutton.dart';
 import '../../../components/inputs/CustomTextField.dart';
-import '../../../model/wallet.dart';
-import '../../../data/service/walletservice.dart';
-import '../../../data/service/authservice.dart';
+import '../../../core/data/service/authservice.dart';
+import '../../../core/data/service/walletservice.dart';
+import '../../../core/model/wallet.dart';
 import 'package:expense_management/configs/theme/color.dart';
 import 'package:expense_management/configs/theme/icon.dart';
 

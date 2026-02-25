@@ -1,5 +1,5 @@
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:expense_management/model/users.dart';
+import '../../model/users.dart';
 
 class AuthService {
   static final AuthService instance = AuthService.internal();

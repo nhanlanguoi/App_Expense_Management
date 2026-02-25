@@ -2,10 +2,10 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:expense_management/components/inputs/CustomTextField.dart';
 import 'package:expense_management/components/buttons/custombutton.dart';
-import 'package:expense_management/model/transactions.dart';
-import 'package:expense_management/data/service/transactionservice.dart';
 import 'package:expense_management/configs/theme/color.dart';
 import 'package:expense_management/configs/theme/icon.dart';
+import '../../../core/data/service/transactionservice.dart';
+import '../../../core/model/transactions.dart';
 
 class AddTransaction extends StatefulWidget {
   final String walletId;

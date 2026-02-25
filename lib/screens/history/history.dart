@@ -2,9 +2,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import '../../components/cardshowvalue/CardShowHistoryTrade.dart';
-import '../../data/service/authservice.dart';
-import '../../data/service/transactionservice.dart';
-import '../../model/transactions.dart';
+import '../../core/data/service/authservice.dart';
+import '../../core/data/service/transactionservice.dart';
+import '../../core/model/transactions.dart';
 import '../../configs/theme/color.dart';
 import '../../configs/theme/icon.dart';
 
