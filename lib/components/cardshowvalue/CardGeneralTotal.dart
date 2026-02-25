@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -42,7 +43,7 @@ class Cardgeneraltotal extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Tổng số dư",
+                  "home.total_balance".tr(),
                   style: TextStyle(
                     fontSize: kichthuocmain1 ?? 12,
                     color: colormain ?? Colors.white,
@@ -71,7 +72,7 @@ class Cardgeneraltotal extends StatelessWidget {
                       children: [
                         const Icon(Icons.circle, size: 10, color: Colors.green),
                         const SizedBox(width: 3),
-                        const Text("Tiết kiệm: ", style: TextStyle(color: Colors.white, fontSize: 10)),
+                        Text("home.savings".tr()+": ", style: const TextStyle(color: Colors.white, fontSize: 10)),
 
                         Flexible(
                           child: Text(
@@ -93,7 +94,7 @@ class Cardgeneraltotal extends StatelessWidget {
                       children: [
                         const Icon(Icons.circle, size: 10, color: Colors.red),
                         const SizedBox(width: 3),
-                        const Text("Đã tiêu: ", style: TextStyle(color: Colors.white, fontSize: 10)),
+                        Text("home.spent".tr()+": ", style: const TextStyle(color: Colors.white, fontSize: 10)),
                         Flexible(
                           child: Text(
                             Chitieu ?? "4.553.235.241 ₫",

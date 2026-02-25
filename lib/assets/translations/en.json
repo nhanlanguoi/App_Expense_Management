@@ -16,7 +16,10 @@
     "cancel": "Cancel",
     "delete_now": "Delete Now",
     "deleted_wallet": "Deleted wallet",
-    "transactions_count": "transactions"
+    "transactions_count": "transactions",
+    "total_balance": "Total Balance",
+    "savings": "Savings",
+    "spent": "Spent"
   },
   "add_transaction": {
     "title": "Add Transaction",
@@ -25,7 +28,6 @@
     "transaction_name": "Transaction Name",
     "transaction_name_hint": "Ex: Lunch, Gas...",
     "amount": "Amount (₫)",
-    "amount_hint": "0",
     "choose_icon": "Choose Icon",
     "cancel_btn": "Cancel",
     "save_btn": "Save Transaction",

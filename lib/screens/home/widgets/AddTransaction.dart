@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:expense_management/components/inputs/CustomTextField.dart';
 import 'package:expense_management/components/buttons/custombutton.dart';
@@ -89,7 +90,7 @@ class _AddTransactionState extends State<AddTransaction> {
   void _saveTransaction() async {
     if (_titleController.text.isEmpty || _amountController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Vui lòng nhập đầy đủ tên và số tiền", style: TextStyle(color: Colors.white)), backgroundColor: Colors.red),
+        SnackBar(content: Text("add_transaction.error_empty".tr(), style: const TextStyle(color: Colors.white)), backgroundColor: Colors.red),
       );
       return;
     }
@@ -97,7 +98,7 @@ class _AddTransactionState extends State<AddTransaction> {
     double? amount = double.tryParse(_amountController.text);
     if (amount == null || amount <= 0) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Số tiền không hợp lệ", style: TextStyle(color: Colors.white)), backgroundColor: Colors.red),
+        SnackBar(content: Text("add_transaction.error_invalid_amount".tr(), style: const TextStyle(color: Colors.white)), backgroundColor: Colors.red),
       );
       return;
     }
@@ -145,8 +146,8 @@ class _AddTransactionState extends State<AddTransaction> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Center(
-                child: Text("Thêm giao dịch", style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, fontFamily: 'BeVietnamPro')),
+              Center(
+                child: Text("add_transaction.title".tr(), style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold, fontFamily: 'BeVietnamPro')),
               ),
               const SizedBox(height: 20),
               Row(
@@ -161,7 +162,7 @@ class _AddTransactionState extends State<AddTransaction> {
                           borderRadius: BorderRadius.circular(12),
                         ),
                         alignment: Alignment.center,
-                        child: Text("Khoản chi (-)", style: TextStyle(color: _selectedType == 'expense' ? Colors.white : Colors.grey.shade600, fontWeight: FontWeight.bold)),
+                        child: Text("add_transaction.expense".tr(), style: TextStyle(color: _selectedType == 'expense' ? Colors.white : Colors.grey.shade600, fontWeight: FontWeight.bold)),
                       ),
                     ),
                   ),
@@ -176,22 +177,22 @@ class _AddTransactionState extends State<AddTransaction> {
                           borderRadius: BorderRadius.circular(12),
                         ),
                         alignment: Alignment.center,
-                        child: Text("Khoản thu (+)", style: TextStyle(color: _selectedType == 'income' ? Colors.white : Colors.grey.shade600, fontWeight: FontWeight.bold)),
+                        child: Text("add_transaction.income".tr(), style: TextStyle(color: _selectedType == 'income' ? Colors.white : Colors.grey.shade600, fontWeight: FontWeight.bold)),
                       ),
                     ),
                   ),
                 ],
               ),
               const SizedBox(height: 20),
-              const Text("Tên giao dịch", style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Colors.grey)),
+              Text("add_transaction.transaction_name".tr(), style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Colors.grey)),
               const SizedBox(height: 8),
               CustomTextField(
                 controller: _titleController,
-                hintText: "VD: Ăn trưa, Đổ xăng...",
+                hintText: "add_transaction.transaction_name_hint".tr(),
                 suffixIcon: Icons.edit_note,
               ),
               const SizedBox(height: 16),
-              const Text("Số tiền (₫)", style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Colors.grey)),
+              Text("add_transaction.amount".tr(), style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Colors.grey)),
               const SizedBox(height: 8),
               CustomTextField(
                 controller: _amountController,
@@ -200,7 +201,7 @@ class _AddTransactionState extends State<AddTransaction> {
                 keyboardType: TextInputType.number,
               ),
               const SizedBox(height: 16),
-              const Text("Chọn biểu tượng", style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15, color: Colors.grey)),
+              Text("add_transaction.choose_icon".tr(), style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 15, color: Colors.grey)),
               const SizedBox(height: 12),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -244,11 +245,11 @@ class _AddTransactionState extends State<AddTransaction> {
                 children: [
                   TextButton(
                     onPressed: () => Navigator.pop(context),
-                    child: const Text("Hủy bỏ", style: TextStyle(color: Colors.grey, fontSize: 16, fontWeight: FontWeight.bold)),
+                    child: Text("add_transaction.cancel_btn".tr(), style: const TextStyle(color: Colors.grey, fontSize: 16, fontWeight: FontWeight.bold)),
                   ),
                   custombutton(
                     onPressed: _saveTransaction,
-                    label: "Lưu giao dịch",
+                    label: "add_transaction.save_btn".tr(),
                     backgroundColor: activeThemeColor,
                     textColor: Colors.white,
                     height: 45,

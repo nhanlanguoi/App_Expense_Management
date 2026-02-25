@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:expense_management/screens/home/widgets/catrgoryDetail.dart';
 import 'package:flutter/material.dart';
 import 'package:expense_management/components/avatar/CircleAvatar.dart';
@@ -80,7 +81,7 @@ class _MyHomeState extends State<MyHome> {
                   final myWallets = WalletService().getWallets(this.widget.users.email);
 
                   if (myWallets.isEmpty) {
-                    return const Center(child: Text("Chưa có ví nào."));
+                    return Center(child: Text("home.no_wallet".tr()));
                   }
 
                   return ListView.builder(
@@ -113,18 +114,18 @@ class _MyHomeState extends State<MyHome> {
                             padding: const EdgeInsets.only(right: 24),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.end,
-                              children: const [
+                              children: [
                                 Text(
-                                  "Xóa ví",
-                                  style: TextStyle(
+                                  "home.delete_wallet".tr(),
+                                  style: const TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,
                                       fontSize: 15,
                                       fontFamily: 'BeVietnamPro'
                                   ),
                                 ),
-                                SizedBox(width: 8),
-                                Icon(Icons.delete_sweep_rounded, color: Colors.white, size: 28),
+                                const SizedBox(width: 8),
+                                const Icon(Icons.delete_sweep_rounded, color: Colors.white, size: 28),
                               ],
                             ),
                           ),
@@ -151,9 +152,9 @@ class _MyHomeState extends State<MyHome> {
                                         ),
                                         const SizedBox(height: 20),
 
-                                        const Text(
-                                          "Xóa ví này?",
-                                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, fontFamily: 'BeVietnamPro'),
+                                        Text(
+                                          "home.delete_wallet_confirm".tr(),
+                                          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, fontFamily: 'BeVietnamPro'),
                                         ),
                                         const SizedBox(height: 12),
 
@@ -167,7 +168,7 @@ class _MyHomeState extends State<MyHome> {
                                                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                                                   backgroundColor: Colors.grey.shade100,
                                                 ),
-                                                child: const Text("Hủy", style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w600)),
+                                                child: Text("home.cancel".tr(), style: const TextStyle(color: Colors.black87, fontWeight: FontWeight.w600)),
                                               ),
                                             ),
                                             const SizedBox(width: 12),
@@ -180,7 +181,7 @@ class _MyHomeState extends State<MyHome> {
                                                   padding: const EdgeInsets.symmetric(vertical: 14),
                                                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                                                 ),
-                                                child: const Text("Xóa ngay", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                                                child: Text("home.delete_now".tr(), style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
                                               ),
                                             ),
                                           ],
@@ -201,7 +202,7 @@ class _MyHomeState extends State<MyHome> {
                                   children: [
                                     const Icon(Icons.check_circle, color: Colors.white),
                                     const SizedBox(width: 12),
-                                    Text("Đã xóa ví ${wallet.name}"),
+                                    Text("home.deleted_wallet".tr()+" ${wallet.name}"),
                                   ],
                                 ),
                                 behavior: SnackBarBehavior.floating,
@@ -221,7 +222,7 @@ class _MyHomeState extends State<MyHome> {
                                   allmoney: "${wallet.balance}",
                                   Icon: AppIcons.getIconFromData(wallet.icon),
                                   Iconcolor: AppColors.getColorFromHex(wallet.color),
-                                  total: "${TransactionService().gettotalTransaction(wallet.id!)} giao dịch",
+                                  total: "${TransactionService().gettotalTransaction(wallet.id!)} "+"home.transactions_count".tr(),
                                   percen: wallet.balance > 0
                                       ? (TransactionService().getpriceTransaction(wallet.id!) / wallet.balance)
                                       : 0.0,

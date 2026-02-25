@@ -16,7 +16,10 @@
     "cancel": "Hủy",
     "delete_now": "Xóa ngay",
     "deleted_wallet": "Đã xóa ví",
-    "transactions_count": "giao dịch"
+    "transactions_count": "giao dịch",
+    "total_balance": "Tổng số dư",
+    "savings": "Tiết kiệm",
+    "spent": "Đã tiêu"
   },
   "add_transaction": {
     "title": "Thêm giao dịch",
@@ -25,7 +28,6 @@
     "transaction_name": "Tên giao dịch",
     "transaction_name_hint": "VD: Ăn trưa, Đổ xăng...",
     "amount": "Số tiền (₫)",
-    "amount_hint": "0",
     "choose_icon": "Chọn biểu tượng",
     "cancel_btn": "Hủy bỏ",
     "save_btn": "Lưu giao dịch",

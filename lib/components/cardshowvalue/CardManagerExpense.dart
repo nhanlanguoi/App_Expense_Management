@@ -117,7 +117,7 @@ class _CardmanagerexpenseState extends State<Cardmanagerexpense> {
                                       ),
                                     ),
                                     Text(
-                                      (widget.total ?? "15") + " giao dịch",
+                                      (widget.total ?? "15"),
                                       style: TextStyle(fontSize: 14),
                                     ),
                                   ],
