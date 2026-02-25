@@ -34,7 +34,15 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
+
+  animated_bottom_navigation_bar: ^1.3.3
+
   font_awesome_flutter: ^10.12.0
+
+  hive: ^2.2.3
+
+  hive_flutter: ^1.1.0
+  easy_localization: ^3.0.8
 
 dev_dependencies:
   flutter_test:
@@ -117,6 +125,9 @@ flutter:
         - asset: lib/assets/fonts/BeVietnamPro-BlackItalic.ttf
           weight: 900
           style: italic
+
+  assets:
+    - lib/assets/translations/
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
 

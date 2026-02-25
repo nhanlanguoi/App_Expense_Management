@@ -1,0 +1,317 @@
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
+
+import '../../../components/buttons/custombutton.dart';
+import '../../../components/inputs/CustomTextField.dart';
+import '../../../model/wallet.dart';
+import '../../../data/service/walletservice.dart';
+import '../../../data/service/authservice.dart';
+import 'package:expense_management/configs/theme/color.dart';
+import 'package:expense_management/configs/theme/icon.dart';
+
+class Addwallet extends StatefulWidget {
+  const Addwallet({super.key});
+
+  @override
+  State<Addwallet> createState() => _AddwalletState();
+}
+
+class _AddwalletState extends State<Addwallet> {
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _balanceController = TextEditingController();
+
+  Color selectedColor = AppColors.primary;
+  IconData selectedIcon = AppIcons.defaultWalletIcons[0];
+
+  List<Color> displayColors = List.from(AppColors.defaultWalletColors);
+  List<IconData> displayIcons = List.from(AppIcons.defaultWalletIcons);
+
+
+
+  void showColorPicker() {
+    final List<Color> moreColors = AppColors.extendedWalletColors;
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Text("Chọn màu sắc", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                const SizedBox(height: 20),
+                Wrap(
+                  spacing: 15,
+                  runSpacing: 15,
+                  children: moreColors.map((color) {
+                    return GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          selectedColor = color;
+                          if (!displayColors.contains(color)) {
+                            displayColors.insert(0, color);
+                            displayColors.removeLast();
+                          }
+                        });
+                        Navigator.pop(context);
+                      },
+                      child: CircleAvatar(
+                        backgroundColor: color,
+                        radius: 20,
+                        child: selectedColor == color
+                            ? const Icon(Icons.check, color: Colors.white, size: 20)
+                            : null,
+                      ),
+                    );
+                  }).toList(),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+
+  void showIconPicker() {
+    final List<IconData> moreIcons = AppIcons.extendedWalletIcons;
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Text("Chọn biểu tượng", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                const SizedBox(height: 20),
+                Wrap(
+                  spacing: 15,
+                  runSpacing: 15,
+                  children: moreIcons.map((icon) {
+                    return GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          selectedIcon = icon;
+                          if (!displayIcons.contains(icon)) {
+                            displayIcons.insert(0, icon);
+                            displayIcons.removeLast();
+                          }
+                        });
+                        Navigator.pop(context);
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: selectedIcon == icon ? const Color(0xFF3B82F6).withOpacity(0.1) : Colors.grey[100],
+                            border: Border.all(
+                              color: selectedIcon == icon ? const Color(0xFF3B82F6) : Colors.transparent,
+                            )
+                        ),
+                        child: Icon(icon, color: selectedIcon == icon ? const Color(0xFF3B82F6) : Colors.black87),
+                      ),
+                    );
+                  }).toList(),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  void saveWallet() {
+    String name = _nameController.text.trim();
+    String balanceStr = _balanceController.text.trim();
+
+    if (name.isEmpty || balanceStr.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("add_wallet.error_missing".tr())),
+      );
+      return;
+    }
+
+    double? balance = double.tryParse(balanceStr);
+    if (balance == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("add_wallet.error_invalid".tr())),
+      );
+      return;
+    }
+
+    final currentUser = AuthService().currentUser;
+    if (currentUser == null) return;
+
+    String colorString = '0x${selectedColor.value.toRadixString(16)}';
+    String iconString = selectedIcon.codePoint.toString();
+
+    Wallet newWallet = Wallet(
+      id: "w_${DateTime.now().millisecondsSinceEpoch}",
+      name: name,
+      balance: balance,
+      icon: iconString,
+      color: colorString,
+      userEmail: currentUser.email,
+    );
+
+    WalletService().addWallet(newWallet);
+    Navigator.pop(context, true);
+  }
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _balanceController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+      backgroundColor: Colors.white,
+      elevation: 10,
+      insetPadding: const EdgeInsets.all(20),
+
+      child: Padding(
+        padding: const EdgeInsets.all(24),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Stack(
+                alignment: Alignment.center,
+                children: [
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: IconButton(
+                      icon: const Icon(Icons.close, color: Colors.grey),
+                      onPressed: () => Navigator.pop(context),
+                    ),
+                  ),
+                  Text(
+                    "add_wallet.title".tr(),
+                    style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold, fontFamily: 'BeVietnamPro'),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              Center(
+                child: Text(
+                  "add_wallet.subtitle".tr(),
+                  style: const TextStyle(color: Colors.grey, fontSize: 14),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              const SizedBox(height: 30),
+
+              CustomTextField(
+                controller: _nameController,
+                hintText: "add_wallet.name_hint".tr(),
+                suffixIcon: Icons.account_balance_wallet_outlined,
+              ),
+              const SizedBox(height: 16),
+              CustomTextField(
+                controller: _balanceController,
+                hintText: "add_wallet.balance_hint".tr(),
+                suffixIcon: Icons.attach_money,
+                keyboardType: TextInputType.number,
+              ),
+              const SizedBox(height: 24),
+              Text("add_wallet.choose_color".tr(), style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 15)),
+              const SizedBox(height: 12),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  ...displayColors.map((color) {
+                    bool isSelected = selectedColor == color;
+                    return GestureDetector(
+                      onTap: () => setState(() => selectedColor = color),
+                      child: Container(
+                        width: 45, height: 45,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: isSelected ? Border.all(color: color, width: 2) : null,
+                        ),
+                        padding: EdgeInsets.all(isSelected ? 3 : 0),
+                        child: Container(
+                          decoration: BoxDecoration(shape: BoxShape.circle, color: color),
+                        ),
+                      ),
+                    );
+                  }).toList(),
+                  GestureDetector(
+                    onTap: showColorPicker,
+                    child: Container(
+                      width: 45, height: 45,
+                      decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.grey[200]),
+                      child: const Icon(Icons.add, color: Colors.black54),
+                    ),
+                  )
+                ],
+              ),
+
+              const SizedBox(height: 24),
+
+              Text("add_wallet.choose_icon".tr(), style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 15)),
+              const SizedBox(height: 12),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  ...displayIcons.map((icon) {
+                    bool isSelected = selectedIcon == icon;
+                    return GestureDetector(
+                      onTap: () => setState(() => selectedIcon = icon),
+                      child: Container(
+                        width: 50, height: 50,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: isSelected ? const Color(0xFF3B82F6) : Colors.grey.withOpacity(0.2),
+                            width: 1.5,
+                          ),
+                          color: isSelected ? const Color(0xFF3B82F6).withOpacity(0.05) : Colors.transparent,
+                        ),
+                        child: Icon(icon, color: isSelected ? const Color(0xFF3B82F6) : Colors.black87),
+                      ),
+                    );
+                  }).toList(),
+                  GestureDetector(
+                    onTap: showIconPicker,
+                    child: Container(
+                      width: 50, height: 50,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(color: Colors.grey.withOpacity(0.2), width: 1.5),
+                      ),
+                      child: const Icon(Icons.grid_view_outlined, color: Colors.black87),
+                    ),
+                  )
+                ],
+              ),
+
+              const SizedBox(height: 32),
+
+              custombutton(
+                label: "add_wallet.save_btn".tr(),
+                icon: const Icon(Icons.check_circle_outline, color: Colors.white),
+                height: 55, width: double.infinity, borderRadius: 16,
+                backgroundColor: const Color(0xFF3B82F6), textColor: Colors.white,
+                onPressed: saveWallet,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

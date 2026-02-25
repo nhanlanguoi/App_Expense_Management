@@ -71,10 +71,12 @@ class _custombuttonState extends State<custombutton> {
       onPressed: widget.isLoading ? null : widget.onPressed,
       style: OutlinedButton.styleFrom(
         foregroundColor: color,
+
         side: BorderSide(
           color: color,
           width: Responsive.w(1.5),
         ),
+
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(widget.borderRadius),
         ),

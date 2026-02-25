@@ -1,12 +1,21 @@
 import 'package:expense_management/enum/authtype.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 import 'package:expense_management/core/utils/responsive.dart';
+
+
+import 'package:expense_management/screens/home/Home.dart';
 
 import '../buttons/custombutton.dart';
 import '../buttons/gradientbutton.dart';
 import '../inputs/passwordbox.dart';
 import '../inputs/textbox.dart';
+import 'package:expense_management/configs/routes/routesname.dart';
+import 'package:expense_management/model/users.dart';
+import 'package:expense_management/screens/mainlayoutcontrol.dart';
+import 'package:expense_management/data/service/authservice.dart';
+
 
 class AuthForm extends StatefulWidget {
   final AuthType type;
@@ -108,6 +117,7 @@ class _AuthFormState extends State<AuthForm> {
                       width: Responsive.w(140),
                     ),
                 ],
+
               ),
 
               passwordbox(
@@ -130,8 +140,69 @@ class _AuthFormState extends State<AuthForm> {
                   prefixIcon:
                   const Icon(Icons.verified_user, color: Colors.grey),
                   controller: _confirmPasswordController,
-                  hintText: "●●●●●●●●●",
-                ),
+                  hintText: "●●●●●●●●●",),
+
+                SizedBox(height: _heightMode),
+                gradientbutton(
+                  label: isLogin ? 'Đăng nhập' : 'Đăng ký',
+                  gradient: const LinearGradient(
+                      colors: [Color(0xFF7B3FE4), Color(0xFF5A2DBD)]
+                  ),
+                  labelStyle: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'BeVietnamPro',
+                    color: Colors.white,
+                  ),
+                  isLoading: _isLoading,
+                  height: 55,
+                  borderRadius: 35,
+                  width: double.infinity,
+                  onPressed: () async {
+                    if (_isLoading) return;
+                    setState(() {
+                      _isLoading = true;
+                    });
+                    Users? user = await AuthService().login(
+                        _identifierController.text,
+                        _passwordController.text
+                    );
+                    await Future.delayed(const Duration(seconds: 2));
+                    if (mounted) {
+                      setState(() {
+                        _isLoading = false;
+                      });
+                      if (isLogin) {
+
+                        if (user != null) {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => MainLayout(user: user,),
+                            ),
+                          );
+
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text("Sai tài khoản hoặc mật khẩu! (Thử: admin / 123)"),
+                              backgroundColor: Colors.red,
+                            ),
+                          );
+                        }
+                      } else {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => MainLayout(
+                                user: Users.testUser()
+                            ),
+                          ),
+                        );
+                      }
+                    }
+                  },
+                )
               ],
 
               if (isRegister) ...[
