@@ -140,66 +140,6 @@ class _AuthFormState extends State<AuthForm> {
                   hintText: "●●●●●●●●●",),
 
                 SizedBox(height: _heightMode),
-                gradientbutton(
-                  label: isLogin ? 'Đăng nhập' : 'Đăng ký',
-                  gradient: const LinearGradient(
-                      colors: [Color(0xFF7B3FE4), Color(0xFF5A2DBD)]
-                  ),
-                  labelStyle: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'BeVietnamPro',
-                    color: Colors.white,
-                  ),
-                  isLoading: _isLoading,
-                  height: 55,
-                  borderRadius: 35,
-                  width: double.infinity,
-                  onPressed: () async {
-                    if (_isLoading) return;
-                    setState(() {
-                      _isLoading = true;
-                    });
-                    Users? user = await AuthService().login(
-                        _identifierController.text,
-                        _passwordController.text
-                    );
-                    await Future.delayed(const Duration(seconds: 2));
-                    if (mounted) {
-                      setState(() {
-                        _isLoading = false;
-                      });
-                      if (isLogin) {
-
-                        if (user != null) {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => MainLayout(user: user,),
-                            ),
-                          );
-
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text("Sai tài khoản hoặc mật khẩu! (Thử: admin / 123)"),
-                              backgroundColor: Colors.red,
-                            ),
-                          );
-                        }
-                      } else {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => MainLayout(
-                                user: Users.testUser()
-                            ),
-                          ),
-                        );
-                      }
-                    }
-                  },
-                )
               ],
 
               if (isRegister) ...[
@@ -247,30 +187,63 @@ class _AuthFormState extends State<AuthForm> {
               gradientbutton(
                 label: isLogin ? 'Đăng nhập' : 'Đăng ký',
                 gradient: const LinearGradient(
-                  colors: [Color(0xFF7B3FE4), Color(0xFF5A2DBD)],
+                    colors: [Color(0xFF7B3FE4), Color(0xFF5A2DBD)]
                 ),
-                labelStyle: TextStyle(
-                  fontSize: Responsive.sp(18),
+                labelStyle: const TextStyle(
+                  fontSize: 18,
                   fontWeight: FontWeight.bold,
                   fontFamily: 'BeVietnamPro',
                   color: Colors.white,
                 ),
                 isLoading: _isLoading,
-                height: Responsive.h(55),
-                borderRadius: Responsive.w(35),
+                height: 55,
+                borderRadius: 35,
                 width: double.infinity,
                 onPressed: () async {
                   if (_isLoading) return;
-                  setState(() => _isLoading = true);
-
-                  await Future.delayed(
-                      const Duration(seconds: 2));
-
+                  setState(() {
+                    _isLoading = true;
+                  });
+                  Users? user = await AuthService().login(
+                      _identifierController.text,
+                      _passwordController.text
+                  );
+                  await Future.delayed(const Duration(seconds: 2));
                   if (mounted) {
-                    setState(() => _isLoading = false);
+                    setState(() {
+                      _isLoading = false;
+                    });
+                    if (isLogin) {
+
+                      if (user != null) {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => MainLayout(user: user,),
+                          ),
+                        );
+
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text("Sai tài khoản hoặc mật khẩu! (Thử: admin / 123)"),
+                            backgroundColor: Colors.red,
+                          ),
+                        );
+                      }
+                    } else {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => MainLayout(
+                              user: Users.testUser()
+                          ),
+                        ),
+                      );
+                    }
                   }
                 },
-              ),
+              )
             ],
           ),
         ),
