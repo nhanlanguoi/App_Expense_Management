@@ -1,3 +1,4 @@
+import 'package:expense_management/screens/statistic/widgets/BalanceChartWidget.dart';
 import 'package:expense_management/screens/statistic/widgets/BarChartWidget.dart';
 import 'package:expense_management/screens/statistic/widgets/OverviewCard.dart';
 import 'package:flutter/material.dart';
@@ -73,7 +74,16 @@ class _StatisticScreenState extends State<StatisticScreen> {
                     ),
                     BarChartWidget(transactions: allTransactions),
                     const SizedBox(height: 30),
-
+                    const Text(
+                      "Biến động số dư",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'BeVietnamPro',
+                      ),
+                    ),
+                    BalanceChartWidget(transactions: allTransactions),
+                    const SizedBox(height: 30),
                   ],
                 ),
               ),
