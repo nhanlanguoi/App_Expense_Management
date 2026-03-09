@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:expense_management/screens/home/widgets/MonthlySpendingCard.dart';
 import 'package:expense_management/screens/home/widgets/catrgoryDetail.dart';
 import 'package:flutter/material.dart';
 import 'package:expense_management/components/avatar/CircleAvatar.dart';
@@ -13,6 +14,9 @@ import '../../core/data/service/transactionservice.dart';
 import '../../core/data/service/walletservice.dart';
 import '../../core/model/users.dart';
 
+import 'package:expense_management/components/widget/purple_header.dart';
+import 'package:expense_management/core/utils/responsive.dart';
+
 class MyHome extends StatefulWidget {
   final Users users;
   const MyHome({super.key, required this.users});
@@ -22,56 +26,119 @@ class MyHome extends StatefulWidget {
 
 class _MyHomeState extends State<MyHome> {
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: Column(
-        children: [
-          Container(
-            width: double.infinity,
-            decoration: BoxDecoration(
-              color: Colors.blueAccent,
-              borderRadius: const BorderRadius.only(
-                bottomLeft: Radius.circular(20),
-                bottomRight: Radius.circular(20),
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.blueAccent.shade100,
-                  blurRadius: 20,
-                  offset: const Offset(0, 5),
-                  spreadRadius: 1,
+
+
+  Widget _HomeHeader(){
+    return  Stack(
+      children: [
+        PurpleHeader(height: 260),
+        SafeArea(
+          bottom: false,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Circleavatar(),
+                    const SizedBox(width: 15),
+                    Expanded(child: CardInfo(
+                      username: widget.users.username,
+                    )),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                CardGeneralTotal(total: 24580000,
+                  income: 30000000,
+                  expense: 5420000,)
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _monlySpending(){
+    List<int> months = [1,2,3,4,5,6,7,8,9,10,11,12];
+    int _selectedMonth = DateTime.now().month;
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 15),
+      child:Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Chi tiêu tháng này",
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'BeVietnamPro',
+                  ),
+                ),
+                /// Dropdown chọn tháng
+                DropdownButton<int>(
+                  value: _selectedMonth,
+
+                  underline: const SizedBox(),
+
+                  items: months.map((m) {
+                    return DropdownMenuItem(
+                      value: m,
+                      child: Text("Tháng $m",
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        fontFamily: 'BeVietnamPro',
+                        color: Color(0xFF7B3FE4),
+                      ),),
+                    );
+                  }).toList(),
+
+                  onChanged: (value) {
+                    if (value == null) return;
+
+                    setState(() {
+                      /// Cập nhật tháng được chọn
+                      _selectedMonth = value;
+
+                      /// TODO:
+                      /// Sau này sẽ gọi function tính toán dữ liệu theo tháng
+                      /// Ví dụ:
+                      /// calculateMonthlyData(_selectedMonth);
+
+                    });
+                  },
                 ),
               ],
             ),
-            child: SafeArea(
-              bottom: false,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Circleavatar(),
-                        const SizedBox(width: 15),
-                        Expanded(child: CardInfo(
-                          username: widget.users.username,
-                        )),
-                      ],
-                    ),
-                    const SizedBox(height: 20),
-                    Cardgeneraltotal(Tongsodu: widget.users.totalBalance,),
-                    const SizedBox(height: 5),
-                  ],
-                ),
-              ),
-            ),
-          ),
+        /// CARD hiển thị chi tiêu tháng
+        /// Hiện tại đang dùng dữ liệu fake để build UI
+        MonthlySpendingCard(
+            spent: 5420000,
+            total: 30000000,
+        ),
+          ]
+      )
+    );
+  }
 
-          const SizedBox(height: 24),
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Column(
+        children: [
+          //Header của trang
+         _HomeHeader(),
+          const SizedBox(height: 1),
+          // Thẻ hiện chi tiêu trong tháng
+          _monlySpending(),
+
+
+          const SizedBox(height: 10),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10),

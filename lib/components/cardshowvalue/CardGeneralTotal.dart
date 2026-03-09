@@ -1,113 +1,85 @@
-import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:intl/intl.dart';
 
-class Cardgeneraltotal extends StatelessWidget {
-  final double? kichthuocmain1;
-  final double? kichthuocmain2;
-  final double? kichthuocphu11;
-  final double? kichthuocphu12;
-  final Color? colormain;
-  final double? Tongsodu;
-  final String? Tietkiem;
-  final String? Chitieu;
+class CardGeneralTotal extends StatelessWidget {
+  final double total;
+  final double income;
+  final double expense;
 
-  const Cardgeneraltotal({
+  const CardGeneralTotal({
     super.key,
-    this.kichthuocmain1,
-    this.kichthuocmain2,
-    this.kichthuocphu11,
-    this.kichthuocphu12,
-    this.colormain,
-    this.Tongsodu,
-    this.Tietkiem,
-    this.Chitieu,
+    required this.total,
+    required this.income,
+    required this.expense,
   });
+
+  String money(double value) {
+    return "${NumberFormat("#,###", "vi_VN").format(value)} ₫";
+  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(5),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.grey.withValues(alpha: 0.6),
         borderRadius: BorderRadius.circular(20),
+        gradient: const LinearGradient(
+          colors: [
+            Color(0xFF9C61E7),
+            Color(0xFF756AE4),
+          ],
+        ),
       ),
-
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
         children: [
-          Padding(
-            padding: EdgeInsetsGeometry.only(left: 10, top: 5),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "home.total_balance".tr(),
-                  style: TextStyle(
-                    fontSize: kichthuocmain1 ?? 12,
-                    color: colormain ?? Colors.white,
-                  ),
-                ),
-                Text(
-                  (Tongsodu?.toString() ?? "3.254.325") + " ₫",
-                  style: TextStyle(
-                    fontSize: kichthuocmain2 ?? 30,
-                    fontWeight: FontWeight.bold,
-                    color: colormain ?? Colors.white,
-                  ),
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ],
+          Text(
+            "home.total_balance".tr(),
+            style: const TextStyle(
+              color: Colors.white70,
+              fontSize: 12,
             ),
           ),
-          Container(
-            child: Padding(
-              padding: EdgeInsets.only(left: 10, right: 10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+          const SizedBox(height: 5),
+
+          Text(
+            money(total),
+            style: const TextStyle(
+              fontSize: 26,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+          ),
+
+          const SizedBox(height: 10),
+
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
                 children: [
-                  Expanded(
-                    child: Row(
-                      children: [
-                        const Icon(Icons.circle, size: 10, color: Colors.green),
-                        const SizedBox(width: 3),
-                        Text("home.savings".tr()+": ", style: const TextStyle(color: Colors.white, fontSize: 10)),
-
-                        Flexible(
-                          child: Text(
-                            Tietkiem ?? "14.553.235 ₫",
-                            style: TextStyle(color: colormain ?? Colors.white ,fontSize: 10),
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  const SizedBox(width: 10),
-
-
-                  Expanded(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        const Icon(Icons.circle, size: 10, color: Colors.red),
-                        const SizedBox(width: 3),
-                        Text("home.spent".tr()+": ", style: const TextStyle(color: Colors.white, fontSize: 10)),
-                        Flexible(
-                          child: Text(
-                            Chitieu ?? "4.553.235.241 ₫",
-                            style: TextStyle(color: colormain ?? Colors.white ,fontSize: 10),
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                      ],
-                    ),
+                  const Icon(Icons.circle, size: 10, color: Colors.green),
+                  const SizedBox(width: 5),
+                  Text(
+                    "${"home.savings".tr()}: ${money(income)}",
+                    style: const TextStyle(color: Colors.white, fontSize: 12),
                   ),
                 ],
               ),
-            ),
+
+              Row(
+                children: [
+                  const Icon(Icons.circle, size: 10, color: Colors.orange),
+                  const SizedBox(width: 5),
+                  Text(
+                    "${"home.spent".tr()}: ${money(expense)}",
+                    style: const TextStyle(color: Colors.white, fontSize: 12),
+                  ),
+                ],
+              ),
+            ],
           ),
         ],
       ),

@@ -1,19 +1,11 @@
 import 'package:expense_management/components/buttons/custombutton.dart';
-import 'package:expense_management/components/inputs/passwordbox.dart';
-import 'package:expense_management/components/logo.dart';
 import 'package:expense_management/components/widget/auth_form.dart';
 import 'package:flutter/material.dart';
-import 'package:expense_management/components/buttons/gradientbutton.dart';
-import 'package:expense_management/components/inputs/textbox.dart';
 import 'package:expense_management/components/gradientbackground.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
-
+import 'package:flutter/widget_previews.dart';
 import '../../core/utils/enum/authtype.dart';
 import '../../core/utils/responsive.dart';
-import 'package:expense_management/configs/routes/routesname.dart';
 
-import 'package:expense_management/screens/home/Home.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
