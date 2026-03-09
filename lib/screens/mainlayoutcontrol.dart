@@ -1,3 +1,4 @@
+import 'package:expense_management/screens/statistic/statistic.dart';
 import 'package:flutter/material.dart';
 import 'package:expense_management/components/bottomnavbar/Bottomnavbar.dart';
 import 'package:expense_management/screens/home/Home.dart';
@@ -24,7 +25,7 @@ class _MainLayoutState extends State<MainLayout> {
 
     final List<Widget> _screens = [
       MyHome(users: widget.user,),
-      const Center(child: Text("Thống kê")),
+      StatisticScreen(),
       History(),
       Character(),
     ];
