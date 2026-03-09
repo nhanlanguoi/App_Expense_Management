@@ -25,32 +25,17 @@ class _CharacterState extends State<Character> {
         children: [
           Container(
             width: double.infinity,
-            decoration: BoxDecoration(
-              color: Colors.blueAccent,
-              borderRadius: const BorderRadius.only(
-                bottomLeft: Radius.circular(20),
-                bottomRight: Radius.circular(20),
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.blueAccent.shade100,
-                  blurRadius: 20,
-                  offset: const Offset(0, 5),
-                  spreadRadius: 1,
-                ),
-              ],
-            ),
             child: SafeArea(
               bottom: false,
               child: Padding(
-                padding: const EdgeInsets.only(top: 15, bottom: 25),
+                padding: const EdgeInsets.only(top: 15, bottom: 25 ,left: 20),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "profile.title".tr(),
+                      "Cài đặt".tr(),
                       style: const TextStyle(
-                        color: Colors.white,
+                        color: Colors.black,
                         fontSize: 22,
                         fontWeight: FontWeight.bold,
                         fontFamily: 'BeVietnamPro',
@@ -58,36 +43,50 @@ class _CharacterState extends State<Character> {
                     ),
                     const SizedBox(height: 25),
                     Container(
-                      padding: const EdgeInsets.all(4),
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        shape: BoxShape.circle,
+                      child: Row(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(4),
+                            decoration: const BoxDecoration(
+                              color: Colors.white,
+                              shape: BoxShape.circle,
+                            ),
+                            child: CircleAvatar(
+                              radius: 25,
+                              backgroundColor: Colors.blue.shade50,
+                              child: const Icon(Icons.person, size: 30, color: Colors.blueAccent),
+                            ),
+                          ),
+                          const SizedBox(width: 15),
+                          Container(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "profile.anonymous_user".tr(),
+                                  style: const TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 22,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: 'BeVietnamPro',
+                                  ),
+                                ),
+                                const SizedBox(height: 5),
+                                Text(
+                                  currentUser?.email ?? "profile.no_email".tr(),
+                                  style: const TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 14,
+                                    fontFamily: 'BeVietnamPro',
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+
+                        ],
                       ),
-                      child: CircleAvatar(
-                        radius: 45,
-                        backgroundColor: Colors.blue.shade50,
-                        child: const Icon(Icons.person, size: 50, color: Colors.blueAccent),
-                      ),
-                    ),
-                    const SizedBox(height: 15),
-                    Text(
-                      "profile.anonymous_user".tr(),
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'BeVietnamPro',
-                      ),
-                    ),
-                    const SizedBox(height: 5),
-                    Text(
-                      currentUser?.email ?? "profile.no_email".tr(),
-                      style: const TextStyle(
-                        color: Colors.white70,
-                        fontSize: 14,
-                        fontFamily: 'BeVietnamPro',
-                      ),
-                    ),
+                    )
                   ],
                 ),
               ),
