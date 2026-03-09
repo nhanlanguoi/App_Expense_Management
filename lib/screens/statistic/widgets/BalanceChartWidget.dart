@@ -30,6 +30,51 @@ class _BalanceChartWidgetState extends State<BalanceChartWidget> {
     super.dispose();
   }
 
+  Widget _buildOption(int value, String title) {
+    bool isSelected = _selectedMonths == value;
+
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          _selectedMonths = value;
+          _currentPage = 0;
+          _selectedData = null;
+        });
+        if (_pageController.hasClients) {
+          _pageController.jumpToPage(0);
+        }
+        Navigator.pop(context);
+      },
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        decoration: BoxDecoration(
+          color: isSelected ? Colors.blue[80] : Colors.transparent,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: isSelected ? Colors.blue : Colors.grey.withOpacity(0.3),
+            width: 1.5,
+          ),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              title,
+              style: TextStyle(
+                fontSize: 15,
+                fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
+                color: isSelected ? Colors.blue : Colors.black87,
+              ),
+            ),
+            if (isSelected)
+              const Icon(Icons.check, color: Colors.blue, size: 22),
+          ],
+        ),
+      ),
+    );
+  }
+
   void _showTimeRangePicker() {
     showModalBottomSheet(
       context: context,
@@ -48,34 +93,12 @@ class _BalanceChartWidgetState extends State<BalanceChartWidget> {
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
               ),
-              const Divider(height: 1),
               _buildOption(3, "3 Tháng gần đây"),
               _buildOption(6, "6 Tháng gần đây"),
               _buildOption(12, "12 Tháng gần đây"),
             ],
           ),
         );
-      },
-    );
-  }
-
-  Widget _buildOption(int value, String title) {
-    return ListTile(
-      title: Text(title, style: TextStyle(
-        fontWeight: _selectedMonths == value ? FontWeight.bold : FontWeight.normal,
-        color: _selectedMonths == value ? Colors.blue : Colors.black,
-      )),
-      trailing: _selectedMonths == value ? const Icon(Icons.check, color: Colors.blue) : null,
-      onTap: () {
-        setState(() {
-          _selectedMonths = value;
-          _currentPage = 0;
-          _selectedData = null;
-        });
-        if (_pageController.hasClients) {
-          _pageController.jumpToPage(0);
-        }
-        Navigator.pop(context);
       },
     );
   }
