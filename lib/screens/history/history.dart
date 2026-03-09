@@ -26,7 +26,8 @@ class _HistoryState extends State<History> {
     final yesterday = DateTime(now.year, now.month, now.day - 1);
     final aDate = DateTime(date.year, date.month, date.day);
 
-    String dateString = "${date.day.toString().padLeft(2, '0')}/${date.month.toString().padLeft(2, '0')}/${date.year}";
+    String dateString =
+        "${date.day.toString().padLeft(2, '0')}/${date.month.toString().padLeft(2, '0')}/${date.year}";
 
     if (aDate == today) return "history.today".tr() + " $dateString";
     if (aDate == yesterday) return "history.yesterday".tr() + " $dateString";
@@ -35,14 +36,18 @@ class _HistoryState extends State<History> {
 
   void _changeMonth(int offset) {
     setState(() {
-      _selectedMonth = DateTime(_selectedMonth.year, _selectedMonth.month + offset, 1);
+      _selectedMonth = DateTime(
+        _selectedMonth.year,
+        _selectedMonth.month + offset,
+        1,
+      );
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[50],
+      backgroundColor: Colors.white,
       body: ValueListenableBuilder(
         valueListenable: Hive.box('transactions').listenable(),
         builder: (context, box, child) {
@@ -53,22 +58,27 @@ class _HistoryState extends State<History> {
           final transService = TransactionService();
           final walletService = WalletService();
 
-          List<TransactionRecord> allTransactions = transService.getAllUserTransactions(currentUser.email);
+          List<TransactionRecord> allTransactions = transService
+              .getAllUserTransactions(currentUser.email);
 
           final userWallets = walletService.getWallets(currentUser.email);
           Map<String, String> walletIdToName = {};
           for (var w in userWallets) {
             walletIdToName[w.id ?? ''] = w.name ?? 'Ví không tên';
           }
-          List<TransactionRecord> monthlyTransactions = allTransactions.where((t) {
-            return t.date.month == _selectedMonth.month && t.date.year == _selectedMonth.year;
+          List<TransactionRecord> monthlyTransactions = allTransactions.where((
+            t,
+          ) {
+            return t.date.month == _selectedMonth.month &&
+                t.date.year == _selectedMonth.year;
           }).toList();
 
           Map<String, double> chartData = {};
           double totalChartAmount = 0;
 
           for (var t in monthlyTransactions) {
-            if ((_isExpense && t.type == 'expense') || (!_isExpense && t.type == 'income')) {
+            if ((_isExpense && t.type == 'expense') ||
+                (!_isExpense && t.type == 'income')) {
               String walletName = walletIdToName[t.walletId] ?? 'Ví khác';
               chartData[walletName] = (chartData[walletName] ?? 0) + t.amount;
               totalChartAmount += t.amount;
@@ -76,19 +86,29 @@ class _HistoryState extends State<History> {
           }
 
           final List<Color> sectionColors = [
-            Colors.blue, Colors.orange, Colors.purple,
-            Colors.green, Colors.redAccent, Colors.teal, Colors.cyan
+            Colors.blue,
+            Colors.orange,
+            Colors.purple,
+            Colors.green,
+            Colors.redAccent,
+            Colors.teal,
+            Colors.cyan,
           ];
           Map<String, Color> walletColors = {};
           int colorIndex = 0;
           for (var key in chartData.keys) {
-            walletColors[key] = sectionColors[colorIndex % sectionColors.length];
+            walletColors[key] =
+                sectionColors[colorIndex % sectionColors.length];
             colorIndex++;
           }
-          List<TransactionRecord> sortedTransactions = List.from(allTransactions);
+          List<TransactionRecord> sortedTransactions = List.from(
+            allTransactions,
+          );
           sortedTransactions.sort((a, b) => b.date.compareTo(a.date));
 
-          List<TransactionRecord> recentTransactions = sortedTransactions.take(5).toList();
+          List<TransactionRecord> recentTransactions = sortedTransactions
+              .take(5)
+              .toList();
 
           Map<String, List<TransactionRecord>> groupedRecentTrans = {};
           for (var t in recentTransactions) {
@@ -115,7 +135,12 @@ class _HistoryState extends State<History> {
                   child: SafeArea(
                     bottom: false,
                     child: Padding(
-                      padding: const EdgeInsets.only(top: 15, bottom: 25, left: 20, right: 20),
+                      padding: const EdgeInsets.only(
+                        top: 15,
+                        bottom: 25,
+                        left: 20,
+                        right: 20,
+                      ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -157,36 +182,59 @@ class _HistoryState extends State<History> {
                                     children: [
                                       Expanded(
                                         child: GestureDetector(
-                                          onTap: () => setState(() => _isExpense = true),
+                                          onTap: () =>
+                                              setState(() => _isExpense = true),
                                           child: Container(
-                                            padding: const EdgeInsets.symmetric(vertical: 8),
+                                            padding: const EdgeInsets.symmetric(
+                                              vertical: 8,
+                                            ),
                                             decoration: BoxDecoration(
-                                              color: _isExpense ? Colors.red : Colors.transparent,
-                                              borderRadius: BorderRadius.circular(10),
+                                              color: _isExpense
+                                                  ? Colors.red
+                                                  : Colors.transparent,
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
                                             ),
                                             child: Center(
-                                              child: Text("Chi", style: TextStyle(
-                                                  color: _isExpense ? Colors.white : Colors.black54,
-                                                  fontWeight: FontWeight.bold
-                                              )),
+                                              child: Text(
+                                                "Chi",
+                                                style: TextStyle(
+                                                  color: _isExpense
+                                                      ? Colors.white
+                                                      : Colors.black54,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
                                             ),
                                           ),
                                         ),
                                       ),
                                       Expanded(
                                         child: GestureDetector(
-                                          onTap: () => setState(() => _isExpense = false),
+                                          onTap: () => setState(
+                                            () => _isExpense = false,
+                                          ),
                                           child: Container(
-                                            padding: const EdgeInsets.symmetric(vertical: 8),
+                                            padding: const EdgeInsets.symmetric(
+                                              vertical: 8,
+                                            ),
                                             decoration: BoxDecoration(
-                                              color: !_isExpense ? Colors.green : Colors.transparent,
-                                              borderRadius: BorderRadius.circular(10),
+                                              color: !_isExpense
+                                                  ? Colors.green
+                                                  : Colors.transparent,
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
                                             ),
                                             child: Center(
-                                              child: Text("Thu", style: TextStyle(
-                                                  color: !_isExpense ? Colors.white : Colors.black54,
-                                                  fontWeight: FontWeight.bold
-                                              )),
+                                              child: Text(
+                                                "Thu",
+                                                style: TextStyle(
+                                                  color: !_isExpense
+                                                      ? Colors.white
+                                                      : Colors.black54,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
                                             ),
                                           ),
                                         ),
@@ -197,7 +245,8 @@ class _HistoryState extends State<History> {
                                 const SizedBox(height: 15),
 
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     IconButton(
                                       icon: const Icon(Icons.chevron_left),
@@ -205,7 +254,10 @@ class _HistoryState extends State<History> {
                                     ),
                                     Text(
                                       "Tháng ${_selectedMonth.month}, ${_selectedMonth.year}",
-                                      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                                      style: const TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
                                     IconButton(
                                       icon: const Icon(Icons.chevron_right),
@@ -224,24 +276,36 @@ class _HistoryState extends State<History> {
                                         PieChartData(
                                           sectionsSpace: 2,
                                           centerSpaceRadius: 90,
-                                          sections: _buildChartSections(chartData, walletColors),
+                                          sections: _buildChartSections(
+                                            chartData,
+                                            walletColors,
+                                          ),
                                         ),
                                       ),
                                       Column(
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
-                                          Text(_isExpense ? "Tổng chi" : "Tổng thu",
-                                              style: const TextStyle(fontSize: 20, color: Colors.black)),
+                                          Text(
+                                            _isExpense
+                                                ? "Tổng chi"
+                                                : "Tổng thu",
+                                            style: const TextStyle(
+                                              fontSize: 20,
+                                              color: Colors.black,
+                                            ),
+                                          ),
                                           Text(
                                             "${totalChartAmount.toStringAsFixed(0)} đ",
                                             style: TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.bold,
-                                                color: _isExpense ? Colors.red : Colors.green
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                              color: _isExpense
+                                                  ? Colors.red
+                                                  : Colors.green,
                                             ),
                                           ),
                                         ],
-                                      )
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -249,7 +313,9 @@ class _HistoryState extends State<History> {
                                 Column(
                                   children: chartData.keys.map((walletName) {
                                     return Padding(
-                                      padding: const EdgeInsets.only(bottom: 8.0),
+                                      padding: const EdgeInsets.only(
+                                        bottom: 8.0,
+                                      ),
                                       child: Row(
                                         children: [
                                           Container(
@@ -262,11 +328,19 @@ class _HistoryState extends State<History> {
                                           ),
                                           const SizedBox(width: 8),
                                           Expanded(
-                                            child: Text(walletName, style: const TextStyle(fontSize: 14)),
+                                            child: Text(
+                                              walletName,
+                                              style: const TextStyle(
+                                                fontSize: 14,
+                                              ),
+                                            ),
                                           ),
                                           Text(
                                             "${chartData[walletName]?.toStringAsFixed(0)} đ",
-                                            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                                            style: const TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                           ),
                                         ],
                                       ),
@@ -281,9 +355,13 @@ class _HistoryState extends State<History> {
                     ),
                   ),
                 ),
-
                 Padding(
-                  padding: const EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 10),
+                  padding: const EdgeInsets.only(
+                    left: 20,
+                    right: 20,
+                    top: 20,
+                    bottom: 10,
+                  ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.end,
@@ -312,49 +390,76 @@ class _HistoryState extends State<History> {
                     ],
                   ),
                 ),
+                Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
 
-                // ĐÃ BỎ Expanded, THÊM shrinkWrap VÀ physics
-                recentTransactions.isEmpty
-                    ? Padding(
-                  padding: const EdgeInsets.only(top: 20, bottom: 40),
-                  child: Text("Không có giao dịch nào", style: const TextStyle(color: Colors.grey)),
-                )
-                    : Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    padding: const EdgeInsets.only(bottom: 30),
-                    itemCount: recentDateKeys.length,
-                    itemBuilder: (context, index) {
-                      String currentDate = recentDateKeys[index];
-                      List<TransactionRecord> dailyTrans = groupedRecentTrans[currentDate]!;
-
-                      List<Map<String, dynamic>> mappedTransactions = dailyTrans.map((t) {
-                        String minute = t.date.minute.toString().padLeft(2, '0');
-                        String timeString = "${t.date.hour}:$minute";
-                        String tSign = t.type == 'income' ? '+' : '-';
-
-                        return {
-                          "id": t.id,
-                          "title": t.title,
-                          "time": timeString,
-                          "money": "$tSign${t.amount.toStringAsFixed(0)} đ",
-                          "icon": AppIcons.getIconFromData(t.icon),
-                          "color": t.type == 'income' ? Colors.green : Colors.red,
-                        };
-                      }).toList();
-
-                      return Cardshowhistorytrade(
-                        date: currentDate,
-                        transactions: mappedTransactions,
-                        onSelect: (id, val) {},
-                        onSelectAll: (val) {},
-                        onLongPress: (id) {},
-                      );
-                    },
+                  // 2. Thêm decoration để bo góc, đổ bóng và tô nền trắng
+                  decoration: BoxDecoration(
+                    color: Colors.grey[300],
+                    borderRadius: BorderRadius.circular(20), // Bo góc tròn trịa
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.1), // Màu bóng đổ rất nhạt
+                        spreadRadius: 2,
+                        blurRadius: 8,
+                        offset: const Offset(0, 4), // Bóng đổ xuôi xuống dưới
+                      ),
+                    ],
                   ),
-                ),
+                  child:
+                    recentTransactions.isEmpty
+                        ? Padding(
+                      padding: const EdgeInsets.only(top: 20, bottom: 40),
+                      child: Text(
+                        "Không có giao dịch nào",
+                        style: const TextStyle(color: Colors.grey),
+                      ),
+                    )
+                        : Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 20),
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: recentDateKeys.length,
+                        itemBuilder: (context, index) {
+                          String currentDate = recentDateKeys[index];
+                          List<TransactionRecord> dailyTrans =
+                          groupedRecentTrans[currentDate]!;
+
+                          List<Map<String, dynamic>>
+                          mappedTransactions = dailyTrans.map((t) {
+                            String minute = t.date.minute.toString().padLeft(
+                              2,
+                              '0',
+                            );
+                            String timeString = "${t.date.hour}:$minute";
+                            String tSign = t.type == 'income' ? '+' : '-';
+
+                            return {
+                              "id": t.id,
+                              "title": t.title,
+                              "time": timeString,
+                              "money":
+                              "$tSign${t.amount.toStringAsFixed(0)} đ",
+                              "icon": AppIcons.getIconFromData(t.icon),
+                              "color": t.type == 'income'
+                                  ? Colors.green
+                                  : Colors.red,
+                            };
+                          }).toList();
+
+                          return Cardshowhistorytrade(
+                            date: currentDate,
+                            transactions: mappedTransactions,
+                            onSelect: (id, val) {},
+                            onSelectAll: (val) {},
+                            onLongPress: (id) {},
+                          );
+                        },
+                      ),
+                    ),
+                )
+
               ],
             ),
           );
@@ -363,7 +468,10 @@ class _HistoryState extends State<History> {
     );
   }
 
-  List<PieChartSectionData> _buildChartSections(Map<String, double> data, Map<String, Color> colors) {
+  List<PieChartSectionData> _buildChartSections(
+    Map<String, double> data,
+    Map<String, Color> colors,
+  ) {
     if (data.isEmpty) {
       return [
         PieChartSectionData(
@@ -371,7 +479,7 @@ class _HistoryState extends State<History> {
           value: 1,
           title: '',
           radius: 30,
-        )
+        ),
       ];
     }
 
