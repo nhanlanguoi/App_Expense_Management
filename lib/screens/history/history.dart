@@ -1,12 +1,11 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import '../../components/cardshowvalue/CardShowHistoryTrade.dart';
+import 'package:fl_chart/fl_chart.dart';
 import '../../data/service/authservice.dart';
 import '../../data/service/transactionservice.dart';
+import '../../data/service/walletservice.dart';
 import '../../model/transactions.dart';
-import '../../configs/theme/color.dart';
-import '../../configs/theme/icon.dart';
 
 class History extends StatefulWidget {
   const History({super.key});
@@ -16,6 +15,8 @@ class History extends StatefulWidget {
 }
 
 class _HistoryState extends State<History> {
+  DateTime _selectedMonth = DateTime.now();
+  bool _isExpense = true;
 
   String formatDate(DateTime date) {
     final now = DateTime.now();
@@ -25,15 +26,21 @@ class _HistoryState extends State<History> {
 
     String dateString = "${date.day.toString().padLeft(2, '0')}/${date.month.toString().padLeft(2, '0')}/${date.year}";
 
-    if (aDate == today) return "history.today".tr() + "$dateString";
-    if (aDate == yesterday) return "history.yesterday".tr() + "$dateString";
+    if (aDate == today) return "history.today".tr() + " $dateString";
+    if (aDate == yesterday) return "history.yesterday".tr() + " $dateString";
     return dateString;
+  }
+
+  void _changeMonth(int offset) {
+    setState(() {
+      _selectedMonth = DateTime(_selectedMonth.year, _selectedMonth.month + offset, 1);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[50],
+      backgroundColor: Colors.white,
       body: ValueListenableBuilder(
         valueListenable: Hive.box('transactions').listenable(),
         builder: (context, box, child) {
@@ -42,12 +49,50 @@ class _HistoryState extends State<History> {
             return Center(child: Text("history.please_login".tr()));
           }
           final transService = TransactionService();
+          final walletService = WalletService(); // Khởi tạo WalletService
+
           List<TransactionRecord> allTransactions = transService.getAllUserTransactions(currentUser.email);
-          double totalAmount = transService.getTotalNetBalance(allTransactions);
-          String sign = totalAmount > 0 ? '+' : (totalAmount < 0 ? '-' : '');
-          String totalAmountStr = "$sign${totalAmount.abs().toStringAsFixed(0)} đ";
+
+          final userWallets = walletService.getWallets(currentUser.email);
+          Map<String, String> walletIdToName = {};
+          for (var w in userWallets) {
+
+            walletIdToName[w.id ?? ''] = w.name ;
+          }
+
+          List<TransactionRecord> monthlyTransactions = allTransactions.where((t) {
+            return t.date.month == _selectedMonth.month && t.date.year == _selectedMonth.year;
+          }).toList();
+
+          Map<String, double> chartData = {};
+          double totalChartAmount = 0;
+
+          for (var t in monthlyTransactions) {
+            if ((_isExpense && t.type == 'expense') || (!_isExpense && t.type == 'income')) {
+              String walletName = walletIdToName[t.walletId] ?? 'Ví khác';
+              chartData[walletName] = (chartData[walletName] ?? 0) + t.amount;
+              totalChartAmount += t.amount;
+            }
+          }
+
+          final List<Color> sectionColors = [
+            Colors.blue, Colors.orange, Colors.purple,
+            Colors.green, Colors.redAccent, Colors.teal, Colors.cyan
+          ];
+          Map<String, Color> walletColors = {};
+          int colorIndex = 0;
+          for (var key in chartData.keys) {
+            walletColors[key] = sectionColors[colorIndex % sectionColors.length];
+            colorIndex++;
+          }
+
+          List<TransactionRecord> displayTransactions = monthlyTransactions.where((t) {
+            if (_isExpense) return t.type == 'expense';
+            return t.type == 'income';
+          }).toList();
+
           Map<String, List<TransactionRecord>> groupedTrans = {};
-          for (var t in allTransactions) {
+          for (var t in displayTransactions) {
             String dateKey = formatDate(t.date);
             if (!groupedTrans.containsKey(dateKey)) {
               groupedTrans[dateKey] = [];
@@ -60,97 +105,183 @@ class _HistoryState extends State<History> {
             children: [
               Container(
                 width: double.infinity,
-                decoration: BoxDecoration(
-                  color: Colors.blueAccent,
-                  borderRadius: const BorderRadius.only(
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(20),
                     bottomRight: Radius.circular(20),
                   ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.blueAccent.shade100,
-                      blurRadius: 20,
-                      offset: const Offset(0, 5),
-                      spreadRadius: 1,
-                    ),
-                  ],
                 ),
                 child: SafeArea(
                   bottom: false,
                   child: Padding(
-                    padding: const EdgeInsets.only(top: 15, bottom: 25),
+                    padding: const EdgeInsets.only(top: 15, bottom: 25, left: 20, right: 20),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           "history.title".tr(),
                           style: const TextStyle(
-                            color: Colors.white,
+                            color: Colors.black,
                             fontSize: 22,
                             fontWeight: FontWeight.bold,
                             fontFamily: 'BeVietnamPro',
                           ),
                         ),
-                        const SizedBox(height: 35),
+                        const SizedBox(height: 15),
                         Text(
-                          "history.total".tr(),
+                          "Tổng quan",
                           style: const TextStyle(
-                            color: Colors.white70,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
+                            color: Colors.black,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
                             fontFamily: 'BeVietnamPro',
                           ),
                         ),
-                        const SizedBox(height: 5),
-                        Text(
-                          totalAmountStr,
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 36,
-                            fontWeight: FontWeight.w800,
-                            fontFamily: 'BeVietnamPro',
+                        const SizedBox(height: 15),
+
+                        Container(
+                          padding: const EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                            color: Colors.grey[100],
+                            borderRadius: BorderRadius.circular(20),
                           ),
-                        )
+                          child: Column(
+                            children: [
+                              Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[300],
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: GestureDetector(
+                                        onTap: () => setState(() => _isExpense = false),
+                                        child: Container(
+                                          padding: const EdgeInsets.symmetric(vertical: 8),
+                                          decoration: BoxDecoration(
+                                            color: !_isExpense ? Colors.green : Colors.transparent,
+                                            borderRadius: BorderRadius.circular(10),
+                                          ),
+                                          child: Center(
+                                            child: Text("Thu", style: TextStyle(
+                                                color: !_isExpense ? Colors.white : Colors.black54,
+                                                fontWeight: FontWeight.bold
+                                            )),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: GestureDetector(
+                                        onTap: () => setState(() => _isExpense = true),
+                                        child: Container(
+                                          padding: const EdgeInsets.symmetric(vertical: 8),
+                                          decoration: BoxDecoration(
+                                            color: _isExpense ? Colors.red : Colors.transparent,
+                                            borderRadius: BorderRadius.circular(10),
+                                          ),
+                                          child: Center(
+                                            child: Text("Chi", style: TextStyle(
+                                                color: _isExpense ? Colors.white : Colors.black54,
+                                                fontWeight: FontWeight.bold
+                                            )),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(height: 15),
+
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  IconButton(
+                                    icon: const Icon(Icons.chevron_left),
+                                    onPressed: () => _changeMonth(-1),
+                                  ),
+                                  Text(
+                                    "Tháng ${_selectedMonth.month}, ${_selectedMonth.year}",
+                                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                                  ),
+                                  IconButton(
+                                    icon: const Icon(Icons.chevron_right),
+                                    onPressed: () => _changeMonth(1),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 10),
+
+                              SizedBox(
+                                height: 160,
+                                child: Stack(
+                                  alignment: Alignment.center,
+                                  children: [
+                                    PieChart(
+                                      PieChartData(
+                                        sectionsSpace: 2,
+                                        centerSpaceRadius: 55,
+                                        sections: _buildChartSections(chartData, walletColors),
+                                      ),
+                                    ),
+                                    Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Text(_isExpense ? "Tổng chi" : "Tổng thu",
+                                            style: const TextStyle(fontSize: 12, color: Colors.grey)),
+                                        Text(
+                                          "${totalChartAmount.toStringAsFixed(0)} đ",
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                              color: _isExpense ? Colors.red : Colors.green
+                                          ),
+                                        ),
+                                      ],
+                                    )
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(height: 20),
+
+                              // 3. ĐÃ CHUYỂN THÀNH LIST DỌC BẰNG COLUMN THAY VÌ WRAP
+                              Column(
+                                children: chartData.keys.map((walletName) {
+                                  return Padding(
+                                    padding: const EdgeInsets.only(bottom: 8.0),
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          width: 12,
+                                          height: 12,
+                                          decoration: BoxDecoration(
+                                            color: walletColors[walletName],
+                                            shape: BoxShape.circle,
+                                          ),
+                                        ),
+                                        const SizedBox(width: 8),
+                                        // Tên ví căn trái
+                                        Expanded(
+                                          child: Text(walletName, style: const TextStyle(fontSize: 14)),
+                                        ),
+                                        // Tổng tiền của ví căn phải (tôi thêm vào để giao diện đẹp và rõ ràng hơn)
+                                        Text(
+                                          "${chartData[walletName]?.toStringAsFixed(0)} đ",
+                                          style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                }).toList(),
+                              ),
+                            ],
+                          ),
+                        ),
                       ],
                     ),
-                  ),
-                ),
-              ),
-              Expanded(
-                child: allTransactions.isEmpty
-                    ? Center(child: Text("history.no_transaction".tr(), style: const TextStyle(color: Colors.grey)))
-                    : Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: ListView.builder(
-                    padding: const EdgeInsets.only(top: 20, bottom: 20),
-                    itemCount: dateKeys.length,
-                    itemBuilder: (context, index) {
-                      String currentDate = dateKeys[index];
-                      List<TransactionRecord> dailyTrans = groupedTrans[currentDate]!;
-
-                      List<Map<String, dynamic>> mappedTransactions = dailyTrans.map((t) {
-                        String minute = t.date.minute.toString().padLeft(2, '0');
-                        String timeString = "${t.date.hour}:$minute";
-                        String tSign = t.type == 'income' ? '+' : '-';
-
-                        return {
-                          "id": t.id,
-                          "title": t.title,
-                          "time": timeString,
-                          "money": "$tSign${t.amount.toStringAsFixed(0)} đ",
-                          "icon": AppIcons.getIconFromData(t.icon),
-                          "color": t.type == 'income' ? Colors.green : Colors.red,
-                        };
-                      }).toList();
-
-                      return Cardshowhistorytrade(
-                        date: currentDate,
-                        transactions: mappedTransactions,
-                        onSelect: (id, val) {},
-                        onSelectAll: (val) {},
-                        onLongPress: (id) {},
-                      );
-                    },
                   ),
                 ),
               ),
@@ -159,5 +290,27 @@ class _HistoryState extends State<History> {
         },
       ),
     );
+  }
+
+  List<PieChartSectionData> _buildChartSections(Map<String, double> data, Map<String, Color> colors) {
+    if (data.isEmpty) {
+      return [
+        PieChartSectionData(
+          color: Colors.grey[300],
+          value: 1,
+          title: '',
+          radius: 20,
+        )
+      ];
+    }
+
+    return data.entries.map((entry) {
+      return PieChartSectionData(
+        color: colors[entry.key]!,
+        value: entry.value,
+        title: '',
+        radius: 20,
+      );
+    }).toList();
   }
 }
