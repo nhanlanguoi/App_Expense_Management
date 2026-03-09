@@ -8,6 +8,7 @@ import '../../data/service/transactionservice.dart';
 import '../../data/service/walletservice.dart';
 import '../../model/transactions.dart';
 import '../../configs/theme/icon.dart';
+import 'all_transactions.dart';
 
 class History extends StatefulWidget {
   const History({super.key});
@@ -16,9 +17,27 @@ class History extends StatefulWidget {
   State<History> createState() => _HistoryState();
 }
 
-class _HistoryState extends State<History> {
+class _HistoryState extends State<History> with TickerProviderStateMixin {
   DateTime _selectedMonth = DateTime.now();
   bool _isExpense = true;
+  late AnimationController _bottomSheetController;
+
+
+  @override
+  void initState() {
+    super.initState();
+    _bottomSheetController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 800),
+      reverseDuration: const Duration(milliseconds:600),
+    );
+  }
+
+  @override
+  void dispose() {
+    _bottomSheetController.dispose();
+    super.dispose();
+  }
 
   String formatDate(DateTime date) {
     final now = DateTime.now();
@@ -376,7 +395,15 @@ class _HistoryState extends State<History> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          print("Chuyển sang trang xem tất cả giao dịch");
+                          showModalBottomSheet(
+                            context: context,
+                            isScrollControlled: true,
+                            backgroundColor: Colors.transparent,
+                            transitionAnimationController: _bottomSheetController,
+                            builder: (context) {
+                              return const AllTransactionsScreen();
+                            },
+                          );
                         },
                         child: const Text(
                           "Xem tất cả",
@@ -393,16 +420,16 @@ class _HistoryState extends State<History> {
                 Container(
                   margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
 
-                  // 2. Thêm decoration để bo góc, đổ bóng và tô nền trắng
+
                   decoration: BoxDecoration(
-                    color: Colors.grey[300],
-                    borderRadius: BorderRadius.circular(20), // Bo góc tròn trịa
+                    color: Colors.grey[200],
+                    borderRadius: BorderRadius.circular(20),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.grey.withOpacity(0.1), // Màu bóng đổ rất nhạt
+                        color: Colors.grey.withOpacity(0.1),
                         spreadRadius: 2,
                         blurRadius: 8,
-                        offset: const Offset(0, 4), // Bóng đổ xuôi xuống dưới
+                        offset: const Offset(0, 4),
                       ),
                     ],
                   ),
@@ -412,7 +439,7 @@ class _HistoryState extends State<History> {
                       padding: const EdgeInsets.only(top: 20, bottom: 40),
                       child: Text(
                         "Không có giao dịch nào",
-                        style: const TextStyle(color: Colors.grey),
+                        style: TextStyle(color: Colors.grey),
                       ),
                     )
                         : Padding(
