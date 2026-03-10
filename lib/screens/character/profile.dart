@@ -28,7 +28,7 @@ class _CharacterState extends State<Character> {
             child: SafeArea(
               bottom: false,
               child: Padding(
-                padding: const EdgeInsets.only(top: 15, bottom: 25 ,left: 20),
+                padding: const EdgeInsets.only(top: 15, bottom: 10 ,left: 20),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -91,6 +91,11 @@ class _CharacterState extends State<Character> {
                 ),
               ),
             ),
+          ),
+          Divider(
+            thickness: 1,
+            indent: 20,
+            endIndent: 20,
           ),
           Expanded(
             child: ListView(

@@ -405,14 +405,19 @@ class _HistoryState extends State<History> with TickerProviderStateMixin {
                             },
                           );
                         },
-                        child: const Text(
-                          "Xem tất cả",
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.blue,
+                        child: Container(
+                          child: Column(
+                            children: [
+                              Text("Xem tất cả"),
+                              SizedBox(height: 0.5,),
+                              Container(
+                                height: 1,
+                                width:70 ,
+                                color: Colors.black,
+                              )
+                            ],
                           ),
-                        ),
+                        )
                       ),
                     ],
                   ),

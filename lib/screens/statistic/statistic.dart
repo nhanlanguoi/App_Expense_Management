@@ -72,6 +72,7 @@ class _StatisticScreenState extends State<StatisticScreen> {
                         fontFamily: 'BeVietnamPro',
                       ),
                     ),
+                    const SizedBox(height: 10),
                     BarChartWidget(transactions: allTransactions),
                     const SizedBox(height: 30),
                     const Text(
@@ -82,6 +83,7 @@ class _StatisticScreenState extends State<StatisticScreen> {
                         fontFamily: 'BeVietnamPro',
                       ),
                     ),
+                    const SizedBox(height: 10),
                     BalanceChartWidget(transactions: allTransactions),
                     const SizedBox(height: 30),
                   ],
