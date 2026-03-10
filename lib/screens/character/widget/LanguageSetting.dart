@@ -48,12 +48,8 @@ class _LanguageSettingScreenState extends State<LanguageSettingScreen> {
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: isSelected ? Colors.blueAccent.withOpacity(0.1) : Colors.white,
+          color: Colors.white,
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(
-            color: isSelected ? Colors.blueAccent : Colors.grey.shade300,
-            width: 1.5,
-          ),
         ),
         child: Row(
           children: [

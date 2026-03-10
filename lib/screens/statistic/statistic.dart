@@ -1,3 +1,4 @@
+import 'package:expense_management/configs/theme/color.dart';
 import 'package:expense_management/configs/theme/textstyles.dart';
 import 'package:expense_management/screens/statistic/widgets/BalanceChartWidget.dart';
 import 'package:expense_management/screens/statistic/widgets/BarChartWidget.dart';
@@ -22,7 +23,7 @@ class _StatisticScreenState extends State<StatisticScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[50],
+      backgroundColor: AppColors.floor_background,
       body: SafeArea(
         child: ValueListenableBuilder(
           valueListenable: Hive.box('transactions').listenable(),

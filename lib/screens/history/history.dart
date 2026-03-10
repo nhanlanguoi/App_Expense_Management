@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:expense_management/configs/theme/color.dart';
 import 'package:expense_management/configs/theme/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -67,7 +68,7 @@ class _HistoryState extends State<History> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[50],
+      backgroundColor: AppColors.floor_background,
       body: ValueListenableBuilder(
         valueListenable: Hive.box('transactions').listenable(),
         builder: (context, box, child) {
@@ -177,7 +178,7 @@ class _HistoryState extends State<History> with TickerProviderStateMixin {
                                   height: 45,
                                   padding: const EdgeInsets.all(4),
                                   decoration: BoxDecoration(
-                                    color: Colors.grey[50],
+                                    color: AppColors.floor_background,
                                     borderRadius: BorderRadius.circular(30),
                                   ),
                                   child: Stack(

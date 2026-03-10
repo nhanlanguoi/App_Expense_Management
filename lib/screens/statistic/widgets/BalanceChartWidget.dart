@@ -1,3 +1,4 @@
+import 'package:expense_management/configs/theme/color.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
@@ -50,11 +51,11 @@ class _BalanceChartWidgetState extends State<BalanceChartWidget> {
         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         decoration: BoxDecoration(
-          color: isSelected ? Colors.blue[80] : Colors.transparent,
+          color: isSelected ? Colors.white : Colors.white,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
-            color: isSelected ? Colors.blue : Colors.grey.withOpacity(0.3),
-            width: 1.5,
+            color: isSelected ? Colors.blue : Colors.grey.withValues(alpha: 0.3),
+            width: 1,
           ),
         ),
         child: Row(
@@ -79,6 +80,7 @@ class _BalanceChartWidgetState extends State<BalanceChartWidget> {
   void _showTimeRangePicker() {
     showModalBottomSheet(
       context: context,
+      backgroundColor: AppColors.floor_background,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
@@ -97,6 +99,7 @@ class _BalanceChartWidgetState extends State<BalanceChartWidget> {
               _buildOption(3, "3 Tháng gần đây"),
               _buildOption(6, "6 Tháng gần đây"),
               _buildOption(12, "12 Tháng gần đây"),
+              SizedBox(height: 100,)
             ],
           ),
         );

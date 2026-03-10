@@ -1,4 +1,5 @@
 
+import 'package:expense_management/configs/theme/color.dart';
 import 'package:expense_management/configs/theme/textstyles.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
@@ -34,6 +35,7 @@ class _BarChartWidgetState extends State<BarChartWidget> {
   void _showTimeRangePicker() {
     showModalBottomSheet(
       context: context,
+      backgroundColor: AppColors.floor_background,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
@@ -52,6 +54,7 @@ class _BarChartWidgetState extends State<BarChartWidget> {
               _buildOption(3, "3 Tháng gần đây"),
               _buildOption(6, "6 Tháng gần đây"),
               _buildOption(12, "12 Tháng gần đây"),
+              SizedBox(height: 100,)
             ],
           ),
         );
@@ -77,7 +80,12 @@ class _BarChartWidgetState extends State<BarChartWidget> {
         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         decoration: BoxDecoration(
+          color: isSelected ? Colors.white : Colors.white,
           borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: isSelected ? Colors.blue : Colors.grey.withValues(alpha: 0.3),
+            width: 1,
+          ),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

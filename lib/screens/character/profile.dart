@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:expense_management/configs/theme/color.dart';
 import 'package:expense_management/configs/theme/textstyles.dart';
 import 'package:expense_management/screens/character/widget/LanguageSetting.dart';
 import 'package:expense_management/screens/character/widget/BalanceSetting.dart';
@@ -21,7 +22,7 @@ class _CharacterState extends State<Character> {
     final currentUser = AuthService().currentUser;
 
     return Scaffold(
-      backgroundColor: Colors.grey[50],
+      backgroundColor: AppColors.floor_background,
       body: Column(
         children: [
           Container(
@@ -49,7 +50,7 @@ class _CharacterState extends State<Character> {
                             ),
                             child: CircleAvatar(
                               radius: 25,
-                              backgroundColor: Colors.blue.shade50,
+                              backgroundColor: AppColors.floor_background,
                               child: const Icon(Icons.person, size: 30, color: Colors.blueAccent),
                             ),
                           ),
@@ -82,7 +83,7 @@ class _CharacterState extends State<Character> {
             thickness: 1.5,
             indent: 20,
             endIndent: 20,
-            color: Colors.grey.shade200,
+            color: Colors.grey.shade300,
           ),
           SizedBox(height: 10,),
           Expanded(

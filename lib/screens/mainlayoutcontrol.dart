@@ -1,3 +1,4 @@
+import 'package:expense_management/configs/theme/color.dart';
 import 'package:expense_management/screens/statistic/statistic.dart';
 import 'package:flutter/material.dart';
 import 'package:expense_management/components/bottomnavbar/Bottomnavbar.dart';
@@ -31,7 +32,7 @@ class _MainLayoutState extends State<MainLayout> {
     ];
     
     return Scaffold(
-
+      extendBody: true,
       body: IndexedStack(
         index: _currentIndex,
         children: _screens,
