@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:expense_management/configs/theme/textstyles.dart';
 import 'package:expense_management/screens/character/widget/LanguageSetting.dart';
 import 'package:expense_management/screens/character/widget/BalanceSetting.dart';
 import 'package:flutter/material.dart';
@@ -34,21 +35,16 @@ class _CharacterState extends State<Character> {
                   children: [
                     Text(
                       "Cài đặt".tr(),
-                      style: const TextStyle(
-                        color: Colors.black,
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'BeVietnamPro',
-                      ),
+                      style: TextStyles.h1.copyWith(color: Colors.black)
                     ),
-                    const SizedBox(height: 25),
+                    const SizedBox(height: 20),
                     Container(
                       child: Row(
                         children: [
                           Container(
                             padding: const EdgeInsets.all(4),
                             decoration: const BoxDecoration(
-                              color: Colors.white,
+                              color: Colors.blue,
                               shape: BoxShape.circle,
                             ),
                             child: CircleAvatar(
@@ -64,26 +60,16 @@ class _CharacterState extends State<Character> {
                               children: [
                                 Text(
                                   "profile.anonymous_user".tr(),
-                                  style: const TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 22,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: 'BeVietnamPro',
-                                  ),
+                                  style: TextStyles.nameuser.copyWith(color: Colors.black)
                                 ),
                                 const SizedBox(height: 5),
                                 Text(
                                   currentUser?.email ?? "profile.no_email".tr(),
-                                  style: const TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 14,
-                                    fontFamily: 'BeVietnamPro',
-                                  ),
+                                  style: TextStyles.emailuser.copyWith(color: Colors.black)
                                 ),
                               ],
                             ),
                           )
-
                         ],
                       ),
                     )
@@ -93,22 +79,19 @@ class _CharacterState extends State<Character> {
             ),
           ),
           Divider(
-            thickness: 1,
+            thickness: 2,
             indent: 20,
             endIndent: 20,
+            color: Colors.grey.shade300,
           ),
+          SizedBox(height: 10,),
           Expanded(
             child: ListView(
               padding: const EdgeInsets.all(20),
               children: [
                 Text(
                   "profile.general_settings".tr(),
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.grey,
-                    fontFamily: 'BeVietnamPro',
-                  ),
+                  style: TextStyles.h2.copyWith(color: Colors.black)
                 ),
                 const SizedBox(height: 15),
 

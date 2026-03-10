@@ -1,3 +1,4 @@
+import 'package:expense_management/configs/theme/textstyles.dart';
 import 'package:flutter/material.dart';
 
 class SettingItem extends StatelessWidget {
@@ -44,15 +45,10 @@ class SettingItem extends StatelessWidget {
             ),
             const SizedBox(width: 15),
 
-            // Tên của nút bấm
             Expanded(
               child: Text(
                 title,
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                  fontFamily: 'BeVietnamPro',
-                ),
+                style: TextStyles.buttonsetting.copyWith(color: Colors.black)
               ),
             ),
 
