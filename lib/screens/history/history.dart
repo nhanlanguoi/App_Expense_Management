@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:expense_management/configs/theme/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:fl_chart/fl_chart.dart';
@@ -66,7 +67,7 @@ class _HistoryState extends State<History> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.grey[50],
       body: ValueListenableBuilder(
         valueListenable: Hive.box('transactions').listenable(),
         builder: (context, box, child) {
@@ -141,17 +142,7 @@ class _HistoryState extends State<History> with TickerProviderStateMixin {
           return SingleChildScrollView(
             child: Column(
               children: [
-                // 1. PHẦN TRÊN: BIỂU ĐỒ
-                Container(
-                  width: double.infinity,
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(20),
-                      bottomRight: Radius.circular(20),
-                    ),
-                  ),
-                  child: SafeArea(
+                 SafeArea(
                     bottom: false,
                     child: Padding(
                       padding: const EdgeInsets.only(
@@ -165,121 +156,116 @@ class _HistoryState extends State<History> with TickerProviderStateMixin {
                         children: [
                           Text(
                             "history.title".tr(),
-                            style: const TextStyle(
-                              color: Colors.black,
-                              fontSize: 22,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: 'BeVietnamPro',
-                            ),
+                            style: TextStyles.h1.copyWith(color: Colors.black)
                           ),
-                          const SizedBox(height: 15),
-                          const Text(
+                          const SizedBox(height: 30),
+                          Text(
                             "Tổng quan",
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                              fontFamily: 'BeVietnamPro',
-                            ),
+                            style: TextStyles.h2.copyWith(color: Colors.black)
                           ),
                           const SizedBox(height: 15),
 
                           Container(
                             padding: const EdgeInsets.all(16),
                             decoration: BoxDecoration(
-                              color: Colors.grey[100],
+                              color: Colors.white,
                               borderRadius: BorderRadius.circular(20),
                             ),
                             child: Column(
                               children: [
                                 Container(
+                                  height: 45,
+                                  padding: const EdgeInsets.all(4),
                                   decoration: BoxDecoration(
-                                    color: Colors.grey[300],
-                                    borderRadius: BorderRadius.circular(10),
+                                    color: Colors.grey[50],
+                                    borderRadius: BorderRadius.circular(30),
                                   ),
-                                  child: Row(
+                                  child: Stack(
                                     children: [
-                                      Expanded(
-                                        child: GestureDetector(
-                                          onTap: () =>
-                                              setState(() => _isExpense = true),
+                                      AnimatedAlign(
+                                        duration: const Duration(milliseconds: 550),
+                                        curve: Curves.easeInOut,
+                                        alignment: _isExpense ? Alignment.centerLeft : Alignment.centerRight,
+                                        child: FractionallySizedBox(
+                                          widthFactor: 0.5,
                                           child: Container(
-                                            padding: const EdgeInsets.symmetric(
-                                              vertical: 8,
-                                            ),
                                             decoration: BoxDecoration(
-                                              color: _isExpense
-                                                  ? Colors.red
-                                                  : Colors.transparent,
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                            ),
-                                            child: Center(
-                                              child: Text(
-                                                "Chi",
-                                                style: TextStyle(
-                                                  color: _isExpense
-                                                      ? Colors.white
-                                                      : Colors.black54,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
+                                              color: Colors.blue,
+                                              borderRadius: BorderRadius.circular(25),
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: Colors.black.withAlpha(50),
+                                                  blurRadius: 4,
+                                                  offset: const Offset(0, 2),
+                                                )
+                                              ],
                                             ),
                                           ),
                                         ),
                                       ),
-                                      Expanded(
-                                        child: GestureDetector(
-                                          onTap: () => setState(
-                                            () => _isExpense = false,
-                                          ),
-                                          child: Container(
-                                            padding: const EdgeInsets.symmetric(
-                                              vertical: 8,
-                                            ),
-                                            decoration: BoxDecoration(
-                                              color: !_isExpense
-                                                  ? Colors.green
-                                                  : Colors.transparent,
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                            ),
-                                            child: Center(
-                                              child: Text(
-                                                "Thu",
-                                                style: TextStyle(
-                                                  color: !_isExpense
-                                                      ? Colors.white
-                                                      : Colors.black54,
-                                                  fontWeight: FontWeight.bold,
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                            child: GestureDetector(
+                                              onTap: () => setState(() => _isExpense = true),
+                                              child: Container(
+                                                color: Colors.transparent,
+                                                alignment: Alignment.center,
+                                                child: AnimatedDefaultTextStyle(
+                                                  duration: const Duration(milliseconds: 250),
+                                                  style: TextStyle(
+                                                    color: _isExpense ? Colors.white : Colors.grey[600],
+                                                    fontWeight: FontWeight.bold,
+                                                    fontFamily: 'BeVietnamPro',
+                                                    fontSize: 14,
+                                                  ),
+                                                  child: const Text("Chi tiêu"),
                                                 ),
                                               ),
                                             ),
                                           ),
-                                        ),
+                                          Expanded(
+                                            child: GestureDetector(
+                                              onTap: () => setState(() => _isExpense = false),
+                                              child: Container(
+                                                color: Colors.transparent,
+                                                alignment: Alignment.center,
+                                                child: AnimatedDefaultTextStyle(
+                                                  duration: const Duration(milliseconds: 250),
+                                                  style: TextStyle(
+                                                    color: !_isExpense ? Colors.white : Colors.grey[600],
+                                                    fontWeight: FontWeight.bold,
+                                                    fontFamily: 'BeVietnamPro',
+                                                    fontSize: 14,
+                                                  ),
+                                                  child: const Text("Thu nhập"),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ],
                                   ),
                                 ),
                                 const SizedBox(height: 15),
-
                                 Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     IconButton(
-                                      icon: const Icon(Icons.chevron_left),
+                                      icon: const Icon(Icons.arrow_left_rounded , size: 30, color: Colors.grey,),
                                       onPressed: () => _changeMonth(-1),
                                     ),
                                     Text(
                                       "Tháng ${_selectedMonth.month}, ${_selectedMonth.year}",
                                       style: const TextStyle(
                                         fontSize: 16,
-                                        fontWeight: FontWeight.bold,
+                                        fontWeight: FontWeight.w500,
                                       ),
                                     ),
                                     IconButton(
-                                      icon: const Icon(Icons.chevron_right),
+                                      icon: const Icon(Icons.arrow_right_rounded ,size: 30,color: Colors.grey,),
                                       onPressed: () => _changeMonth(1),
                                     ),
                                   ],
@@ -373,7 +359,7 @@ class _HistoryState extends State<History> with TickerProviderStateMixin {
                       ),
                     ),
                   ),
-                ),
+
                 Padding(
                   padding: const EdgeInsets.only(
                     left: 20,
@@ -385,13 +371,9 @@ class _HistoryState extends State<History> with TickerProviderStateMixin {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      const Text(
+                      Text(
                         "Giao dịch gần đây",
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),
+                        style: TextStyles.h2.copyWith(color: Colors.black)
                       ),
                       GestureDetector(
                         onTap: () {
@@ -408,13 +390,17 @@ class _HistoryState extends State<History> with TickerProviderStateMixin {
                         child: Container(
                           child: Column(
                             children: [
-                              Text("Xem tất cả"),
-                              SizedBox(height: 0.5,),
-                              Container(
-                                height: 1,
-                                width:70 ,
-                                color: Colors.black,
-                              )
+                              Text("Xem tất cả" , style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.blue,
+                                decoration: TextDecoration.underline,
+                                decorationColor: Colors.blue,
+                              )),
+                              // Container(
+                              //   height: 1,
+                              //   width:80 ,
+                              //   color: Colors.blue,
+                              // )
                             ],
                           ),
                         )
@@ -427,7 +413,7 @@ class _HistoryState extends State<History> with TickerProviderStateMixin {
 
 
                   decoration: BoxDecoration(
-                    color: Colors.grey[200],
+                    color: Colors.white,
                     borderRadius: BorderRadius.circular(20),
                     boxShadow: [
                       BoxShadow(

@@ -1,4 +1,5 @@
 
+import 'package:expense_management/configs/theme/textstyles.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
@@ -66,7 +67,6 @@ class _BarChartWidgetState extends State<BarChartWidget> {
         setState(() {
           _selectedMonths = value;
           _currentPage = 0;
-          // Không có _selectedData ở biểu đồ này nên ta bỏ đi
         });
         if (_pageController.hasClients) {
           _pageController.jumpToPage(0);
@@ -77,12 +77,7 @@ class _BarChartWidgetState extends State<BarChartWidget> {
         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         decoration: BoxDecoration(
-          color: isSelected ? Colors.blue.withOpacity(0.08) : Colors.transparent,
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(
-            color: isSelected ? Colors.blue : Colors.grey.withOpacity(0.3),
-            width: 1.5,
-          ),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -147,13 +142,6 @@ class _BarChartWidgetState extends State<BarChartWidget> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
-        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -176,10 +164,10 @@ class _BarChartWidgetState extends State<BarChartWidget> {
                       children: [
                         Text(
                           "$_selectedMonths Tháng",
-                          style: const TextStyle(color: Colors.blue, fontWeight: FontWeight.bold, fontSize: 12),
+                          style: TextStyles.buttonsetting.copyWith(color: Colors.blue),
                         ),
                         const SizedBox(width: 4),
-                        const Icon(Icons.keyboard_arrow_down, color: Colors.blue, size: 16),
+                        const Icon(Icons.keyboard_arrow_down, color: Colors.blue, size: 20),
                       ],
                     ),
                   ),

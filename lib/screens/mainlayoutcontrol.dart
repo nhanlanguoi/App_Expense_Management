@@ -56,8 +56,8 @@ class _MainLayoutState extends State<MainLayout> {
       bottomNavigationBar: Bottomnavbar(
         listicon: const [
           Icons.home,
-          Icons.analytics_outlined,
-          Icons.history_sharp,
+          Icons.show_chart_outlined,
+          Icons.turned_in_not_outlined,
           Icons.person,
         ],
         activeIndex: _currentIndex,

@@ -1,6 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
+import '../../../configs/theme/textstyles.dart';
 import '../../../model/transactions.dart';
 
 class BalanceChartWidget extends StatefulWidget {
@@ -198,10 +199,10 @@ class _BalanceChartWidgetState extends State<BalanceChartWidget> {
                       children: [
                         Text(
                           "$_selectedMonths Tháng",
-                          style: const TextStyle(color: Colors.blue, fontWeight: FontWeight.bold, fontSize: 12),
+                          style: TextStyles.buttonsetting.copyWith(color: Colors.blue),
                         ),
                         const SizedBox(width: 4),
-                        const Icon(Icons.keyboard_arrow_down, color: Colors.blue, size: 16),
+                        const Icon(Icons.keyboard_arrow_down, color: Colors.blue, size: 20),
                       ],
                     ),
                   ),

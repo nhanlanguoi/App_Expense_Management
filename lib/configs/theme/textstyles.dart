@@ -18,10 +18,12 @@ class TextStyles {
   static const TextStyle h3 = TextStyle(
     fontFamily: fontFamily,
     fontSize: 18,
-    fontWeight: FontWeight.w600,
   );
 
-
+  static const TextStyle h4 = TextStyle(
+    fontFamily: fontFamily,
+    fontSize: 15,
+  );
 
   ////////
   static const TextStyle nameuser = TextStyle(

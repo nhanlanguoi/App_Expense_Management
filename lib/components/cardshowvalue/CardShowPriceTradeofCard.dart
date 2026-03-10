@@ -51,15 +51,15 @@ class _CardmanagerexpenseState extends State<Cardshowpricetrade> {
                         ),
                       ),
                     ),
-                    SizedBox(width: 3),
+                    SizedBox(width: 10),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           widget.title ?? "Ăn uống",
                           style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 15,
                           ),
                         ),
                         Text(

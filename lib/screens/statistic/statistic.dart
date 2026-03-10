@@ -1,3 +1,4 @@
+import 'package:expense_management/configs/theme/textstyles.dart';
 import 'package:expense_management/screens/statistic/widgets/BalanceChartWidget.dart';
 import 'package:expense_management/screens/statistic/widgets/BarChartWidget.dart';
 import 'package:expense_management/screens/statistic/widgets/OverviewCard.dart';
@@ -8,6 +9,7 @@ import '../../data/service/transactionservice.dart';
 import '../../model/transactions.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'dart:math' as math;
+import 'package:expense_management/configs/theme/textstyles.dart';
 
 class StatisticScreen extends StatefulWidget {
   const StatisticScreen({super.key});
@@ -64,24 +66,16 @@ class _StatisticScreenState extends State<StatisticScreen> {
                       maxExpense: maxExpense,
                     ),
                     const SizedBox(height: 30),
-                    const Text(
+                    Text(
                       "Thu nhập và Chi tiêu",
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'BeVietnamPro',
-                      ),
+                      style: TextStyles.h2.copyWith(color: Colors.black)
                     ),
                     const SizedBox(height: 10),
                     BarChartWidget(transactions: allTransactions),
                     const SizedBox(height: 30),
-                    const Text(
+                    Text(
                       "Biến động số dư",
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'BeVietnamPro',
-                      ),
+                      style: TextStyles.h2.copyWith(color: Colors.black)
                     ),
                     const SizedBox(height: 10),
                     BalanceChartWidget(transactions: allTransactions),

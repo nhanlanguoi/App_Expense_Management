@@ -33,7 +33,7 @@ class Cardshowhistorytrade extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(date, style: const TextStyle(fontWeight: FontWeight.bold)),
+              Text(date ,style: TextStyle(fontSize: 15),),
               if (isSelectionMode)
                 Checkbox(
                   shape: const CircleBorder(),
@@ -49,15 +49,6 @@ class Cardshowhistorytrade extends StatelessWidget {
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(15),
-            border: Border.all(color: Colors.grey.withOpacity(0.1), width: 1),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.02),
-                blurRadius: 20,
-                spreadRadius: 10,
-                offset: const Offset(4, 4),
-              ),
-            ],
           ),
           child: Column(
             children: List.generate(transactions.length, (index) {
@@ -65,16 +56,13 @@ class Cardshowhistorytrade extends StatelessWidget {
               bool isSelected = selectedIds.contains(item['id']);
 
               return GestureDetector(
-
                 onLongPress: () => onLongPress(item['id']),
-
                 onTap: () {
                   if (isSelectionMode) {
                     onSelect(item['id'], !isSelected);
                   }
                 },
                 child: Container(
-                  color: isSelected ? Colors.red.withOpacity(0.05) : Colors.transparent,
                   child: Column(
                     children: [
                       Row(
@@ -99,9 +87,9 @@ class Cardshowhistorytrade extends StatelessWidget {
                         ],
                       ),
                       if (index != transactions.length - 1)
-                        const Padding(
+                        Padding(
                           padding: EdgeInsets.symmetric(horizontal: 10),
-                          child: Divider(thickness: 1, height: 0.7),
+                          child: Divider(thickness: 1.5,color: Colors.grey.shade200,),
                         ),
                     ],
                   ),

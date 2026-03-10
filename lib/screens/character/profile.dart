@@ -37,7 +37,7 @@ class _CharacterState extends State<Character> {
                       "Cài đặt".tr(),
                       style: TextStyles.h1.copyWith(color: Colors.black)
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 30),
                     Container(
                       child: Row(
                         children: [
@@ -79,10 +79,10 @@ class _CharacterState extends State<Character> {
             ),
           ),
           Divider(
-            thickness: 2,
+            thickness: 1.5,
             indent: 20,
             endIndent: 20,
-            color: Colors.grey.shade300,
+            color: Colors.grey.shade200,
           ),
           SizedBox(height: 10,),
           Expanded(
