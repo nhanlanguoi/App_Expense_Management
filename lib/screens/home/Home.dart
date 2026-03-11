@@ -52,7 +52,7 @@ class _MyHomeState extends State<MyHome> {
                     GestureDetector(
                       onTap: (){
                         Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => const Categorymanager()));
+                            MaterialPageRoute(builder: (context) => Categorymanager(users: widget.users,)));
                       },
                       child: const Icon(
                         Icons.edit,

@@ -58,7 +58,7 @@ class BaseSettingLayout extends StatelessWidget {
               child: custombutton(
                 onPressed: onSave,
                 label: "settings.save_change".tr(),
-                backgroundColor: Colors.blueAccent,
+                backgroundColor: AppColors.background,
                 textColor: Colors.white,
                 height: 50,
                 width: double.infinity,
