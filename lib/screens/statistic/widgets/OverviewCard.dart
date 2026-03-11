@@ -1,6 +1,8 @@
 import 'package:expense_management/configs/theme/color.dart';
 import 'package:flutter/material.dart';
 
+import '../../../core/utils/format.dart';
+
 class OverviewCard extends StatelessWidget {
   final int currentMonth;
   final double totalExpense;
@@ -38,7 +40,7 @@ class OverviewCard extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Text(
-            "${totalExpense.toStringAsFixed(0)} đ",
+            "${Format.formatnumber(totalExpense)} đ",
             style: const TextStyle(
               color: Colors.white,
               fontSize: 32,
@@ -60,7 +62,7 @@ class OverviewCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    "${averagePerDay.toStringAsFixed(0)} đ",
+                    "${Format.formatnumber(averagePerDay)} đ",
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 18,
@@ -80,7 +82,7 @@ class OverviewCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    "${maxExpense.toStringAsFixed(0)} đ",
+                    "${Format.formatnumber(maxExpense)} đ",
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 18,

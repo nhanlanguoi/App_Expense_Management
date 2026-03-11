@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../../../configs/theme/textstyles.dart';
 import '../../../core/model/transactions.dart';
+import '../../../core/utils/format.dart';
 
 class BalanceChartWidget extends StatefulWidget {
   final List<TransactionRecord> transactions;
@@ -233,7 +234,7 @@ class _BalanceChartWidgetState extends State<BalanceChartWidget> {
                       Text("Số dư", style: TextStyle(color: Colors.grey[600], fontSize: 13)),
                       const SizedBox(height: 4),
                       Text(
-                        "${displayData['balance'].toStringAsFixed(0)} đ",
+                        "${Format.formatnumber(displayData['balance'])} đ",
                         style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: Colors.black87),
                       ),
                     ],
@@ -244,7 +245,7 @@ class _BalanceChartWidgetState extends State<BalanceChartWidget> {
                       Text("Biến động", style: TextStyle(color: Colors.grey[600], fontSize: 13)),
                       const SizedBox(height: 4),
                       Text(
-                        "${displayData['difference'] >= 0 ? '+' : '-'}${displayData['difference'].abs().toStringAsFixed(0)} đ",
+                        "${displayData['difference'] >= 0 ? '+' : '-'}${Format.formatnumber(displayData['difference'])} đ",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
