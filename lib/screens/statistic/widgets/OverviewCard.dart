@@ -1,3 +1,4 @@
+import 'package:expense_management/configs/theme/color.dart';
 import 'package:flutter/material.dart';
 
 class OverviewCard extends StatelessWidget {
@@ -20,11 +21,7 @@ class OverviewCard extends StatelessWidget {
       padding: const EdgeInsets.all(25),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
-        gradient: const LinearGradient(
-          colors: [Color(0xFF6448FE), Color(0xFF5FC6FF)],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
+        gradient: AppColors.gradientcard,
         boxShadow: [
           BoxShadow(
             color: const Color(0xFF6448FE).withOpacity(0.4),

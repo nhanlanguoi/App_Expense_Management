@@ -382,6 +382,7 @@ class _HistoryState extends State<History> with TickerProviderStateMixin {
                             context: context,
                             isScrollControlled: true,
                             backgroundColor: Colors.transparent,
+                            constraints: const BoxConstraints(maxWidth: double.infinity),
                             transitionAnimationController: _bottomSheetController,
                             builder: (context) {
                               return const AllTransactionsScreen();

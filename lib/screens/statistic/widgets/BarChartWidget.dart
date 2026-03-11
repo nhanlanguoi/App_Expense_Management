@@ -36,6 +36,7 @@ class _BarChartWidgetState extends State<BarChartWidget> {
     showModalBottomSheet(
       context: context,
       backgroundColor: AppColors.floor_background,
+      constraints: const BoxConstraints(maxWidth: double.infinity),
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
@@ -164,18 +165,18 @@ class _BarChartWidgetState extends State<BarChartWidget> {
                   child: Container(
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                     decoration: BoxDecoration(
-                      color: Colors.blue.withOpacity(0.1),
                       borderRadius: BorderRadius.circular(12),
+                      border: Border.all(width: 0.5 ,color: Colors.grey)
                     ),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
                           "$_selectedMonths Tháng",
-                          style: TextStyles.buttonsetting.copyWith(color: Colors.blue),
+                          style: TextStyles.buttonsetting.copyWith(fontWeight:FontWeight.normal ),
                         ),
                         const SizedBox(width: 4),
-                        const Icon(Icons.keyboard_arrow_down, color: Colors.blue, size: 20),
+                        const Icon(Icons.keyboard_arrow_down, color: Colors.black, size: 20),
                       ],
                     ),
                   ),

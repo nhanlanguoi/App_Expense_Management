@@ -3,6 +3,12 @@ import 'package:flutter/material.dart';
 class AppColors {
   static const Color background = Colors.blue;
   static final Color? floor_background = Color.fromRGBO(221, 244, 253, 1.0);
+  static const Gradient gradientcard = LinearGradient(
+    colors: [Color(0xFF6448FE), Color(0xFF5FC6FF)],
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+  );
+
 
   static const List<Color> defaultWalletColors = [
     Color(0xFF3B82F6), Color(0xFF10B981), Color(0xFFEF4444),
