@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:expense_management/core/utils/format.dart';
 import 'package:expense_management/screens/home/widgets/MonthlySpendingCard.dart';
 import 'package:expense_management/screens/home/widgets/catrgoryDetail.dart';
 import 'package:flutter/material.dart';
@@ -299,8 +300,8 @@ class _MyHomeState extends State<MyHome> {
                               valueListenable: Hive.box('transactions').listenable(),
                               builder: (context, transactionBox, widgetChild) {
                                 return Cardmanagerexpense(
-                                  title: wallet.name,
-                                  allmoney: "${wallet.balance}",
+                                  title: Format.formattext(wallet.name),
+                                  allmoney: "${Format.formatnumber(wallet.balance)}",
                                   Icon: AppIcons.getIconFromData(wallet.icon),
                                   Iconcolor: AppColors.getColorFromHex(wallet.color),
                                   total: "${TransactionService().gettotalTransaction(wallet.id!)} "+"home.transactions_count".tr(),

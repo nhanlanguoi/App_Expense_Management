@@ -14,4 +14,12 @@ class Format {
 
     return result;
   }
+
+  static String formattext(String text) {
+    if (text.isEmpty) return text;
+    if (text.length <= 15) {
+      return text;
+    }
+    return '${text.substring(0, 10)}...';
+  }
 }

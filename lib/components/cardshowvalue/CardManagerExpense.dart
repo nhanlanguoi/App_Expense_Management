@@ -1,3 +1,4 @@
+import 'package:expense_management/core/utils/format.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -105,7 +106,7 @@ class _CardmanagerexpenseState extends State<Cardmanagerexpense> {
                                     ),
                                   ),
                                 ),
-                                SizedBox(width: 3),
+                                SizedBox(width: 10),
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -128,7 +129,7 @@ class _CardmanagerexpenseState extends State<Cardmanagerexpense> {
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
                                 Text(
-                                  (widget.allmoney ?? "232,43243324.234")+" ₫",
+                                  (Format.formattext(widget.allmoney?? "232.43243324.234"))+" ₫",
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 16,

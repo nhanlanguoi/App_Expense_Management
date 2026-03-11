@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:expense_management/components/buttons/custombutton.dart';
+import 'package:expense_management/core/utils/format.dart';
 import 'package:expense_management/screens/home/widgets/AddWallet.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
@@ -396,7 +397,7 @@ class _CategorymanagerState extends State<Categorymanager> {
                                           const SizedBox(width: 16),
                                           Expanded(
                                             child: Text(
-                                              wallet.name,
+                                              Format.formattext(wallet.name),
                                               style: const TextStyle(
                                                 fontSize: 14,
                                                 fontWeight: FontWeight.bold,
@@ -406,7 +407,7 @@ class _CategorymanagerState extends State<Categorymanager> {
                                             ),
                                           ),
                                           Text(
-                                            "${wallet.balance.toStringAsFixed(0)} đ",
+                                            Format.formattext("${Format.formatnumber(wallet.balance)}")+ " đ",
                                             style: TextStyle(
                                               fontSize: 14,
                                               fontWeight: FontWeight.bold,

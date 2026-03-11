@@ -12,6 +12,8 @@ import '../../../core/data/service/transactionservice.dart';
 import '../../../core/model/wallet.dart';
 import 'package:expense_management/screens/home/widgets/AddTransaction.dart';
 
+import '../../../core/utils/format.dart';
+
 class categoryDetail extends StatefulWidget {
   final Wallet wallet;
 
@@ -117,7 +119,6 @@ class _categoryDetailState extends State<categoryDetail> {
                           label: "Tất cả",
                           height: 30,
                           borderRadius: 30,
-                          width: 100,
                           backgroundColor: Colors.purple[500],
                           textColor: Colors.white,
                         ),
@@ -189,7 +190,7 @@ class _categoryDetailState extends State<categoryDetail> {
                                   "id": t.id,
                                   "title": t.title,
                                   "time": timeString,
-                                  "money": "$sign${t.amount} đ",
+                                  "money": "$sign${Format.formatnumber(t.amount)} đ",
                                   "icon": AppIcons.getIconFromData(t.icon),
                                   "color": moneyColor,
                                 };
