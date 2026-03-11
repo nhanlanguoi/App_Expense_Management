@@ -20,7 +20,7 @@ class _AddwalletState extends State<Addwallet> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _balanceController = TextEditingController();
 
-  Color selectedColor = AppColors.primary;
+  Color selectedColor = AppColors.background;
   IconData selectedIcon = AppIcons.defaultWalletIcons[0];
 
   List<Color> displayColors = List.from(AppColors.defaultWalletColors);

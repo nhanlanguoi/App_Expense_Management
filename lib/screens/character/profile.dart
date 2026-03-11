@@ -1,4 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:expense_management/configs/theme/color.dart';
+import 'package:expense_management/configs/theme/textstyles.dart';
 import 'package:expense_management/screens/character/widget/LanguageSetting.dart';
 import 'package:expense_management/screens/character/widget/BalanceSetting.dart';
 import 'package:flutter/material.dart';
@@ -21,91 +23,77 @@ class _CharacterState extends State<Character> {
     final currentUser = AuthService().currentUser;
 
     return Scaffold(
-      backgroundColor: Colors.grey[50],
+      backgroundColor: AppColors.floor_background,
       body: Column(
         children: [
           Container(
             width: double.infinity,
-            decoration: BoxDecoration(
-              color: Colors.blueAccent,
-              borderRadius: const BorderRadius.only(
-                bottomLeft: Radius.circular(20),
-                bottomRight: Radius.circular(20),
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.blueAccent.shade100,
-                  blurRadius: 20,
-                  offset: const Offset(0, 5),
-                  spreadRadius: 1,
-                ),
-              ],
-            ),
             child: SafeArea(
               bottom: false,
               child: Padding(
-                padding: const EdgeInsets.only(top: 15, bottom: 25),
+                padding: const EdgeInsets.only(top: 15, bottom: 10 ,left: 20),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "profile.title".tr(),
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'BeVietnamPro',
-                      ),
+                      "Cài đặt".tr(),
+                      style: TextStyles.h1.copyWith(color: Colors.black)
                     ),
-                    const SizedBox(height: 25),
+                    const SizedBox(height: 30),
                     Container(
-                      padding: const EdgeInsets.all(4),
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        shape: BoxShape.circle,
+                      child: Row(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(4),
+                            decoration: const BoxDecoration(
+                              color: Colors.blue,
+                              shape: BoxShape.circle,
+                            ),
+                            child: CircleAvatar(
+                              radius: 25,
+                              backgroundColor: AppColors.floor_background,
+                              child: const Icon(Icons.person, size: 30, color: Colors.blueAccent),
+                            ),
+                          ),
+                          const SizedBox(width: 15),
+                          Container(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "profile.anonymous_user".tr(),
+                                  style: TextStyles.nameuser.copyWith(color: Colors.black)
+                                ),
+                                const SizedBox(height: 5),
+                                Text(
+                                  currentUser?.email ?? "profile.no_email".tr(),
+                                  style: TextStyles.emailuser.copyWith(color: Colors.black)
+                                ),
+                              ],
+                            ),
+                          )
+                        ],
                       ),
-                      child: CircleAvatar(
-                        radius: 45,
-                        backgroundColor: Colors.blue.shade50,
-                        child: const Icon(Icons.person, size: 50, color: Colors.blueAccent),
-                      ),
-                    ),
-                    const SizedBox(height: 15),
-                    Text(
-                      "profile.anonymous_user".tr(),
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'BeVietnamPro',
-                      ),
-                    ),
-                    const SizedBox(height: 5),
-                    Text(
-                      currentUser?.email ?? "profile.no_email".tr(),
-                      style: const TextStyle(
-                        color: Colors.white70,
-                        fontSize: 14,
-                        fontFamily: 'BeVietnamPro',
-                      ),
-                    ),
+                    )
                   ],
                 ),
               ),
             ),
           ),
+          Divider(
+            thickness: 1.5,
+            indent: 20,
+            endIndent: 20,
+            color: Colors.grey.shade300,
+          ),
+          SizedBox(height: 10,),
           Expanded(
             child: ListView(
               padding: const EdgeInsets.all(20),
               children: [
                 Text(
                   "profile.general_settings".tr(),
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.grey,
-                    fontFamily: 'BeVietnamPro',
-                  ),
+                  style: TextStyles.h2.copyWith(color: Colors.black)
                 ),
                 const SizedBox(height: 15),
 

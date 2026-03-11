@@ -1,3 +1,5 @@
+import 'package:expense_management/configs/theme/color.dart';
+import 'package:expense_management/screens/statistic/statistic.dart';
 import 'package:flutter/material.dart';
 import 'package:expense_management/components/bottomnavbar/Bottomnavbar.dart';
 import 'package:expense_management/screens/home/Home.dart';
@@ -24,13 +26,13 @@ class _MainLayoutState extends State<MainLayout> {
 
     final List<Widget> _screens = [
       MyHome(users: widget.user,),
-      const Center(child: Text("Thống kê")),
+      StatisticScreen(),
       History(),
       Character(),
     ];
     
     return Scaffold(
-
+      extendBody: true,
       body: IndexedStack(
         index: _currentIndex,
         children: _screens,
@@ -55,8 +57,8 @@ class _MainLayoutState extends State<MainLayout> {
       bottomNavigationBar: Bottomnavbar(
         listicon: const [
           Icons.home,
-          Icons.analytics_outlined,
-          Icons.history_sharp,
+          Icons.show_chart_outlined,
+          Icons.turned_in_not_outlined,
           Icons.person,
         ],
         activeIndex: _currentIndex,

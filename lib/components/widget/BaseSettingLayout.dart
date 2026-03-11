@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:expense_management/configs/theme/color.dart';
 import 'package:flutter/material.dart';
 import '../buttons/custombutton.dart';
 
@@ -17,7 +18,7 @@ class BaseSettingLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[50],
+      backgroundColor: AppColors.floor_background,
       body: SafeArea(
         child: Column(
           children: [
