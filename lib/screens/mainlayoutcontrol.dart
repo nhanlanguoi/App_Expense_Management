@@ -8,6 +8,8 @@ import 'package:expense_management/screens/home/widgets/AddWallet.dart';
 import 'package:expense_management/screens/history/history.dart';
 import 'package:expense_management/screens/character/profile.dart';
 
+import 'AddTransaction.dart';
+
 class MainLayout extends StatefulWidget {
   final Users user;
   const MainLayout({super.key, required this.user});
@@ -40,11 +42,20 @@ class _MainLayoutState extends State<MainLayout> {
 
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          showDialog(
+          showModalBottomSheet(
             context: context,
             barrierColor: Colors.black54,
+            isScrollControlled: true,
+            backgroundColor: Colors.transparent,
             builder: (context) {
-              return Addwallet();
+              return Container(
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+                ),
+                clipBehavior: Clip.antiAlias,
+                child: AddTransaction(walletId: null, users: widget.user),
+              );
             },
           );
         },
