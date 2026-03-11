@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:expense_management/components/buttons/custombutton.dart';
+import 'package:expense_management/screens/home/widgets/AddWallet.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -78,7 +79,28 @@ class _CategorymanagerState extends State<Categorymanager> {
               child: Column(
                 children: [
                   custombutton(
-                    onPressed: () {},
+                    onPressed: () {
+                      showModalBottomSheet(
+                        context: context,
+                        barrierColor: Colors.black54,
+                        isScrollControlled: true,
+                        backgroundColor: Colors.transparent,
+                        builder: (context) {
+                          return Container(
+                            height: MediaQuery.of(context).size.height * 0.7,
+                            width: double.infinity,
+                            decoration: const BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.vertical(
+                                top: Radius.circular(24),
+                              ),
+                            ),
+                            clipBehavior: Clip.antiAlias,
+                            child: Addwallet(),
+                          );
+                        },
+                      );
+                    },
                     label: 'Tạo nhóm danh mục',
                     height: 60,
                     borderRadius: 30,
