@@ -395,7 +395,6 @@ class _AddTransactionState extends State<AddTransaction> {
                   backgroundColor: activeThemeColor,
                   textColor: Colors.white,
                   height: 45,
-                  width: 160,
                   borderRadius: 25,
                 ),
               ],
