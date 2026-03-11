@@ -51,12 +51,19 @@ class _custombuttonState extends State<custombutton> {
   Widget _buildElevatedButton(Color bgColor, Color textColor) {
     Responsive.init(context);
 
+    final bool isIconOnly = widget.icon != null && widget.label.isEmpty;
+
     return ElevatedButton(
       onPressed: widget.isLoading ? null : widget.onPressed,
       style: ElevatedButton.styleFrom(
         backgroundColor: bgColor,
         foregroundColor: textColor,
         elevation: 0,
+
+        padding: isIconOnly ? EdgeInsets.zero : null,
+
+        minimumSize: isIconOnly ? Size(widget.width, widget.height) : null,
+
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(widget.borderRadius),
         ),
@@ -98,23 +105,36 @@ class _custombuttonState extends State<custombutton> {
       );
     }
 
+    /// icon-only button
+    if (widget.icon != null &&
+        widget.label.isEmpty) {
+      return Center(child: widget.icon);
+    }
+
+    Widget labelWidget = const SizedBox();
+
+    if (widget.label is String && (widget.label as String).isNotEmpty) {
+      labelWidget = Text(
+        widget.label,
+        style: widget.labelStyle ??
+            TextStyle(
+              fontSize: Responsive.sp(16),
+              fontWeight: FontWeight.bold,
+              fontFamily: 'BeVietnamPro',
+              color: color,
+            ),
+      );
+    }
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
       children: [
         if (widget.icon != null) ...[
           widget.icon!,
           SizedBox(width: Responsive.w(8)),
         ],
-        Text(
-          widget.label,
-          style: widget.labelStyle ??
-              TextStyle(
-                fontSize: Responsive.sp(16),
-                fontWeight: FontWeight.bold,
-                fontFamily: 'BeVietnamPro',
-                color: color,
-              ),
-        ),
+        labelWidget,
       ],
     );
   }
