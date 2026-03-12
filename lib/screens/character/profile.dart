@@ -7,8 +7,8 @@ import 'package:flutter/material.dart';
 import '../../components/buttons/custombutton.dart';
 import '../../components/buttons/settingiteam.dart';
 import '../../core/data/service/authservice.dart';
-
-
+import '../../core/utils/responsive.dart';
+// Nhớ import file chứa class Responsive vào đây nhé!
 
 class Character extends StatefulWidget {
   const Character({super.key});
@@ -31,43 +31,43 @@ class _CharacterState extends State<Character> {
             child: SafeArea(
               bottom: false,
               child: Padding(
-                padding: const EdgeInsets.only(top: 15, bottom: 10 ,left: 20),
+                padding: EdgeInsets.only(top: Responsive.h(15), bottom: Responsive.h(10) ,left: Responsive.w(20)),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Cài đặt".tr(),
-                      style: TextStyles.h1.copyWith(color: Colors.black)
+                        "Cài đặt".tr(),
+                        style: TextStyles.h1.copyWith(color: Colors.black)
                     ),
-                    const SizedBox(height: 30),
+                    SizedBox(height: Responsive.h(30)),
                     Container(
                       child: Row(
                         children: [
                           Container(
-                            padding: const EdgeInsets.all(4),
+                            padding: EdgeInsets.all(Responsive.w(4)),
                             decoration: const BoxDecoration(
                               color: Colors.blue,
                               shape: BoxShape.circle,
                             ),
                             child: CircleAvatar(
-                              radius: 25,
+                              radius: Responsive.w(25),
                               backgroundColor: AppColors.floor_background,
-                              child: const Icon(Icons.person, size: 30, color: Colors.blueAccent),
+                              child: Icon(Icons.person, size: Responsive.w(30), color: Colors.blueAccent),
                             ),
                           ),
-                          const SizedBox(width: 15),
+                          SizedBox(width: Responsive.w(15)),
                           Container(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "profile.anonymous_user".tr(),
-                                  style: TextStyles.nameuser.copyWith(color: Colors.black)
+                                    "profile.anonymous_user".tr(),
+                                    style: TextStyles.nameuser.copyWith(color: Colors.black)
                                 ),
-                                const SizedBox(height: 5),
+                                SizedBox(height: Responsive.h(5)),
                                 Text(
-                                  currentUser?.email ?? "profile.no_email".tr(),
-                                  style: TextStyles.emailuser.copyWith(color: Colors.black)
+                                    currentUser?.email ?? "profile.no_email".tr(),
+                                    style: TextStyles.emailuser.copyWith(color: Colors.black)
                                 ),
                               ],
                             ),
@@ -81,21 +81,21 @@ class _CharacterState extends State<Character> {
             ),
           ),
           Divider(
-            thickness: 1.5,
-            indent: 20,
-            endIndent: 20,
+            thickness: Responsive.h(1.5),
+            indent: Responsive.w(20),
+            endIndent: Responsive.w(20),
             color: Colors.grey.shade300,
           ),
-          SizedBox(height: 10,),
+          SizedBox(height: Responsive.h(10),),
           Expanded(
             child: ListView(
-              padding: const EdgeInsets.all(20),
+              padding: EdgeInsets.all(Responsive.w(20)),
               children: [
                 Text(
-                  "profile.general_settings".tr(),
-                  style: TextStyles.h2.copyWith(color: Colors.black)
+                    "profile.general_settings".tr(),
+                    style: TextStyles.h2.copyWith(color: Colors.black)
                 ),
-                const SizedBox(height: 15),
+                SizedBox(height: Responsive.h(15)),
 
                 SettingItem(
                   icon: Icons.language,
@@ -119,9 +119,9 @@ class _CharacterState extends State<Character> {
                   label: "profile.logout".tr(),
                   backgroundColor: Colors.redAccent,
                   textColor: Colors.white,
-                  height: 45,
-                  width: 160,
-                  borderRadius: 25,
+                  height: Responsive.h(45),
+                  width: Responsive.w(160),
+                  borderRadius: Responsive.w(25),
                 ),
               ],
             ),
