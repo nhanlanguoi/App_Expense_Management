@@ -6,6 +6,7 @@ import '../../core/data/service/authservice.dart';
 import '../../core/data/service/transactionservice.dart';
 import '../../core/model/transactions.dart';
 import '../../configs/theme/icon.dart';
+import '../../core/utils/responsive.dart';
 
 class AllTransactionsScreen extends StatefulWidget {
   const AllTransactionsScreen({super.key});
@@ -38,51 +39,51 @@ class _AllTransactionsScreenState extends State<AllTransactionsScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.only(left: 10, top: 10),
+              padding: EdgeInsets.only(left: Responsive.w(10), top: Responsive.h(10)),
               child: IconButton(
-                icon: const Icon(Icons.close, size: 28, color: Colors.black87),
+                icon: Icon(Icons.close, size: Responsive.w(28), color: Colors.black87),
                 onPressed: () {
                   Navigator.pop(context);
                 },
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
+              padding: EdgeInsets.symmetric(horizontal: Responsive.w(20)),
               child: Text(
                 "Tất cả giao dịch",
-                style: const TextStyle(
+                style: TextStyle(
                   color: Colors.black,
-                  fontSize: 24,
+                  fontSize: Responsive.sp(24),
                   fontWeight: FontWeight.bold,
                   fontFamily: 'BeVietnamPro',
                 ),
               ),
             ),
-            const SizedBox(height: 15),
+            SizedBox(height: Responsive.h(15)),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
+              padding: EdgeInsets.symmetric(horizontal: Responsive.w(20)),
               child: Row(
                 children: [
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                    padding: EdgeInsets.symmetric(horizontal: Responsive.w(20), vertical: Responsive.h(8)),
                     decoration: BoxDecoration(
                       color: Colors.blue.withOpacity(0.15),
-                      borderRadius: BorderRadius.circular(20),
+                      borderRadius: BorderRadius.circular(Responsive.w(20)),
                       border: Border.all(color: Colors.blue.withOpacity(0.5)),
                     ),
-                    child: const Text(
+                    child: Text(
                       "Tất cả",
                       style: TextStyle(
                         color: Colors.blue,
                         fontWeight: FontWeight.bold,
-                        fontSize: 14,
+                        fontSize: Responsive.sp(14),
                       ),
                     ),
                   ),
                 ],
               ),
             ),
-            const SizedBox(height: 20),
+            SizedBox(height: Responsive.h(20)),
             Expanded(
               child: ValueListenableBuilder(
                 valueListenable: Hive.box('transactions').listenable(),
@@ -112,21 +113,21 @@ class _AllTransactionsScreenState extends State<AllTransactionsScreen> {
                   }
 
                   return Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10).copyWith(bottom: 20),
+                    margin: EdgeInsets.symmetric(horizontal: Responsive.w(20), vertical: Responsive.h(10)).copyWith(bottom: Responsive.h(20)),
                     decoration: BoxDecoration(
                       color: Colors.white,
-                      borderRadius: BorderRadius.circular(20),
+                      borderRadius: BorderRadius.circular(Responsive.w(20)),
                       boxShadow: [
                         BoxShadow(
                           color: Colors.grey.withOpacity(0.1),
-                          spreadRadius: 2,
-                          blurRadius: 8,
-                          offset: const Offset(0, 4),
+                          spreadRadius: Responsive.w(2),
+                          blurRadius: Responsive.w(8),
+                          offset: Offset(0, Responsive.h(4)),
                         ),
                       ],
                     ),
                     child: ListView.builder(
-                      padding: const EdgeInsets.all(15),
+                      padding: EdgeInsets.all(Responsive.w(15)),
                       itemCount: dateKeys.length,
                       itemBuilder: (context, index) {
                         String currentDate = dateKeys[index];
