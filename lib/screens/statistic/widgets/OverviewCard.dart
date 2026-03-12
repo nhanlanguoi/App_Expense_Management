@@ -62,7 +62,7 @@ class OverviewCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    "${Format.formatnumber(averagePerDay)} đ",
+                    "${Format.formattext(Format.formatnumber(averagePerDay))} đ",
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 18,
@@ -82,7 +82,7 @@ class OverviewCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    "${Format.formatnumber(maxExpense)} đ",
+                    "${Format.formattext(Format.formatnumber(maxExpense))} đ",
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 18,

@@ -234,7 +234,7 @@ class _BalanceChartWidgetState extends State<BalanceChartWidget> {
                       Text("Số dư", style: TextStyle(color: Colors.grey[600], fontSize: 13)),
                       const SizedBox(height: 4),
                       Text(
-                        "${Format.formatnumber(displayData['balance'])} đ",
+                        "${Format.formattext(Format.formatnumber(displayData['balance']))} đ",
                         style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: Colors.black87),
                       ),
                     ],
@@ -245,7 +245,7 @@ class _BalanceChartWidgetState extends State<BalanceChartWidget> {
                       Text("Biến động", style: TextStyle(color: Colors.grey[600], fontSize: 13)),
                       const SizedBox(height: 4),
                       Text(
-                        "${displayData['difference'] >= 0 ? '+' : '-'}${Format.formatnumber(displayData['difference'])} đ",
+                        "${displayData['difference'] >= 0 ? '+' : '-'}${Format.formattext(Format.formatnumber(displayData['difference']))} đ",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
