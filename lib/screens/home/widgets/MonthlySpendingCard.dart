@@ -4,11 +4,13 @@ import 'package:intl/intl.dart';
 class MonthlySpendingCard extends StatelessWidget {
   final double spent;
   final double total;
+  final bool collapsed;
 
   const MonthlySpendingCard({
     super.key,
     required this.spent,
     required this.total,
+    required this.collapsed,
   });
 
   String money(double value) {
@@ -20,8 +22,10 @@ class MonthlySpendingCard extends StatelessWidget {
     double percent = spent / total;
     double remain = total - spent;
 
-    return Container(
-      padding: const EdgeInsets.all(16),
+    return AnimatedContainer(
+        duration: const Duration(milliseconds: 500),
+      curve: Curves.easeInOutCubic,
+      padding: EdgeInsets.all(collapsed ? 10 : 16),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
         gradient: const LinearGradient(
@@ -38,7 +42,45 @@ class MonthlySpendingCard extends StatelessWidget {
           )
         ],
       ),
-      child: Column(
+      child: collapsed ? Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+
+          ClipRRect(
+            borderRadius: BorderRadius.circular(10),
+            child: LinearProgressIndicator(
+              value: percent,
+              minHeight: 8,
+              backgroundColor: Colors.white.withOpacity(0.3),
+              valueColor:
+              const AlwaysStoppedAnimation<Color>(Colors.white),
+            ),
+          ),
+
+          const SizedBox(height: 6),
+
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                money(spent),
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Text(
+                "${(percent * 100).toStringAsFixed(0)}%",
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+              )
+            ],
+          )
+        ],
+      )
+          : Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           /// Top row

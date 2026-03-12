@@ -27,9 +27,29 @@ class MyHome extends StatefulWidget {
 }
 
 class _MyHomeState extends State<MyHome> {
-
-
-
+  final ScrollController _scrollController = ScrollController();
+  bool _collapsed = false;
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(() {
+      if (_scrollController.offset > 40 && !_collapsed) {
+        setState(() {
+          _collapsed = true;
+        });
+      } else if (_scrollController.offset <= 40 && _collapsed) {
+        setState(() {
+          _collapsed = false;
+        });
+      }
+    });
+  }
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+  @override
   Widget _HomeHeader(){
     return  Stack(
       children: [
@@ -120,8 +140,6 @@ class _MyHomeState extends State<MyHome> {
 
                         /// TODO:
                         /// Sau này sẽ gọi function tính toán dữ liệu theo tháng
-                        /// Ví dụ:
-                        /// calculateMonthlyData(_selectedMonth);
 
                       });
                     },
@@ -131,6 +149,7 @@ class _MyHomeState extends State<MyHome> {
               /// CARD hiển thị chi tiêu tháng
               /// Hiện tại đang dùng dữ liệu fake để build UI
               MonthlySpendingCard(
+                collapsed: _collapsed,
                 spent: 5420000,
                 total: 30000000,
               ),
@@ -166,7 +185,8 @@ class _MyHomeState extends State<MyHome> {
                   }
 
                   return ListView.builder(
-                    padding: EdgeInsets.zero,
+                    controller: _scrollController,
+                    padding: EdgeInsets.only(bottom: 80),
                     itemCount: myWallets.length,
                     itemBuilder: (context, index) {
                       final wallet = myWallets[index];
