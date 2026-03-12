@@ -11,7 +11,6 @@ class custombutton extends StatefulWidget {
   final Color? textColor;
   final Widget? icon;
 
-
   final double? height;
   final double? width;
   final double borderRadius;
@@ -27,7 +26,7 @@ class custombutton extends StatefulWidget {
     this.icon,
     this.height,
     this.width,
-    this.borderRadius = 12.0,
+    required this.borderRadius,
     this.labelStyle,
   });
 
@@ -66,7 +65,7 @@ class _custombuttonState extends State<custombutton> {
         elevation: 0,
         padding: isIconOnly
             ? EdgeInsets.zero
-            : const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+            : const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         minimumSize: (isIconOnly && widget.width != null && widget.height != null)
             ? Size(widget.width!, widget.height!)
             : null,
@@ -92,8 +91,7 @@ class _custombuttonState extends State<custombutton> {
         ),
         padding: isIconOnly
             ? EdgeInsets.zero
-            : const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-
+            : const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(widget.borderRadius),
         ),
@@ -113,13 +111,16 @@ class _custombuttonState extends State<custombutton> {
         ),
       );
     }
+
     if (widget.icon != null && widget.label.isEmpty) {
       return Center(child: widget.icon);
     }
+
     Widget labelWidget = const SizedBox();
     if (widget.label.isNotEmpty) {
       labelWidget = Text(
         widget.label,
+        overflow: TextOverflow.ellipsis,
         style: widget.labelStyle ??
             TextStyle(
               fontSize: Responsive.sp(16),
@@ -138,7 +139,9 @@ class _custombuttonState extends State<custombutton> {
           widget.icon!,
           SizedBox(width: Responsive.w(8)),
         ],
-        labelWidget,
+        Flexible(
+          child: labelWidget,
+        ),
       ],
     );
   }
