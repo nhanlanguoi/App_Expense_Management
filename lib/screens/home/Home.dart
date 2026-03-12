@@ -9,14 +9,11 @@ import 'package:expense_management/components/cardshowvalue/CardManagerExpense.d
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:expense_management/configs/theme/color.dart';
 import 'package:expense_management/configs/theme/icon.dart';
-
 import '../../core/data/service/transactionservice.dart';
 import '../../core/data/service/walletservice.dart';
 import '../../core/model/users.dart';
-
 import 'package:expense_management/components/widget/purple_header.dart';
 import 'package:expense_management/core/utils/responsive.dart';
-
 import '../../core/utils/format.dart';
 import 'categorymanager.dart';
 
@@ -88,8 +85,41 @@ class _MyHomeState extends State<MyHome> {
                   ],
                 ),
                 SizedBox(height: Responsive.h(20)),
-                CardGeneralTotal(
-                    total: 24580000, income: 30000000, expense: 5420000)
+                ValueListenableBuilder(
+                  valueListenable: Hive.box('transactions').listenable(),
+                  builder: (context, transBox, _) {
+                    return ValueListenableBuilder(
+                      valueListenable: Hive.box('wallets').listenable(),
+                      builder: (context, walletBox, _) {
+                        final myWallets = WalletService().getWallets(widget.users.email);
+                        double totalBalance = 0;
+                        double totalIncome = 0;
+                        double totalExpense = 0;
+                        DateTime now = DateTime.now();
+                        for (var wallet in myWallets) {
+                          totalBalance += wallet.balance;
+                          final transList = TransactionService().getTransactionsByWallet(wallet.id!);
+
+                          for (var t in transList) {
+                            if (t.date.month == now.month && t.date.year == now.year) {
+                              if (t.type == 'income') {
+                                totalIncome += t.amount;
+                              } else if (t.type == 'expense') {
+                                totalExpense += t.amount;
+                              }
+                            }
+                          }
+                        }
+
+                        return CardGeneralTotal(
+                          total: totalBalance,
+                          income: totalIncome,
+                          expense: totalExpense,
+                        );
+                      },
+                    );
+                  },
+                )
               ],
             ),
           ),
@@ -99,12 +129,13 @@ class _MyHomeState extends State<MyHome> {
   }
 
   Widget _monlySpending() {
-    List<int> months = [1,2,3,4,5,6,7,8,9,10,11,12];
-    int _selectedMonth = DateTime.now().month;
+    int _currentMonth = DateTime.now().month;
+    int _currentYear = DateTime.now().year;
 
     return Padding(
-        padding: EdgeInsets.symmetric(horizontal: Responsive.w(15)),
-        child: Column(children: [
+      padding: EdgeInsets.symmetric(horizontal: Responsive.w(15)),
+      child: Column(
+        children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -116,39 +147,44 @@ class _MyHomeState extends State<MyHome> {
                   fontFamily: 'BeVietnamPro',
                 ),
               ),
-              DropdownButton<int>(
-                value: _selectedMonth,
-                underline: const SizedBox(),
-                items: months.map((m) {
-                  return DropdownMenuItem(
-                    value: m,
-                    child: Text(
-                      "Tháng $m",
-                      style: TextStyle(
-                        fontSize: Responsive.sp(14),
-                        fontWeight: FontWeight.w600,
-                        fontFamily: 'BeVietnamPro',
-                        color: const Color(0xFF7B3FE4),
-                      ),
-                    ),
-                  );
-                }).toList(),
-                onChanged: (value) {
-                  if (value == null) return;
-
-                  setState(() {
-                    _selectedMonth = value;
-                  });
-                },
+              Text(
+                "Tháng $_currentMonth",
+                style: TextStyle(
+                  fontSize: Responsive.sp(14),
+                  fontWeight: FontWeight.w600,
+                  fontFamily: 'BeVietnamPro',
+                  color: const Color(0xFF7B3FE4),
+                ),
               ),
             ],
           ),
-          MonthlySpendingCard(
-            collapsed: _collapsed,
-            spent: 5420000,
-            total: 30000000,
+          ValueListenableBuilder(
+            valueListenable: Hive.box('transactions').listenable(),
+            builder: (context, box, _) {
+              final myWallets = WalletService().getWallets(widget.users.email);
+              double monthlyExpense = 0;
+
+              for (var wallet in myWallets) {
+                final transList = TransactionService().getTransactionsByWallet(wallet.id!);
+                for (var t in transList) {
+                  if (t.type == 'expense' &&
+                      t.date.month == _currentMonth &&
+                      t.date.year == _currentYear) {
+                    monthlyExpense += t.amount;
+                  }
+                }
+              }
+
+              return MonthlySpendingCard(
+                collapsed: _collapsed,
+                spent: monthlyExpense,
+                total: widget.users.totalBalance,
+              );
+            },
           ),
-        ]));
+        ],
+      ),
+    );
   }
 
   @override

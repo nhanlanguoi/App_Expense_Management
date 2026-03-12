@@ -43,6 +43,7 @@ class _custombuttonState extends State<custombutton> {
     Widget button = widget.isOutline
         ? _buildOutlineButton(primaryColor)
         : _buildElevatedButton(primaryColor, onPrimaryColor);
+
     if (widget.width != null || widget.height != null) {
       return SizedBox(
         width: widget.width,
@@ -65,7 +66,7 @@ class _custombuttonState extends State<custombutton> {
         elevation: 0,
         padding: isIconOnly
             ? EdgeInsets.zero
-            : const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            : const EdgeInsets.symmetric(horizontal: 16),
         minimumSize: (isIconOnly && widget.width != null && widget.height != null)
             ? Size(widget.width!, widget.height!)
             : null,
@@ -91,7 +92,7 @@ class _custombuttonState extends State<custombutton> {
         ),
         padding: isIconOnly
             ? EdgeInsets.zero
-            : const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            : const EdgeInsets.symmetric(horizontal: 16),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(widget.borderRadius),
         ),
@@ -120,6 +121,7 @@ class _custombuttonState extends State<custombutton> {
     if (widget.label.isNotEmpty) {
       labelWidget = Text(
         widget.label,
+        maxLines: 1,
         overflow: TextOverflow.ellipsis,
         style: widget.labelStyle ??
             TextStyle(

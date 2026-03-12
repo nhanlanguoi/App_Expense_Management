@@ -1,3 +1,4 @@
+import 'package:expense_management/core/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -19,61 +20,57 @@ class MonthlySpendingCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double percent = spent / total;
-    double remain = total - spent;
+    double percent = total > 0 ? (spent / total).clamp(0.0, 1.0) : 0.0;
+    double remain = total;
 
     return AnimatedContainer(
-        duration: const Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 500),
       curve: Curves.easeInOutCubic,
-      padding: EdgeInsets.all(collapsed ? 10 : 16),
+      padding: EdgeInsets.all(collapsed ? Responsive.r(10) : Responsive.r(16)),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(Responsive.r(20)),
         gradient: const LinearGradient(
-          colors: [
-            Color(0xFF7A6FF0),
-            Color(0xFF5A5BD6),
-          ],
+          colors: [Color(0xFF7A6FF0), Color(0xFF5A5BD6)],
         ),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.15),
-            blurRadius: 10,
-            offset: const Offset(0, 5),
+            blurRadius: Responsive.r(10),
+            offset: Offset(0, Responsive.h(5)),
           )
         ],
       ),
-      child: collapsed ? Column(
+      child: collapsed
+          ? Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-
           ClipRRect(
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(Responsive.r(10)),
             child: LinearProgressIndicator(
               value: percent,
-              minHeight: 8,
+              minHeight: Responsive.h(8),
               backgroundColor: Colors.white.withOpacity(0.3),
-              valueColor:
-              const AlwaysStoppedAnimation<Color>(Colors.white),
+              valueColor: const AlwaysStoppedAnimation<Color>(Colors.white),
             ),
           ),
-
-          const SizedBox(height: 6),
-
+          SizedBox(height: Responsive.h(6)),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
                 money(spent),
-                style: const TextStyle(
+                style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
+                  fontSize: Responsive.sp(14),
                 ),
               ),
               Text(
                 "${(percent * 100).toStringAsFixed(0)}%",
-                style: const TextStyle(
+                style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
+                  fontSize: Responsive.sp(14),
                 ),
               )
             ],
@@ -83,22 +80,20 @@ class MonthlySpendingCard extends StatelessWidget {
           : Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          /// Top row
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
+              Text(
                 "Đã chi tiêu",
                 style: TextStyle(
-                    fontSize: 15,
+                    fontSize: Responsive.sp(15),
                     fontWeight: FontWeight.bold,
                     fontFamily: 'BeVietnamPro',
                     color: Colors.white70),
               ),
-
               Container(
-                width: 50,
-                height: 50,
+                width: Responsive.r(50),
+                height: Responsive.r(50),
                 decoration: BoxDecoration(
                   color: Colors.white.withOpacity(0.2),
                   shape: BoxShape.circle,
@@ -106,47 +101,39 @@ class MonthlySpendingCard extends StatelessWidget {
                 alignment: Alignment.center,
                 child: Text(
                   "${(percent * 100).toStringAsFixed(0)}%",
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
+                    fontSize: Responsive.sp(14),
                   ),
                 ),
               )
             ],
           ),
-
-
-          /// Spent amount
           Text(
             money(spent),
-            style: const TextStyle(
-              fontSize: 26,
+            style: TextStyle(
+              fontSize: Responsive.sp(26),
               fontWeight: FontWeight.bold,
               color: Colors.white,
             ),
           ),
-
-          const SizedBox(height: 5),
-
-          /// Progress bar
+          SizedBox(height: Responsive.h(5)),
           ClipRRect(
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(Responsive.r(10)),
             child: LinearProgressIndicator(
               value: percent,
-              minHeight: 8,
+              minHeight: Responsive.h(8),
               backgroundColor: Colors.white.withOpacity(0.3),
               valueColor: const AlwaysStoppedAnimation<Color>(Colors.white),
             ),
           ),
-
-          const SizedBox(height: 5),
-
-          /// Remaining
+          SizedBox(height: Responsive.h(5)),
           Text(
-            "Còn lại: ${money(remain)}",
-            style: const TextStyle(
+            "Số tiền trong ví thật : ${money(remain)}",
+            style: TextStyle(
               color: Colors.white70,
-              fontSize: 13,
+              fontSize: Responsive.sp(13),
             ),
           )
         ],

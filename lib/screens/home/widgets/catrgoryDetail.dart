@@ -88,13 +88,21 @@ class _categoryDetailState extends State<categoryDetail> {
                                 fontFamily: 'BeVietnamPro',
                               ),
                             ),
-                            Text(
-                              "${widget.wallet.balance} ₫",
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 40,
-                                fontWeight: FontWeight.w800,
-                                fontFamily: 'BeVietnamPro',
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 16),
+                              child: FittedBox(
+                                fit: BoxFit.scaleDown,
+                                alignment: Alignment.center,
+                                child: Text(
+                                  "${Format.formatnumber(widget.wallet.balance)} ₫",
+                                  maxLines: 1,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 40,
+                                    fontWeight: FontWeight.w800,
+                                    fontFamily: 'BeVietnamPro',
+                                  ),
+                                ),
                               ),
                             ),
                           ],
