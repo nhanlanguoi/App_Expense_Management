@@ -3,17 +3,21 @@ import 'package:flutter/material.dart';
 class Cardshowtotalofcard extends StatefulWidget {
   final String? total;
   final double? percen;
-  final IconData? Icon;
+  final IconData? icon;
   final Color? Iconcolor;
   final Color? Background;
+  final double totalIncome;
+  final double totalExpense;
 
   const Cardshowtotalofcard({
     super.key,
     this.total,
     this.percen,
-    this.Icon,
+    this.icon,
     this.Iconcolor,
-    this.Background,
+    this.Background= Colors.white,
+    required this.totalIncome,
+    required this.totalExpense,
   });
 
   @override
@@ -25,7 +29,7 @@ class _CardmanagerexpenseState extends State<Cardshowtotalofcard> {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: widget.Background ?? Colors.grey[150],
+        color: widget.Background ?? Colors.grey[200],
         borderRadius: BorderRadius.circular(15),
         border: Border.all(color: Colors.grey.withValues(alpha: 0.1), width: 2),
         boxShadow: [
@@ -41,7 +45,7 @@ class _CardmanagerexpenseState extends State<Cardshowtotalofcard> {
       child: Column(
         children: [
           Padding(
-            padding: EdgeInsetsGeometry.all(20),
+            padding: const EdgeInsets.all(20), // Sửa EdgeInsetsGeometry thành EdgeInsets
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -50,30 +54,30 @@ class _CardmanagerexpenseState extends State<Cardshowtotalofcard> {
                     Container(
                       decoration: BoxDecoration(
                         color:
-                            widget.Iconcolor?.withValues(alpha: 0.2) ??
+                        widget.Iconcolor?.withValues(alpha: 0.2) ??
                             Colors.orange[200],
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Padding(
-                        padding: EdgeInsets.all(5),
+                        padding: const EdgeInsets.all(5),
                         child: Icon(
-                          widget.Icon ?? Icons.fastfood,
+                          widget.icon ?? Icons.fastfood,
                           size: 30,
                           color: widget.Iconcolor ?? Colors.orange,
                         ),
                       ),
                     ),
-                    SizedBox(width: 3),
+                    const SizedBox(width: 3),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
+                        const Text(
                           "Thống kê",
                           style: TextStyle(fontSize: 14, color: Colors.grey),
                         ),
                         Text(
-                          (widget.total ?? "15") + " giao dịch",
-                          style: TextStyle(
+                          "${widget.total ?? '15'} giao dịch",
+                          style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
                           ),
@@ -85,7 +89,7 @@ class _CardmanagerexpenseState extends State<Cardshowtotalofcard> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Text(
+                    const Text(
                       "Tỉ trọng",
                       style: TextStyle(fontSize: 14, color: Colors.grey),
                     ),
