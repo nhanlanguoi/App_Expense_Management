@@ -3,6 +3,7 @@ import 'package:expense_management/screens/home/widgets/CategoryCard.dart';
 import 'package:flutter/material.dart';
 
 import '../../components/widget/purple_header.dart';
+import '../../core/utils/responsive.dart';
 
 class Categorymanager extends StatefulWidget {
   const Categorymanager({super.key});
@@ -12,19 +13,27 @@ class Categorymanager extends StatefulWidget {
 }
 
 class _CategorymanagerState extends State<Categorymanager> {
+
   @override
   Widget build(BuildContext context) {
+
+    Responsive.init(context);
+
     return Scaffold(
       body: Column(
         children: [
 
-          // Đây là header
+          /// Header
           Stack(
             children: [
-              PurpleHeader(height: 140),
+              PurpleHeader(height: Responsive.h(120)),
+
               SafeArea(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: Responsive.w(20),
+                    vertical: Responsive.h(20),
+                  ),
                   child: Stack(
                     alignment: Alignment.center,
                     children: [
@@ -36,23 +45,23 @@ class _CategorymanagerState extends State<Categorymanager> {
                             Navigator.pop(context);
                           },
                           label: "",
-                          icon: const Icon(
+                          icon: Icon(
                             Icons.arrow_back,
                             color: Colors.white,
-                            size: 25,
+                            size: Responsive.sp(23),
                           ),
-                          width: 44,
-                          height: 44,
-                          borderRadius: 50,
+                          width: Responsive.w(40),
+                          height: Responsive.h(40),
+                          borderRadius: Responsive.w(50),
                           backgroundColor: Colors.white.withOpacity(0.2),
                         ),
                       ),
 
-                      const Text(
+                      Text(
                         "Quản lý danh mục",
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: 23,
+                          fontSize: Responsive.sp(20),
                           fontWeight: FontWeight.bold,
                           fontFamily: 'BeVietnamPro',
                         ),
@@ -62,37 +71,45 @@ class _CategorymanagerState extends State<Categorymanager> {
                 ),
               )
 
-
             ],
           ),
-          const SizedBox(height: 20),
+
+          SizedBox(height: Responsive.h(15)),
+
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
+            padding: EdgeInsets.symmetric(horizontal: Responsive.w(20)),
             child: Column(
               children: [
+
                 custombutton(
-                  onPressed: (){
-                  },
+                  onPressed: (){},
                   label: 'Tạo nhóm danh mục',
-                  height: 60,
-                  borderRadius: 30,
-                  width: 400,
+
+                  height: Responsive.h(55),
+                  borderRadius: Responsive.w(30),
+                  width: Responsive.w(400),
+
                   icon: Icon(
                     Icons.create_new_folder_rounded,
                     color: Colors.white,
-                    size: 30,
+                    size: Responsive.sp(25),
                   ),
+
                   labelStyle: TextStyle(
-                    fontSize: 18,
+                    fontSize: Responsive.sp(16),
                     fontWeight: FontWeight.bold,
                     fontFamily: 'BeVietnamPro',
                   ),
-                  backgroundColor: Color(0xFF9147F2),
+
+                  backgroundColor: const Color(0xFF9147F2),
                 ),
-                const SizedBox(height: 20),
+
+                SizedBox(height: Responsive.h(18)),
+
                 CategoryCard(
                   title: "Di chuyển",
-                  icon: Icons.directions_car, iconColor: Colors.blueAccent,
+                  icon: Icons.directions_car,
+                  iconColor: Colors.blueAccent,
                 ),
               ],
             ),
