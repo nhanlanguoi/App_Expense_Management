@@ -10,8 +10,9 @@ import '../../core/data/service/transactionservice.dart';
 import '../../core/data/service/walletservice.dart';
 import '../../core/model/transactions.dart';
 import '../../configs/theme/icon.dart';
-import '../../core/utils/format.dart';
+import '../../core/utils/responsive.dart';
 import 'all_transactions.dart';
+import 'package:expense_management/core/utils/format.dart';
 
 class History extends StatefulWidget {
   const History({super.key});
@@ -146,11 +147,11 @@ class _HistoryState extends State<History> with TickerProviderStateMixin {
                 SafeArea(
                   bottom: false,
                   child: Padding(
-                    padding: const EdgeInsets.only(
-                      top: 15,
-                      bottom: 25,
-                      left: 20,
-                      right: 20,
+                    padding: EdgeInsets.only(
+                      top: Responsive.h(15),
+                      bottom: Responsive.h(25),
+                      left: Responsive.w(20),
+                      right: Responsive.w(20),
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -159,27 +160,31 @@ class _HistoryState extends State<History> with TickerProviderStateMixin {
                           "history.title".tr(),
                           style: TextStyles.h1.copyWith(color: Colors.black),
                         ),
-                        const SizedBox(height: 30),
+                        SizedBox(height: Responsive.h(30)),
                         Text(
                           "Tổng quan",
                           style: TextStyles.h2.copyWith(color: Colors.black),
                         ),
-                        const SizedBox(height: 15),
+                        SizedBox(height: Responsive.h(15)),
 
                         Container(
-                          padding: const EdgeInsets.all(16),
+                          padding: EdgeInsets.all(Responsive.w(16)),
                           decoration: BoxDecoration(
                             color: Colors.white,
-                            borderRadius: BorderRadius.circular(20),
+                            borderRadius: BorderRadius.circular(
+                              Responsive.w(20),
+                            ),
                           ),
                           child: Column(
                             children: [
                               Container(
-                                height: 45,
-                                padding: const EdgeInsets.all(4),
+                                height: Responsive.h(45),
+                                padding: EdgeInsets.all(Responsive.w(4)),
                                 decoration: BoxDecoration(
                                   color: AppColors.floor_background,
-                                  borderRadius: BorderRadius.circular(30),
+                                  borderRadius: BorderRadius.circular(
+                                    Responsive.w(30),
+                                  ),
                                 ),
                                 child: Stack(
                                   children: [
@@ -197,15 +202,18 @@ class _HistoryState extends State<History> with TickerProviderStateMixin {
                                           decoration: BoxDecoration(
                                             color: Colors.blue,
                                             borderRadius: BorderRadius.circular(
-                                              25,
+                                              Responsive.w(25),
                                             ),
                                             boxShadow: [
                                               BoxShadow(
                                                 color: Colors.black.withAlpha(
                                                   50,
                                                 ),
-                                                blurRadius: 4,
-                                                offset: const Offset(0, 2),
+                                                blurRadius: Responsive.w(4),
+                                                offset: Offset(
+                                                  0,
+                                                  Responsive.h(2),
+                                                ),
                                               ),
                                             ],
                                           ),
@@ -232,7 +240,7 @@ class _HistoryState extends State<History> with TickerProviderStateMixin {
                                                       : Colors.grey[600],
                                                   fontWeight: FontWeight.bold,
                                                   fontFamily: 'BeVietnamPro',
-                                                  fontSize: 14,
+                                                  fontSize: Responsive.sp(14),
                                                 ),
                                                 child: const Text("Chi tiêu"),
                                               ),
@@ -257,7 +265,7 @@ class _HistoryState extends State<History> with TickerProviderStateMixin {
                                                       : Colors.grey[600],
                                                   fontWeight: FontWeight.bold,
                                                   fontFamily: 'BeVietnamPro',
-                                                  fontSize: 14,
+                                                  fontSize: Responsive.sp(14),
                                                 ),
                                                 child: const Text("Thu nhập"),
                                               ),
@@ -269,47 +277,47 @@ class _HistoryState extends State<History> with TickerProviderStateMixin {
                                   ],
                                 ),
                               ),
-                              const SizedBox(height: 15),
+                              SizedBox(height: Responsive.h(15)),
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   IconButton(
-                                    icon: const Icon(
+                                    icon: Icon(
                                       Icons.arrow_left_rounded,
-                                      size: 30,
+                                      size: Responsive.w(30),
                                       color: Colors.grey,
                                     ),
                                     onPressed: () => _changeMonth(-1),
                                   ),
                                   Text(
                                     "Tháng ${_selectedMonth.month}, ${_selectedMonth.year}",
-                                    style: const TextStyle(
-                                      fontSize: 16,
+                                    style: TextStyle(
+                                      fontSize: Responsive.sp(16),
                                       fontWeight: FontWeight.w500,
                                     ),
                                   ),
                                   IconButton(
-                                    icon: const Icon(
+                                    icon: Icon(
                                       Icons.arrow_right_rounded,
-                                      size: 30,
+                                      size: Responsive.w(30),
                                       color: Colors.grey,
                                     ),
                                     onPressed: () => _changeMonth(1),
                                   ),
                                 ],
                               ),
-                              const SizedBox(height: 10),
+                              SizedBox(height: Responsive.h(10)),
 
                               SizedBox(
-                                height: 300,
+                                height: Responsive.h(300),
                                 child: Stack(
                                   alignment: Alignment.center,
                                   children: [
                                     PieChart(
                                       PieChartData(
-                                        sectionsSpace: 2,
-                                        centerSpaceRadius: 90,
+                                        sectionsSpace: Responsive.w(2),
+                                        centerSpaceRadius: Responsive.w(90),
                                         sections: _buildChartSections(
                                           chartData,
                                           walletColors,
@@ -321,15 +329,15 @@ class _HistoryState extends State<History> with TickerProviderStateMixin {
                                       children: [
                                         Text(
                                           _isExpense ? "Tổng chi" : "Tổng thu",
-                                          style: const TextStyle(
-                                            fontSize: 20,
+                                          style: TextStyle(
+                                            fontSize: Responsive.sp(20),
                                             color: Colors.black,
                                           ),
                                         ),
                                         Text(
-                                          "${Format.formatnumber(totalChartAmount)} đ",
+                                          "${totalChartAmount.toStringAsFixed(0)} đ",
                                           style: TextStyle(
-                                            fontSize: 16,
+                                            fontSize: Responsive.sp(16),
                                             fontWeight: FontWeight.bold,
                                             color: _isExpense
                                                 ? Colors.red
@@ -341,34 +349,36 @@ class _HistoryState extends State<History> with TickerProviderStateMixin {
                                   ],
                                 ),
                               ),
-                              const SizedBox(height: 20),
+                              SizedBox(height: Responsive.h(20)),
                               Column(
                                 children: chartData.keys.map((walletName) {
                                   return Padding(
-                                    padding: const EdgeInsets.only(bottom: 8.0),
+                                    padding: EdgeInsets.only(
+                                      bottom: Responsive.h(8.0),
+                                    ),
                                     child: Row(
                                       children: [
                                         Container(
-                                          width: 12,
-                                          height: 12,
+                                          width: Responsive.w(12),
+                                          height: Responsive.h(12),
                                           decoration: BoxDecoration(
                                             color: walletColors[walletName],
                                             shape: BoxShape.circle,
                                           ),
                                         ),
-                                        const SizedBox(width: 8),
+                                        SizedBox(width: Responsive.w(8)),
                                         Expanded(
                                           child: Text(
                                             walletName,
-                                            style: const TextStyle(
-                                              fontSize: 14,
+                                            style: TextStyle(
+                                              fontSize: Responsive.sp(14),
                                             ),
                                           ),
                                         ),
                                         Text(
-                                          "${Format.formatnumber(chartData[walletName]!)} đ",
-                                          style: const TextStyle(
-                                            fontSize: 14,
+                                          "${chartData[walletName]?.toStringAsFixed(0)} đ",
+                                          style: TextStyle(
+                                            fontSize: Responsive.sp(14),
                                             fontWeight: FontWeight.bold,
                                           ),
                                         ),
@@ -386,11 +396,11 @@ class _HistoryState extends State<History> with TickerProviderStateMixin {
                 ),
 
                 Padding(
-                  padding: const EdgeInsets.only(
-                    left: 20,
-                    right: 20,
-                    top: 20,
-                    bottom: 10,
+                  padding: EdgeInsets.only(
+                    left: Responsive.w(20),
+                    right: Responsive.w(20),
+                    top: Responsive.h(20),
+                    bottom: Responsive.h(10),
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -422,7 +432,7 @@ class _HistoryState extends State<History> with TickerProviderStateMixin {
                               Text(
                                 "Xem tất cả",
                                 style: TextStyle(
-                                  fontSize: 16,
+                                  fontSize: Responsive.sp(16),
                                   color: Colors.blue,
                                   decoration: TextDecoration.underline,
                                   decorationColor: Colors.blue,
@@ -441,35 +451,38 @@ class _HistoryState extends State<History> with TickerProviderStateMixin {
                   ),
                 ),
                 Container(
-                  margin: const EdgeInsets.symmetric(
-                    horizontal: 20,
-                    vertical: 10,
+                  margin: EdgeInsets.symmetric(
+                    horizontal: Responsive.w(20),
+                    vertical: Responsive.h(10),
                   ),
 
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(20),
+                    borderRadius: BorderRadius.circular(Responsive.w(20)),
                     boxShadow: [
                       BoxShadow(
                         color: Colors.grey.withOpacity(0.1),
-                        spreadRadius: 2,
-                        blurRadius: 8,
-                        offset: const Offset(0, 4),
+                        spreadRadius: Responsive.w(2),
+                        blurRadius: Responsive.w(8),
+                        offset: Offset(0, Responsive.h(4)),
                       ),
                     ],
                   ),
                   child: recentTransactions.isEmpty
                       ? Padding(
-                          padding: const EdgeInsets.only(top: 20, bottom: 40),
+                          padding: EdgeInsets.only(
+                            top: Responsive.h(20),
+                            bottom: Responsive.h(40),
+                          ),
                           child: Text(
                             "Không có giao dịch nào",
-                            style: TextStyle(color: Colors.grey),
+                            style: const TextStyle(color: Colors.grey),
                           ),
                         )
                       : Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 20,
-                            vertical: 20,
+                          padding: EdgeInsets.symmetric(
+                            horizontal: Responsive.w(20),
+                            vertical: Responsive.h(20),
                           ),
                           child: ListView.builder(
                             shrinkWrap: true,
@@ -530,7 +543,7 @@ class _HistoryState extends State<History> with TickerProviderStateMixin {
           color: Colors.grey[300],
           value: 1,
           title: '',
-          radius: 30,
+          radius: Responsive.w(30),
         ),
       ];
     }
@@ -540,7 +553,7 @@ class _HistoryState extends State<History> with TickerProviderStateMixin {
         color: colors[entry.key]!,
         value: entry.value,
         title: '',
-        radius: 30,
+        radius: Responsive.w(30),
       );
     }).toList();
   }

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 class AppColors {
-  static const Color background = Colors.blue;
-  static final Color? floor_background = Color.fromRGBO(221, 244, 253, 1.0);
+  static const Color background = Color(0xFFFCF6FD);
+  static final Color? floor_background = Color(0xFFFCF6FD);
   static const Gradient gradientcard = LinearGradient(
-    colors: [Color(0xFF6448FE), Color(0xFF5FC6FF)],
+    colors: [Color(0xFF9C61E7), Color(0xFF756AE4),],
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
   );

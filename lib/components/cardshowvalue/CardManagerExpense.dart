@@ -49,6 +49,7 @@ class _CardmanagerexpenseState extends State<Cardmanagerexpense> {
 
         child: Container(
           decoration: BoxDecoration(
+            color: const Color(0xFFF4F6F8),
             borderRadius: BorderRadius.circular(15),
             boxShadow: [
               BoxShadow(

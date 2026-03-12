@@ -4,7 +4,11 @@ import 'package:flutter/material.dart';
 
 import '../../../configs/theme/textstyles.dart';
 import '../../../core/model/transactions.dart';
+
 import '../../../core/utils/format.dart';
+
+import '../../../core/utils/responsive.dart';
+
 
 class BalanceChartWidget extends StatefulWidget {
   final List<TransactionRecord> transactions;
@@ -49,14 +53,14 @@ class _BalanceChartWidgetState extends State<BalanceChartWidget> {
         Navigator.pop(context);
       },
       child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        margin: EdgeInsets.symmetric(horizontal: Responsive.w(16), vertical: Responsive.h(6)),
+        padding: EdgeInsets.symmetric(horizontal: Responsive.w(16), vertical: Responsive.h(14)),
         decoration: BoxDecoration(
           color: isSelected ? Colors.white : Colors.white,
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(Responsive.w(12)),
           border: Border.all(
             color: isSelected ? Colors.blue : Colors.grey.withValues(alpha: 0.3),
-            width: 1,
+            width: Responsive.w(1),
           ),
         ),
         child: Row(
@@ -65,13 +69,13 @@ class _BalanceChartWidgetState extends State<BalanceChartWidget> {
             Text(
               title,
               style: TextStyle(
-                fontSize: 15,
+                fontSize: Responsive.sp(15),
                 fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
                 color: isSelected ? Colors.blue : Colors.black87,
               ),
             ),
             if (isSelected)
-              const Icon(Icons.check, color: Colors.blue, size: 22),
+              Icon(Icons.check, color: Colors.blue, size: Responsive.w(22)),
           ],
         ),
       ),
@@ -83,25 +87,25 @@ class _BalanceChartWidgetState extends State<BalanceChartWidget> {
       context: context,
       backgroundColor: AppColors.floor_background,
       constraints: const BoxConstraints(maxWidth: double.infinity),
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(Responsive.w(20))),
       ),
       builder: (context) {
         return SafeArea(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Padding(
-                padding: EdgeInsets.all(16.0),
+              Padding(
+                padding: EdgeInsets.all(Responsive.w(16.0)),
                 child: Text(
                   "Chọn khoảng thời gian",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: Responsive.sp(18), fontWeight: FontWeight.bold),
                 ),
               ),
               _buildOption(3, "3 Tháng gần đây"),
               _buildOption(6, "6 Tháng gần đây"),
               _buildOption(12, "12 Tháng gần đây"),
-              SizedBox(height: 100,)
+              SizedBox(height: Responsive.h(100),)
             ],
           ),
         );
@@ -171,15 +175,15 @@ class _BalanceChartWidgetState extends State<BalanceChartWidget> {
 
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(20),
+      padding: EdgeInsets.all(Responsive.w(20)),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(Responsive.w(20)),
         boxShadow: [
           BoxShadow(
             color: Colors.grey.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
+            blurRadius: Responsive.w(10),
+            offset: Offset(0, Responsive.h(4)),
           ),
         ],
       ),
@@ -194,10 +198,10 @@ class _BalanceChartWidgetState extends State<BalanceChartWidget> {
                 child: GestureDetector(
                   onTap: _showTimeRangePicker,
                   child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    padding: EdgeInsets.symmetric(horizontal: Responsive.w(12), vertical: Responsive.h(6)),
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(width: 0.5,color: Colors.grey)
+                        borderRadius: BorderRadius.circular(Responsive.w(12)),
+                        border: Border.all(width: Responsive.w(0.5), color: Colors.grey)
                     ),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
@@ -206,8 +210,8 @@ class _BalanceChartWidgetState extends State<BalanceChartWidget> {
                           "$_selectedMonths Tháng",
                           style: TextStyles.buttonsetting.copyWith(fontWeight: FontWeight.normal),
                         ),
-                        const SizedBox(width: 4),
-                        const Icon(Icons.keyboard_arrow_down, color: Colors.black, size: 20),
+                        SizedBox(width: Responsive.w(4)),
+                        Icon(Icons.keyboard_arrow_down, color: Colors.black, size: Responsive.w(20)),
                       ],
                     ),
                   ),
@@ -215,14 +219,14 @@ class _BalanceChartWidgetState extends State<BalanceChartWidget> {
               ),
             ],
           ),
-          const SizedBox(height: 15),
+          SizedBox(height: Responsive.h(15)),
           if (displayData != null)
             Container(
-              padding: const EdgeInsets.all(15),
-              margin: const EdgeInsets.only(bottom: 15),
+              padding: EdgeInsets.all(Responsive.w(15)),
+              margin: EdgeInsets.only(bottom: Responsive.h(15)),
               decoration: BoxDecoration(
                 color: Colors.blue.withOpacity(0.05),
-                borderRadius: BorderRadius.circular(15),
+                borderRadius: BorderRadius.circular(Responsive.w(15)),
                 border: Border.all(color: Colors.blue.withOpacity(0.2)),
               ),
               child: Row(
@@ -231,24 +235,25 @@ class _BalanceChartWidgetState extends State<BalanceChartWidget> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Số dư", style: TextStyle(color: Colors.grey[600], fontSize: 13)),
-                      const SizedBox(height: 4),
+                      Text("Số dư", style: TextStyle(color: Colors.grey[600], fontSize: Responsive.sp(13))),
+                      SizedBox(height: Responsive.h(4)),
                       Text(
                         "${Format.formattext(Format.formatnumber(displayData['balance']))} đ",
                         style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: Colors.black87),
+
                       ),
                     ],
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      Text("Biến động", style: TextStyle(color: Colors.grey[600], fontSize: 13)),
-                      const SizedBox(height: 4),
+                      Text("Biến động", style: TextStyle(color: Colors.grey[600], fontSize: Responsive.sp(13))),
+                      SizedBox(height: Responsive.h(4)),
                       Text(
                         "${displayData['difference'] >= 0 ? '+' : '-'}${Format.formattext(Format.formatnumber(displayData['difference']))} đ",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: 16,
+                          fontSize: Responsive.sp(16),
                           color: displayData['difference'] >= 0 ? Colors.green : Colors.redAccent,
                         ),
                       ),
@@ -259,7 +264,7 @@ class _BalanceChartWidgetState extends State<BalanceChartWidget> {
             ),
 
           SizedBox(
-            height: 250,
+            height: Responsive.h(250),
             child: PageView.builder(
               controller: _pageController,
               onPageChanged: (index) {
@@ -292,15 +297,15 @@ class _BalanceChartWidgetState extends State<BalanceChartWidget> {
                     titlesData: FlTitlesData(
                       show: true,
                       topTitles: AxisTitles(
-                        sideTitles: SideTitles(showTitles: true, reservedSize: 20, getTitlesWidget: (v, m) => const SizedBox()),
+                        sideTitles: SideTitles(showTitles: true, reservedSize: Responsive.h(20), getTitlesWidget: (v, m) => const SizedBox()),
                       ),
                       rightTitles: AxisTitles(
-                        sideTitles: SideTitles(showTitles: true, reservedSize: 15, getTitlesWidget: (v, m) => const SizedBox()),
+                        sideTitles: SideTitles(showTitles: true, reservedSize: Responsive.w(15), getTitlesWidget: (v, m) => const SizedBox()),
                       ),
                       bottomTitles: AxisTitles(
                         sideTitles: SideTitles(
                           showTitles: true,
-                          reservedSize: 40,
+                          reservedSize: Responsive.h(40),
                           interval: 1,
                           getTitlesWidget: (value, meta) {
                             if (value != value.toInt()) return const SizedBox();
@@ -309,7 +314,7 @@ class _BalanceChartWidgetState extends State<BalanceChartWidget> {
                               meta: meta,
                               child: Text(
                                 pageData[value.toInt()]['month'],
-                                style: const TextStyle(color: Colors.grey, fontSize: 12, fontWeight: FontWeight.bold),
+                                style: TextStyle(color: Colors.grey, fontSize: Responsive.sp(12), fontWeight: FontWeight.bold),
                               ),
                             );
                           },
@@ -318,16 +323,16 @@ class _BalanceChartWidgetState extends State<BalanceChartWidget> {
                       leftTitles: AxisTitles(
                         sideTitles: SideTitles(
                           showTitles: true,
-                          reservedSize: 45,
+                          reservedSize: Responsive.w(45),
                           interval: yInterval,
                           getTitlesWidget: (value, meta) {
                             if (value >= maxY * 0.99) return const SizedBox();
                             return SideTitleWidget(
                               meta: meta,
-                              space: 8,
+                              space: Responsive.w(8),
                               child: Text(
                                 _formatAmount(value),
-                                style: const TextStyle(color: Colors.grey, fontSize: 12, fontWeight: FontWeight.w500),
+                                style: TextStyle(color: Colors.grey, fontSize: Responsive.sp(12), fontWeight: FontWeight.w500),
                                 textAlign: TextAlign.right,
                               ),
                             );
@@ -340,7 +345,7 @@ class _BalanceChartWidgetState extends State<BalanceChartWidget> {
                       show: true,
                       drawVerticalLine: false,
                       horizontalInterval: yInterval,
-                      getDrawingHorizontalLine: (value) => FlLine(color: Colors.grey[200], strokeWidth: 1),
+                      getDrawingHorizontalLine: (value) => FlLine(color: Colors.grey[200], strokeWidth: Responsive.w(1)),
                     ),
 
                     lineBarsData: [
@@ -350,7 +355,7 @@ class _BalanceChartWidgetState extends State<BalanceChartWidget> {
                         }).toList(),
                         isCurved: false,
                         color: Colors.blue,
-                        barWidth: 3,
+                        barWidth: Responsive.w(3),
                         isStrokeCapRound: true,
                         dotData: FlDotData(
                           show: true,
@@ -358,9 +363,9 @@ class _BalanceChartWidgetState extends State<BalanceChartWidget> {
                             bool isSelected = displayData != null && displayData['month'] == pageData[index]['month'];
 
                             return FlDotCirclePainter(
-                              radius: isSelected ? 8 : 5,
+                              radius: Responsive.w(isSelected ? 8 : 5),
                               color: isSelected ? Colors.blue : Colors.white,
-                              strokeWidth: isSelected ? 3 : 2,
+                              strokeWidth: Responsive.w(isSelected ? 3 : 2),
                               strokeColor: Colors.blue,
                             );
                           },
@@ -376,18 +381,18 @@ class _BalanceChartWidgetState extends State<BalanceChartWidget> {
               },
             ),
           ),
-          const SizedBox(height: 5),
+          SizedBox(height: Responsive.h(5)),
           if (pages.length > 1)
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: List.generate(pages.length, (index) {
                 return Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 3),
-                  width: _currentPage == index ? 16 : 6,
-                  height: 6,
+                  margin: EdgeInsets.symmetric(horizontal: Responsive.w(3)),
+                  width: Responsive.w(_currentPage == index ? 16 : 6),
+                  height: Responsive.h(6),
                   decoration: BoxDecoration(
                     color: _currentPage == index ? Colors.blue : Colors.grey[300],
-                    borderRadius: BorderRadius.circular(6),
+                    borderRadius: BorderRadius.circular(Responsive.w(6)),
                   ),
                 );
               }),

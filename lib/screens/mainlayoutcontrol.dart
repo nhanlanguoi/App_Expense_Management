@@ -8,7 +8,10 @@ import 'package:expense_management/screens/home/widgets/AddWallet.dart';
 import 'package:expense_management/screens/history/history.dart';
 import 'package:expense_management/screens/character/profile.dart';
 
+
 import 'AddTransaction.dart';
+
+import '../core/utils/responsive.dart';
 
 class MainLayout extends StatefulWidget {
   final Users user;
@@ -32,7 +35,7 @@ class _MainLayoutState extends State<MainLayout> {
       History(),
       Character(),
     ];
-    
+
     return Scaffold(
       extendBody: true,
       body: IndexedStack(
@@ -61,7 +64,7 @@ class _MainLayoutState extends State<MainLayout> {
         },
         backgroundColor: Colors.blueAccent,
         shape: const CircleBorder(),
-        child: const Icon(Icons.add, color: Colors.white, size: 30),
+        child: Icon(Icons.add, color: Colors.white, size: Responsive.w(30)),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
 
