@@ -4,6 +4,11 @@ const {
   loginWithFirebaseToken,
   getCurrentUserById,
 } = require("../services/auth-service");
+const {
+  requestEmailOtp,
+  verifyRegisterEmailOtp,
+  verifyResetEmailOtp,
+} = require("../services/email-otp-service");
 
 async function register(req, res) {
   try {
@@ -99,6 +104,45 @@ async function me(req, res) {
   }
 }
 
+async function requestOtp(req, res) {
+  try {
+    const result = await requestEmailOtp(req.body?.email, req.body?.purpose);
+    return res.status(result.status).json(result.body);
+  } catch (error) {
+    return res.status(500).json({ message: "Request OTP failed", error: String(error) });
+  }
+}
+
+async function verifyRegisterOtp(req, res) {
+  try {
+    const result = await verifyRegisterEmailOtp({
+      emailRaw: req.body?.email,
+      codeRaw: req.body?.code,
+      passwordRaw: req.body?.password,
+      displayNameRaw: req.body?.displayName,
+    });
+    if (result.user) {
+      req.session.userId = result.user.id;
+    }
+    return res.status(result.status).json(result.body);
+  } catch (error) {
+    return res.status(500).json({ message: "Verify register OTP failed", error: String(error) });
+  }
+}
+
+async function verifyResetOtp(req, res) {
+  try {
+    const result = await verifyResetEmailOtp({
+      emailRaw: req.body?.email,
+      codeRaw: req.body?.code,
+      newPasswordRaw: req.body?.newPassword,
+    });
+    return res.status(result.status).json(result.body);
+  } catch (error) {
+    return res.status(500).json({ message: "Verify reset OTP failed", error: String(error) });
+  }
+}
+
 module.exports = {
   register,
   login,
@@ -107,4 +151,7 @@ module.exports = {
   facebookLogin,
   logout,
   me,
+  requestOtp,
+  verifyRegisterOtp,
+  verifyResetOtp,
 };

@@ -173,11 +173,12 @@ async function loginWithFirebaseToken(idTokenRaw, expectedProvider) {
   const decodedToken = await admin.auth().verifyIdToken(idToken, true);
   const firebaseUid = decodedToken.uid;
   const authProvider = decodedToken.firebase?.sign_in_provider || "firebase";
+  const genericAllowedProviders = ["google.com", "facebook.com", "password"];
 
-  if (authProvider !== "google.com" && authProvider !== "facebook.com") {
+  if (!expectedProvider && !genericAllowedProviders.includes(authProvider)) {
     return {
       status: 400,
-      body: { message: "Only Google and Facebook OAuth are allowed in this endpoint" },
+      body: { message: "Unsupported Firebase sign-in provider" },
     };
   }
 
@@ -228,7 +229,7 @@ async function loginWithFirebaseToken(idTokenRaw, expectedProvider) {
   return {
     status: 200,
     body: {
-      message: "Firebase OAuth login success",
+      message: "Firebase login success",
       user: sanitizeUser(user),
     },
     user,

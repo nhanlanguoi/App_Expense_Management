@@ -8,8 +8,8 @@ import '../buttons/custombutton.dart';
 import '../buttons/gradientbutton.dart';
 import '../inputs/passwordbox.dart';
 import '../inputs/textbox.dart';
-import 'package:expense_management/configs/routes/routesname.dart';
 import 'package:expense_management/screens/mainlayoutcontrol.dart';
+import 'package:expense_management/screens/auth/email_verification_screen.dart';
 
 
 
@@ -48,6 +48,11 @@ class _AuthFormState extends State<AuthForm> {
     return digits.length >= 9 && digits.length <= 11;
   }
 
+  bool _looksLikeEmail(String value) {
+    final v = value.trim();
+    return RegExp(r'^[^\s@]+@[^\s@]+\.[^\s@]+$').hasMatch(v);
+  }
+
   String _toUserMessage(Object error) {
     final raw = error.toString();
     if (raw.contains('SocketException') || raw.contains('SocketConnection')) {
@@ -82,6 +87,85 @@ class _AuthFormState extends State<AuthForm> {
         builder: (context) => MainLayout(user: user),
       ),
     );
+  }
+
+  Future<void> _openEmailVerificationFlow({
+    required String email,
+    required String password,
+    String? displayName,
+  }) async {
+    await AuthService().registerEmailAndSendVerification(
+      email: email,
+      password: password,
+      displayName: displayName,
+    );
+
+    if (!mounted) {
+      return;
+    }
+
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => EmailVerificationScreen(
+          email: email,
+        ),
+      ),
+    );
+  }
+
+  Future<void> _openForgotPasswordFlow() async {
+    final emailController = TextEditingController();
+
+    try {
+      final result = await showDialog<String>(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text('Quên mật khẩu'),
+            content: TextField(
+              controller: emailController,
+              keyboardType: TextInputType.emailAddress,
+              decoration: const InputDecoration(
+                hintText: 'Nhập email đăng ký',
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('Hủy'),
+              ),
+              TextButton(
+                onPressed: () => Navigator.pop(context, emailController.text.trim()),
+                child: const Text('Tiếp tục'),
+              ),
+            ],
+          );
+        },
+      );
+
+      if (result == null || result.isEmpty) {
+        return;
+      }
+      if (!_looksLikeEmail(result)) {
+        throw Exception('Quên mật khẩu chỉ hỗ trợ email');
+      }
+
+      await AuthService().sendPasswordResetEmail(result);
+
+      if (!mounted) {
+        return;
+      }
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Firebase đã gửi link đặt lại mật khẩu tới $result'),
+          backgroundColor: Colors.green,
+        ),
+      );
+    } finally {
+      emailController.dispose();
+    }
   }
 
   @override
@@ -145,6 +229,7 @@ class _AuthFormState extends State<AuthForm> {
                   if (isLogin)
                     custombutton(
                       label: 'Quên mật khẩu?',
+                      onPressed: _openForgotPasswordFlow,
                       isOutline: true,
                       backgroundColor: Colors.transparent,
                       textColor: Colors.purple,
@@ -255,10 +340,18 @@ class _AuthFormState extends State<AuthForm> {
                       if (!_looksLikeEmailOrPhone(_identifierController.text)) {
                         throw Exception('Vui lòng nhập đúng email hoặc số điện thoại');
                       }
-                      user = await AuthService().login(
-                        _identifierController.text.trim(),
-                        _passwordController.text,
-                      );
+                      final identifier = _identifierController.text.trim();
+                      if (_looksLikeEmail(identifier)) {
+                        user = await AuthService().loginWithFirebaseEmailPassword(
+                          email: identifier,
+                          password: _passwordController.text,
+                        );
+                      } else {
+                        user = await AuthService().login(
+                          identifier,
+                          _passwordController.text,
+                        );
+                      }
                     } else {
                       final identifier = _identifierController.text.trim();
                       if (identifier.isEmpty) {
@@ -270,13 +363,26 @@ class _AuthFormState extends State<AuthForm> {
                       if (_passwordController.text != _confirmPasswordController.text) {
                         throw Exception('Mật khẩu xác nhận không khớp');
                       }
-                      user = await AuthService().register(
-                        identifier: identifier,
-                        password: _passwordController.text,
-                        displayName: _nameController.text.trim(),
-                      );
+
+                      if (_looksLikeEmail(identifier)) {
+                        await _openEmailVerificationFlow(
+                          email: identifier,
+                          password: _passwordController.text,
+                          displayName: _nameController.text.trim(),
+                        );
+                        user = null;
+                      } else {
+                        // Phone register keeps direct flow because SMS OTP service is not configured.
+                        user = await AuthService().register(
+                          identifier: identifier,
+                          password: _passwordController.text,
+                          displayName: _nameController.text.trim(),
+                        );
+                      }
                     }
-                    await _goToMainIfUser(user);
+                    if (user != null) {
+                      await _goToMainIfUser(user);
+                    }
                   } catch (e) {
                     if (mounted) {
                       ScaffoldMessenger.of(context).showSnackBar(

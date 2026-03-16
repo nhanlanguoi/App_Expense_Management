@@ -2,9 +2,11 @@ const env = require("./config/env");
 const createApp = require("./app");
 const { initFirebaseAdmin } = require("./config/firebase-admin");
 const { ensureUsersStore } = require("./repositories/user-repository");
+const { ensureOtpStore } = require("./repositories/otp-repository");
 
 async function startServer() {
   await ensureUsersStore();
+  await ensureOtpStore();
   const app = createApp();
 
   if (initFirebaseAdmin()) {

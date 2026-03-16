@@ -94,6 +94,93 @@ class AuthService {
     return currentUser;
   }
 
+  Future<Users?> loginWithFirebaseEmailPassword({
+    required String email,
+    required String password,
+  }) async {
+    final credential = await _firebaseAuth.signInWithEmailAndPassword(
+      email: email.trim(),
+      password: password,
+    );
+
+    await credential.user?.reload();
+    final user = _firebaseAuth.currentUser;
+    if (user == null) {
+      throw Exception('Không thể đăng nhập Firebase');
+    }
+    if (!user.emailVerified) {
+      throw Exception('Email chưa xác thực. Vui lòng kiểm tra hộp thư.');
+    }
+
+    final idToken = await user.getIdToken(true);
+    if (idToken.isEmpty) {
+      throw Exception('Không lấy được Firebase token');
+    }
+
+    final response = await _authApi.loginWithFirebase(idToken: idToken);
+    final userMap = response['user'] as Map<String, dynamic>?;
+    if (userMap == null) {
+      return null;
+    }
+    currentUser = Users.fromApi(userMap);
+    return currentUser;
+  }
+
+  Future<void> registerEmailAndSendVerification({
+    required String email,
+    required String password,
+    String? displayName,
+  }) async {
+    final credential = await _firebaseAuth.createUserWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
+
+    if (displayName != null && displayName.trim().isNotEmpty) {
+      await credential.user?.updateDisplayName(displayName.trim());
+    }
+
+    await credential.user?.sendEmailVerification();
+  }
+
+  Future<void> resendEmailVerification() async {
+    final user = _firebaseAuth.currentUser;
+    if (user == null) {
+      throw Exception('Không tìm thấy phiên đăng ký email hiện tại');
+    }
+    await user.sendEmailVerification();
+  }
+
+  Future<Users?> loginVerifiedFirebaseEmailToBackend() async {
+    final user = _firebaseAuth.currentUser;
+    if (user == null) {
+      throw Exception('Không tìm thấy người dùng Firebase');
+    }
+
+    await user.reload();
+    final refreshed = _firebaseAuth.currentUser;
+    if (refreshed == null || !refreshed.emailVerified) {
+      throw Exception('Email chưa được xác thực');
+    }
+
+    final idToken = await refreshed.getIdToken(true);
+    if (idToken.isEmpty) {
+      throw Exception('Không lấy được Firebase token');
+    }
+
+    final response = await _authApi.loginWithFirebase(idToken: idToken);
+    final userMap = response['user'] as Map<String, dynamic>?;
+    if (userMap == null) {
+      return null;
+    }
+    currentUser = Users.fromApi(userMap);
+    return currentUser;
+  }
+
+  Future<void> sendPasswordResetEmail(String email) async {
+    await _firebaseAuth.sendPasswordResetEmail(email: email.trim());
+  }
+
   Future<void> logout() async {
     try {
       await _authApi.logout();
@@ -115,4 +202,5 @@ class AuthService {
 
     currentUser = null;
   }
+
 }

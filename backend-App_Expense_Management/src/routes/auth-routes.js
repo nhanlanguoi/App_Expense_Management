@@ -9,6 +9,9 @@ router.post("/login", authController.login);
 router.post("/firebase", authController.firebaseLogin);
 router.post("/google", authController.googleLogin);
 router.post("/facebook", authController.facebookLogin);
+router.post("/email-otp/request", authController.requestOtp);
+router.post("/email-otp/verify-register", authController.verifyRegisterOtp);
+router.post("/email-otp/verify-reset", authController.verifyResetOtp);
 router.post("/logout", requireAuth, authController.logout);
 router.get("/me", requireAuth, authController.me);
 
