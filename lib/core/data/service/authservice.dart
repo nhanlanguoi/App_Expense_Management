@@ -113,7 +113,7 @@ class AuthService {
     }
 
     final idToken = await user.getIdToken(true);
-    if (idToken.isEmpty) {
+    if (idToken == null || idToken.isEmpty) {
       throw Exception('Không lấy được Firebase token');
     }
 
@@ -164,7 +164,7 @@ class AuthService {
     }
 
     final idToken = await refreshed.getIdToken(true);
-    if (idToken.isEmpty) {
+    if (idToken == null || idToken.isEmpty) {
       throw Exception('Không lấy được Firebase token');
     }
 
