@@ -65,6 +65,9 @@ class _AuthFormState extends State<AuthForm> {
         (raw.contains('Api10') || raw.contains('ApiException: 10'))) {
       return 'Google Sign-In chưa cấu hình đúng SHA-1/Google Services. Hãy cập nhật Firebase rồi build lại app.';
     }
+    if (raw.contains('[firebase_auth/invalid-credential]')) {
+      return 'Google credential không hợp lệ. Hãy kiểm tra SHA-1/SHA-256, package name và google-services.json đúng Firebase project.';
+    }
     return raw.replaceFirst('Exception: ', '');
   }
 
@@ -187,202 +190,282 @@ class _AuthFormState extends State<AuthForm> {
     final _padingMode =
     widget.type == AuthType.login ? Responsive.h(14) : Responsive.h(10);
 
-    return Column(
-      children: [
-        Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              if (isRegister) ...[
+    return Padding(
+        padding: EdgeInsets.symmetric(horizontal: Responsive.w(0.5)),
+      child: Column(
+        children: [
+          Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                if (isRegister) ...[
+                  textbox(
+                    controller: _nameController,
+                    label: 'Họ và tên',
+                    prefixIcon:
+                    const Icon(Icons.person, color: Colors.grey),
+                    hintText: "Nguyễn Văn A",
+                  ),
+                  SizedBox(height: _heightMode),
+                ],
                 textbox(
-                  controller: _nameController,
-                  label: 'Họ và tên',
+                  keyboardType: TextInputType.emailAddress,
+                  label: 'Email hoặc số điện thoại',
+                  controller: _identifierController,
                   prefixIcon:
-                  const Icon(Icons.person, color: Colors.grey),
-                  hintText: "Nguyễn Văn A",
+                  const Icon(Icons.alternate_email, color: Colors.grey),
+                  hintText: 'name@gmail.com hoặc 0987654321',
                 ),
                 SizedBox(height: _heightMode),
-              ],
-              textbox(
-                keyboardType: TextInputType.emailAddress,
-                label: 'Email hoặc số điện thoại',
-                controller: _identifierController,
-                prefixIcon:
-                const Icon(Icons.alternate_email, color: Colors.grey),
-                hintText: 'name@gmail.com hoặc 0987654321',
-              ),
-              SizedBox(height: _heightMode),
 
-              /// Mật khẩu + Quên mật khẩu
-              Row(
-                children: [
-                  Text(
-                    "Mật khẩu",
-                    style: TextStyle(
+                /// Mật khẩu + Quên mật khẩu
+                Row(
+                  children: [
+                    Text(
+                      "Mật khẩu",
+                      style: TextStyle(
+                        fontSize: Responsive.sp(16),
+                        fontWeight: FontWeight.w600,
+                        fontFamily: "BeVietnamPro",
+                        color: Colors.black,
+                      ),
+                    ),
+                    const Spacer(),
+                    if (isLogin)
+                      custombutton(
+                        label: 'Quên mật khẩu?',
+                        onPressed: _openForgotPasswordFlow,
+                        isOutline: true,
+                        backgroundColor: Colors.transparent,
+                        textColor: Colors.purple,
+                        labelStyle: TextStyle(
+                          fontSize: Responsive.sp(16),
+                          fontWeight: FontWeight.w600,
+                          fontFamily: "BeVietnamPro",
+                          color: const Color(0xFF7B3FE4),
+                        ),
+                        height: Responsive.h(34),
+                        borderRadius: Responsive.w(18),
+                        width: Responsive.w(140),
+                      ),
+                  ],
+
+                ),
+
+                passwordbox(
+                  controller: _passwordController,
+                  hintText: "●●●●●●●●●",
+                  prefixIcon:
+                  const Icon(Icons.lock, color: Colors.grey),
+                ),
+
+                if (isRegister) ...[
+                  SizedBox(height: _heightMode),
+                  passwordbox(
+                    label: "Nhập lại mật khẩu",
+                    labelStyle: TextStyle(
                       fontSize: Responsive.sp(16),
                       fontWeight: FontWeight.w600,
                       fontFamily: "BeVietnamPro",
                       color: Colors.black,
                     ),
-                  ),
-                  const Spacer(),
-                  if (isLogin)
-                    custombutton(
-                      label: 'Quên mật khẩu?',
-                      onPressed: _openForgotPasswordFlow,
-                      isOutline: true,
-                      backgroundColor: Colors.transparent,
-                      textColor: Colors.purple,
-                      labelStyle: TextStyle(
-                        fontSize: Responsive.sp(16),
-                        fontWeight: FontWeight.w600,
-                        fontFamily: "BeVietnamPro",
-                        color: const Color(0xFF7B3FE4),
-                      ),
-                      height: Responsive.h(34),
-                      borderRadius: Responsive.w(18),
-                      width: Responsive.w(140),
-                    ),
+                    prefixIcon:
+                    const Icon(Icons.verified_user, color: Colors.grey),
+                    controller: _confirmPasswordController,
+                    hintText: "●●●●●●●●●",),
+
+                  SizedBox(height: _heightMode),
                 ],
 
-              ),
-
-              passwordbox(
-                controller: _passwordController,
-                hintText: "●●●●●●●●●",
-                prefixIcon:
-                const Icon(Icons.lock, color: Colors.grey),
-              ),
-
-              if (isRegister) ...[
-                SizedBox(height: _heightMode),
-                passwordbox(
-                  label: "Nhập lại mật khẩu",
-                  labelStyle: TextStyle(
-                    fontSize: Responsive.sp(16),
-                    fontWeight: FontWeight.w600,
-                    fontFamily: "BeVietnamPro",
-                    color: Colors.black,
-                  ),
-                  prefixIcon:
-                  const Icon(Icons.verified_user, color: Colors.grey),
-                  controller: _confirmPasswordController,
-                  hintText: "●●●●●●●●●",),
-
-                SizedBox(height: _heightMode),
-              ],
-
-              if (isRegister) ...[
-                SizedBox(height: _heightMode),
-                Row(
-                  children: [
-                    Checkbox(
-                      value: _agreeTerms,
-                      onChanged: (value) {
-                        setState(() {
-                          _agreeTerms = value!;
-                        });
-                      },
-                    ),
-                    Expanded(
-                      child: RichText(
-                        text: TextSpan(
-                          style: TextStyle(
-                            color: Colors.black87,
-                            fontSize: Responsive.sp(14),
+                if (isRegister) ...[
+                  SizedBox(height: _heightMode),
+                  Row(
+                    children: [
+                      Checkbox(
+                        value: _agreeTerms,
+                        onChanged: (value) {
+                          setState(() {
+                            _agreeTerms = value!;
+                          });
+                        },
+                      ),
+                      Expanded(
+                        child: RichText(
+                          text: TextSpan(
+                            style: TextStyle(
+                              color: Colors.black87,
+                              fontSize: Responsive.sp(14),
+                            ),
+                            children: const [
+                              TextSpan(text: "Tôi đồng ý với "),
+                              TextSpan(
+                                text: "Điều khoản",
+                                style: TextStyle(
+                                    color: Color(0xFF7B3FE4)),
+                              ),
+                              TextSpan(text: " và "),
+                              TextSpan(
+                                text: "Chính sách bảo mật",
+                                style: TextStyle(
+                                    color: Color(0xFF7B3FE4)),
+                              ),
+                            ],
                           ),
-                          children: const [
-                            TextSpan(text: "Tôi đồng ý với "),
-                            TextSpan(
-                              text: "Điều khoản",
-                              style: TextStyle(
-                                  color: Color(0xFF7B3FE4)),
-                            ),
-                            TextSpan(text: " và "),
-                            TextSpan(
-                              text: "Chính sách bảo mật",
-                              style: TextStyle(
-                                  color: Color(0xFF7B3FE4)),
-                            ),
-                          ],
                         ),
                       ),
+                    ],
+                  ),
+                ],
+
+                SizedBox(height: _heightMode),
+
+                gradientbutton(
+                  label: isLogin ? 'Đăng nhập' : 'Đăng ký',
+                  gradient: const LinearGradient(
+                      colors: [Color(0xFF7B3FE4), Color(0xFF5A2DBD)]
+                  ),
+                  labelStyle: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'BeVietnamPro',
+                    color: Colors.white,
+                  ),
+                  isLoading: _isLoading,
+                  height: 55,
+                  borderRadius: 35,
+                  width: double.infinity,
+                  onPressed: () async {
+                    if (_isLoading) return;
+                    setState(() {
+                      _isLoading = true;
+                    });
+                    try {
+                      Users? user;
+                      if (isLogin) {
+                        if (!_looksLikeEmailOrPhone(_identifierController.text)) {
+                          throw Exception('Vui lòng nhập đúng email hoặc số điện thoại');
+                        }
+                        final identifier = _identifierController.text.trim();
+                        if (_looksLikeEmail(identifier)) {
+                          user = await AuthService().loginWithFirebaseEmailPassword(
+                            email: identifier,
+                            password: _passwordController.text,
+                          );
+                        } else {
+                          user = await AuthService().login(
+                            identifier,
+                            _passwordController.text,
+                          );
+                        }
+                      } else {
+                        final identifier = _identifierController.text.trim();
+                        if (identifier.isEmpty) {
+                          throw Exception('Vui lòng nhập email hoặc số điện thoại');
+                        }
+                        if (!_looksLikeEmailOrPhone(identifier)) {
+                          throw Exception('Email hoặc số điện thoại không hợp lệ');
+                        }
+                        if (_passwordController.text != _confirmPasswordController.text) {
+                          throw Exception('Mật khẩu xác nhận không khớp');
+                        }
+
+                        if (_looksLikeEmail(identifier)) {
+                          await _openEmailVerificationFlow(
+                            email: identifier,
+                            password: _passwordController.text,
+                            displayName: _nameController.text.trim(),
+                          );
+                          user = null;
+                        } else {
+                          // Phone register keeps direct flow because SMS OTP service is not configured.
+                          user = await AuthService().register(
+                            identifier: identifier,
+                            password: _passwordController.text,
+                            displayName: _nameController.text.trim(),
+                          );
+                        }
+                      }
+                      if (user != null) {
+                        await _goToMainIfUser(user);
+                      }
+                    } catch (e) {
+                      if (mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(_toUserMessage(e)),
+                            backgroundColor: Colors.red,
+                          ),
+                        );
+                      }
+                    } finally {
+                      if (mounted) {
+                        setState(() {
+                          _isLoading = false;
+                        });
+                      }
+                    }
+                  },
+                )
+              ],
+            ),
+          ),
+
+          Padding(
+            padding: EdgeInsets.symmetric(vertical: _padingMode),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Divider(
+                    color: Colors.grey[300],
+                    thickness: Responsive.w(1),
+                  ),
+                ),
+                Padding(
+                  padding:
+                  EdgeInsets.symmetric(horizontal: Responsive.w(8)),
+                  child: Text(
+                    "Hoặc tiếp tục với",
+                    style: TextStyle(
+                      color: Colors.grey.shade600,
+                      fontFamily: 'BeVietnamPro',
+                      fontSize: Responsive.sp(14),
                     ),
-                  ],
+                  ),
+                ),
+                Expanded(
+                  child: Divider(
+                    color: Colors.grey[300],
+                    thickness: Responsive.w(1),
+                  ),
                 ),
               ],
+            ),
+          ),
 
-              SizedBox(height: _heightMode),
-
-              gradientbutton(
-                label: isLogin ? 'Đăng nhập' : 'Đăng ký',
-                gradient: const LinearGradient(
-                    colors: [Color(0xFF7B3FE4), Color(0xFF5A2DBD)]
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              custombutton(
+                label: "Google",
+                height: Responsive.h(50),
+                borderRadius: Responsive.w(30),
+                width: Responsive.w(120),
+                isOutline: true,
+                backgroundColor: const Color(0xFFDB4437),
+                textColor: const Color(0xFF1F1F1F),
+                icon: Icon(
+                  FontAwesomeIcons.google,
+                  color: const Color(0xFFDB4437),
+                  size: Responsive.w(15),
                 ),
-                labelStyle: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'BeVietnamPro',
-                  color: Colors.white,
-                ),
-                isLoading: _isLoading,
-                height: 55,
-                borderRadius: 35,
-                width: double.infinity,
                 onPressed: () async {
                   if (_isLoading) return;
                   setState(() {
                     _isLoading = true;
                   });
                   try {
-                    Users? user;
-                    if (isLogin) {
-                      if (!_looksLikeEmailOrPhone(_identifierController.text)) {
-                        throw Exception('Vui lòng nhập đúng email hoặc số điện thoại');
-                      }
-                      final identifier = _identifierController.text.trim();
-                      if (_looksLikeEmail(identifier)) {
-                        user = await AuthService().loginWithFirebaseEmailPassword(
-                          email: identifier,
-                          password: _passwordController.text,
-                        );
-                      } else {
-                        user = await AuthService().login(
-                          identifier,
-                          _passwordController.text,
-                        );
-                      }
-                    } else {
-                      final identifier = _identifierController.text.trim();
-                      if (identifier.isEmpty) {
-                        throw Exception('Vui lòng nhập email hoặc số điện thoại');
-                      }
-                      if (!_looksLikeEmailOrPhone(identifier)) {
-                        throw Exception('Email hoặc số điện thoại không hợp lệ');
-                      }
-                      if (_passwordController.text != _confirmPasswordController.text) {
-                        throw Exception('Mật khẩu xác nhận không khớp');
-                      }
-
-                      if (_looksLikeEmail(identifier)) {
-                        await _openEmailVerificationFlow(
-                          email: identifier,
-                          password: _passwordController.text,
-                          displayName: _nameController.text.trim(),
-                        );
-                        user = null;
-                      } else {
-                        // Phone register keeps direct flow because SMS OTP service is not configured.
-                        user = await AuthService().register(
-                          identifier: identifier,
-                          password: _passwordController.text,
-                          displayName: _nameController.text.trim(),
-                        );
-                      }
-                    }
-                    if (user != null) {
-                      await _goToMainIfUser(user);
-                    }
+                    final user = await AuthService().loginWithGoogle();
+                    await _goToMainIfUser(user);
                   } catch (e) {
                     if (mounted) {
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -400,133 +483,56 @@ class _AuthFormState extends State<AuthForm> {
                     }
                   }
                 },
-              )
+              ),
+              custombutton(
+                label: "Facebook",
+                labelStyle: TextStyle(
+                  fontSize: Responsive.sp(15),
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'BeVietnamPro',
+                  color: const Color(0xFF1877F2),
+                ),
+                height: Responsive.h(50),
+                borderRadius: Responsive.w(30),
+                width: Responsive.w(120),
+                isOutline: true,
+                backgroundColor: const Color(0xFF1877F2),
+                textColor: Colors.black,
+                icon: Icon(
+                  FontAwesomeIcons.facebook,
+                  color: const Color(0xFF1877F2),
+                  size: Responsive.w(20),
+                ),
+                onPressed: () async {
+                  if (_isLoading) return;
+                  setState(() {
+                    _isLoading = true;
+                  });
+                  try {
+                    final user = await AuthService().loginWithFacebook();
+                    await _goToMainIfUser(user);
+                  } catch (e) {
+                    if (mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(_toUserMessage(e)),
+                          backgroundColor: Colors.red,
+                        ),
+                      );
+                    }
+                  } finally {
+                    if (mounted) {
+                      setState(() {
+                        _isLoading = false;
+                      });
+                    }
+                  }
+                },
+              ),
             ],
           ),
-        ),
-
-        Padding(
-          padding: EdgeInsets.symmetric(vertical: _padingMode),
-          child: Row(
-            children: [
-              Expanded(
-                child: Divider(
-                  color: Colors.grey[300],
-                  thickness: Responsive.w(1),
-                ),
-              ),
-              Padding(
-                padding:
-                EdgeInsets.symmetric(horizontal: Responsive.w(8)),
-                child: Text(
-                  "Hoặc tiếp tục với",
-                  style: TextStyle(
-                    color: Colors.grey.shade600,
-                    fontFamily: 'BeVietnamPro',
-                    fontSize: Responsive.sp(14),
-                  ),
-                ),
-              ),
-              Expanded(
-                child: Divider(
-                  color: Colors.grey[300],
-                  thickness: Responsive.w(1),
-                ),
-              ),
-            ],
-          ),
-        ),
-
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            custombutton(
-              label: "Google",
-              height: Responsive.h(50),
-              borderRadius: Responsive.w(30),
-              width: Responsive.w(120),
-              isOutline: true,
-              backgroundColor: const Color(0xFFDB4437),
-              textColor: const Color(0xFF1F1F1F),
-              icon: Icon(
-                FontAwesomeIcons.google,
-                color: const Color(0xFFDB4437),
-                size: Responsive.w(20),
-              ),
-              onPressed: () async {
-                if (_isLoading) return;
-                setState(() {
-                  _isLoading = true;
-                });
-                try {
-                  final user = await AuthService().loginWithGoogle();
-                  await _goToMainIfUser(user);
-                } catch (e) {
-                  if (mounted) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(_toUserMessage(e)),
-                        backgroundColor: Colors.red,
-                      ),
-                    );
-                  }
-                } finally {
-                  if (mounted) {
-                    setState(() {
-                      _isLoading = false;
-                    });
-                  }
-                }
-              },
-            ),
-            custombutton(
-              label: "Facebook",
-              labelStyle: TextStyle(
-                fontSize: Responsive.sp(15),
-                fontWeight: FontWeight.bold,
-                fontFamily: 'BeVietnamPro',
-                color: const Color(0xFF1877F2),
-              ),
-              height: Responsive.h(50),
-              borderRadius: Responsive.w(30),
-              width: Responsive.w(120),
-              isOutline: true,
-              backgroundColor: const Color(0xFF1877F2),
-              textColor: Colors.black,
-              icon: Icon(
-                FontAwesomeIcons.facebook,
-                color: const Color(0xFF1877F2),
-                size: Responsive.w(20),
-              ),
-              onPressed: () async {
-                if (_isLoading) return;
-                setState(() {
-                  _isLoading = true;
-                });
-                try {
-                  final user = await AuthService().loginWithFacebook();
-                  await _goToMainIfUser(user);
-                } catch (e) {
-                  if (mounted) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(_toUserMessage(e)),
-                        backgroundColor: Colors.red,
-                      ),
-                    );
-                  }
-                } finally {
-                  if (mounted) {
-                    setState(() {
-                      _isLoading = false;
-                    });
-                  }
-                }
-              },
-            ),
-          ],
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

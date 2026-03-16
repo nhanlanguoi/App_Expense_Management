@@ -37,6 +37,7 @@ class custombutton extends StatefulWidget {
 class _custombuttonState extends State<custombutton> {
   @override
   Widget build(BuildContext context) {
+
     final primaryColor = widget.backgroundColor ?? Colors.purple;
     final onPrimaryColor = widget.textColor ?? Colors.white;
 
@@ -51,11 +52,12 @@ class _custombuttonState extends State<custombutton> {
         child: button,
       );
     }
+
     return button;
   }
 
   Widget _buildElevatedButton(Color bgColor, Color textColor) {
-    Responsive.init(context);
+
     final bool isIconOnly = widget.icon != null && widget.label.isEmpty;
 
     return ElevatedButton(
@@ -66,10 +68,7 @@ class _custombuttonState extends State<custombutton> {
         elevation: 0,
         padding: isIconOnly
             ? EdgeInsets.zero
-            : const EdgeInsets.symmetric(horizontal: 16),
-        minimumSize: (isIconOnly && widget.width != null && widget.height != null)
-            ? Size(widget.width!, widget.height!)
-            : null,
+            : EdgeInsets.symmetric(horizontal: Responsive.w(3)),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(widget.borderRadius),
         ),
@@ -80,6 +79,7 @@ class _custombuttonState extends State<custombutton> {
   }
 
   Widget _buildOutlineButton(Color color) {
+
     final bool isIconOnly = widget.icon != null && widget.label.isEmpty;
 
     return OutlinedButton(
@@ -92,7 +92,7 @@ class _custombuttonState extends State<custombutton> {
         ),
         padding: isIconOnly
             ? EdgeInsets.zero
-            : const EdgeInsets.symmetric(horizontal: 16),
+            : EdgeInsets.symmetric(horizontal: Responsive.w(3)),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(widget.borderRadius),
         ),
@@ -102,6 +102,7 @@ class _custombuttonState extends State<custombutton> {
   }
 
   Widget _buildChild(Color color) {
+
     if (widget.isLoading) {
       return SizedBox(
         height: Responsive.w(20),
@@ -113,11 +114,13 @@ class _custombuttonState extends State<custombutton> {
       );
     }
 
+    /// icon-only button
     if (widget.icon != null && widget.label.isEmpty) {
       return Center(child: widget.icon);
     }
 
     Widget labelWidget = const SizedBox();
+
     if (widget.label.isNotEmpty) {
       labelWidget = Text(
         widget.label,
@@ -135,15 +138,16 @@ class _custombuttonState extends State<custombutton> {
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
-      mainAxisSize: MainAxisSize.min,
+      mainAxisSize: MainAxisSize.max,
       children: [
+
         if (widget.icon != null) ...[
           widget.icon!,
           SizedBox(width: Responsive.w(8)),
         ],
-        Flexible(
-          child: labelWidget,
-        ),
+
+        labelWidget,
+
       ],
     );
   }

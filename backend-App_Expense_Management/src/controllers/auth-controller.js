@@ -46,16 +46,17 @@ async function firebaseLogin(req, res) {
     }
     return res.status(result.status).json(result.body);
   } catch (error) {
+    const detail = String(error?.message || error || "Unknown error");
     return res.status(401).json({
-      message: "Invalid Firebase token",
-      error: String(error),
+      message: `Invalid Firebase token: ${detail}`,
+      error: detail,
     });
   }
 }
 
 async function googleLogin(req, res) {
   try {
-    const result = await loginWithFirebaseToken(req.body?.idToken, "google.com");
+    const result = await loginWithFirebaseToken(req.body?.idToken);
     if (result.user) {
       req.session.userId = result.user.id;
     }
@@ -70,7 +71,7 @@ async function googleLogin(req, res) {
 
 async function facebookLogin(req, res) {
   try {
-    const result = await loginWithFirebaseToken(req.body?.idToken, "facebook.com");
+    const result = await loginWithFirebaseToken(req.body?.idToken);
     if (result.user) {
       req.session.userId = result.user.id;
     }

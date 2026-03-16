@@ -45,24 +45,46 @@ class AuthService {
   }
 
   Future<Users?> loginWithGoogle() async {
+    // Clear stale local sessions to avoid reusing old cached tokens.
+    try {
+      await _googleSignIn.disconnect();
+    } catch (_) {}
+    try {
+      await _googleSignIn.signOut();
+    } catch (_) {}
+    try {
+      await _firebaseAuth.signOut();
+    } catch (_) {}
+
     final googleUser = await _googleSignIn.signIn();
     if (googleUser == null) {
       return null;
     }
 
     final googleAuth = await googleUser.authentication;
+    if (googleAuth.idToken == null || googleAuth.accessToken == null) {
+      throw Exception('Google token is missing. Check Firebase/Google Sign-In config (SHA-1, package name, google-services.json).');
+    }
     final credential = GoogleAuthProvider.credential(
       accessToken: googleAuth.accessToken,
       idToken: googleAuth.idToken,
     );
-    final userCredential = await _firebaseAuth.signInWithCredential(credential);
-    final idToken = await userCredential.user?.getIdToken();
+    UserCredential userCredential;
+    try {
+      userCredential = await _firebaseAuth.signInWithCredential(credential);
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'invalid-credential') {
+        throw Exception('Google credential invalid. Verify SHA-1/SHA-256 and package name in Firebase project.');
+      }
+      rethrow;
+    }
+    final idToken = await userCredential.user?.getIdToken(true);
 
     if (idToken == null || idToken.isEmpty) {
       throw Exception('Cannot get Google ID token');
     }
 
-    final response = await _authApi.loginWithGoogle(idToken: idToken);
+    final response = await _authApi.loginWithFirebase(idToken: idToken);
     final userMap = response['user'] as Map<String, dynamic>?;
     if (userMap == null) {
       return null;
@@ -72,6 +94,14 @@ class AuthService {
   }
 
   Future<Users?> loginWithFacebook() async {
+    // Clear stale local sessions to avoid token/provider mismatch.
+    try {
+      await FacebookAuth.instance.logOut();
+    } catch (_) {}
+    try {
+      await _firebaseAuth.signOut();
+    } catch (_) {}
+
     final loginResult = await FacebookAuth.instance.login();
     if (loginResult.status != LoginStatus.success || loginResult.accessToken == null) {
       return null;
@@ -79,13 +109,13 @@ class AuthService {
 
     final credential = FacebookAuthProvider.credential(loginResult.accessToken!.tokenString);
     final userCredential = await _firebaseAuth.signInWithCredential(credential);
-    final idToken = await userCredential.user?.getIdToken();
+    final idToken = await userCredential.user?.getIdToken(true);
 
     if (idToken == null || idToken.isEmpty) {
       throw Exception('Cannot get Facebook ID token');
     }
 
-    final response = await _authApi.loginWithFacebook(idToken: idToken);
+    final response = await _authApi.loginWithFirebase(idToken: idToken);
     final userMap = response['user'] as Map<String, dynamic>?;
     if (userMap == null) {
       return null;
@@ -98,10 +128,22 @@ class AuthService {
     required String email,
     required String password,
   }) async {
-    final credential = await _firebaseAuth.signInWithEmailAndPassword(
-      email: email.trim(),
-      password: password,
-    );
+    UserCredential credential;
+    try {
+      credential = await _firebaseAuth.signInWithEmailAndPassword(
+        email: email.trim(),
+        password: password,
+      );
+    } on FirebaseAuthException catch (_) {
+      // Fallback for legacy local-backend accounts that are not in Firebase Auth.
+      final response = await _authApi.login(identifier: email.trim(), password: password);
+      final userMap = response['user'] as Map<String, dynamic>?;
+      if (userMap == null) {
+        return null;
+      }
+      currentUser = Users.fromApi(userMap);
+      return currentUser;
+    }
 
     await credential.user?.reload();
     final user = _firebaseAuth.currentUser;

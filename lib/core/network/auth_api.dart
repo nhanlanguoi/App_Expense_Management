@@ -33,14 +33,14 @@ class AuthApi {
 
   Future<Map<String, dynamic>> loginWithGoogle({required String idToken}) {
     return _client.postJson(
-      ApiConfig.uri('/auth/google'),
+      ApiConfig.uri('/auth/firebase'),
       {'idToken': idToken},
     );
   }
 
   Future<Map<String, dynamic>> loginWithFacebook({required String idToken}) {
     return _client.postJson(
-      ApiConfig.uri('/auth/facebook'),
+      ApiConfig.uri('/auth/firebase'),
       {'idToken': idToken},
     );
   }

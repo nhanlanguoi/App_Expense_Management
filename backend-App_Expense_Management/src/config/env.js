@@ -8,7 +8,6 @@ const env = {
   corsOrigin: process.env.CORS_ORIGIN || true,
   dataDir: path.join(__dirname, "../../data"),
   usersFile: path.join(__dirname, "../../data/users.json"),
-  firebaseServiceAccountJson: process.env.FIREBASE_SERVICE_ACCOUNT_JSON,
   googleApplicationCredentials: process.env.GOOGLE_APPLICATION_CREDENTIALS,
   mailUser: process.env.MAIL_USER,
   mailAppPassword: process.env.MAIL_APP_PASSWORD,

@@ -29,7 +29,7 @@ class _AuthScreenState extends State<AuthScreen> {
       duration: const Duration(milliseconds: 700),
       curve: Curves.easeInOutCubic,
 
-      height: isRegister ? Responsive.h(260) : Responsive.h(100),
+      height: isRegister ? Responsive.h(250) : Responsive.h(100),
       width: isRegister ? MediaQuery.of(context).size.width : Responsive.w(100),
 
       decoration: BoxDecoration(
@@ -94,7 +94,7 @@ class _AuthScreenState extends State<AuthScreen> {
           },
           child: Container(
             key: ValueKey(_mode),
-            margin: EdgeInsets.symmetric(horizontal: Responsive.w(30)),
+            margin: EdgeInsets.symmetric(horizontal: Responsive.w(20)),
             padding: _mode == AuthType.login
                 ? EdgeInsets.all(Responsive.w(35))
                 : EdgeInsets.symmetric(

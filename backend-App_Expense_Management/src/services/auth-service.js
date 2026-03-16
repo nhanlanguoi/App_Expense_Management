@@ -170,7 +170,27 @@ async function loginWithFirebaseToken(idTokenRaw, expectedProvider) {
     return { status: 400, body: { message: "idToken is required" } };
   }
 
-  const decodedToken = await admin.auth().verifyIdToken(idToken, true);
+  let decodedToken;
+  try {
+    decodedToken = await admin.auth().verifyIdToken(idToken, true);
+  } catch (error) {
+    const code = String(error?.code || "");
+    const message = String(error?.message || "").toLowerCase();
+    const shouldRetryWithoutRevocation =
+      code === "auth/id-token-revoked-check-failed" ||
+      code === "auth/internal-error" ||
+      message.includes("network") ||
+      message.includes("econn") ||
+      message.includes("timed out") ||
+      message.includes("socket");
+
+    if (!shouldRetryWithoutRevocation) {
+      throw error;
+    }
+
+    // Fallback for environments with unstable outbound connectivity.
+    decodedToken = await admin.auth().verifyIdToken(idToken);
+  }
   const firebaseUid = decodedToken.uid;
   const authProvider = decodedToken.firebase?.sign_in_provider || "firebase";
   const genericAllowedProviders = ["google.com", "facebook.com", "password"];
