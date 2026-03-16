@@ -27,4 +27,16 @@ class AuthService {
     await userBox.put(user.email, user.toMap());
     print("Đã đăng ký user mới: ${user.email}");
   }
+
+  Future<void> updateUserBalance(String email, double newBalance) async {
+    var userData = userBox.get(email);
+    if (userData != null) {
+      final userMap = Map<String, dynamic>.from(userData);
+      userMap['total_balance'] = newBalance;
+      await userBox.put(email, userMap);
+      if (currentUser?.email == email) {
+        currentUser = Users.fromMap(userMap);
+      }
+    }
+  }
 }

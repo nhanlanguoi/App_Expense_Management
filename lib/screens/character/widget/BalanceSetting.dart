@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../../../components/inputs/CustomTextField.dart';
 import '../../../components/widget/BaseSettingLayout.dart';
+import '../../../core/data/service/authservice.dart';
 
 
 class BalanceSettingScreen extends StatefulWidget {
@@ -16,6 +17,14 @@ class _BalanceSettingScreenState extends State<BalanceSettingScreen> {
   final TextEditingController _balanceController = TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+    final user = AuthService.instance.currentUser;
+    if (user != null) {
+      _balanceController.text = user.totalBalance.toInt().toString();
+    }
+  }
+  @override
   void dispose() {
     _balanceController.dispose();
     super.dispose();
@@ -25,7 +34,7 @@ class _BalanceSettingScreenState extends State<BalanceSettingScreen> {
   Widget build(BuildContext context) {
     return BaseSettingLayout(
       title: "settings.balance_title".tr(),
-      onSave: () {
+      onSave: () async {
         if (_balanceController.text.isEmpty) {
           ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
@@ -35,12 +44,29 @@ class _BalanceSettingScreenState extends State<BalanceSettingScreen> {
           );
           return;
         }
-
-        print("Số dư thiết lập: ${_balanceController.text}");
-        ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text("settings.balance_saved".tr()))
-        );
-        Navigator.pop(context);
+        double? newBalance = double.tryParse(_balanceController.text);
+        if (newBalance == null) {
+          ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                  content: Text("Vui lòng nhập số hợp lệ!"),
+                  backgroundColor: Colors.red
+              )
+          );
+          return;
+        }
+        final user = AuthService.instance.currentUser;
+        if (user != null) {
+          await AuthService.instance.updateUserBalance(user.email, newBalance);
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text("settings.balance_saved".tr()),
+                  backgroundColor: Colors.green,
+                )
+            );
+            Navigator.pop(context);
+          }
+        }
       },
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
