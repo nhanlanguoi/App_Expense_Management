@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "Node16",
+    "checkJs": false,
+    "moduleResolution": "node16"
+  },
+  "exclude": ["node_modules"]
+}
