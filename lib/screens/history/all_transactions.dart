@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:expense_management/configs/theme/color.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import '../../components/cardshowvalue/CardShowHistoryTrade.dart';
@@ -6,7 +7,9 @@ import '../../core/data/service/authservice.dart';
 import '../../core/data/service/transactionservice.dart';
 import '../../core/model/transactions.dart';
 import '../../configs/theme/icon.dart';
+import '../../core/utils/format.dart';
 import '../../core/utils/responsive.dart';
+
 
 class AllTransactionsScreen extends StatefulWidget {
   const AllTransactionsScreen({super.key});
@@ -33,7 +36,7 @@ class _AllTransactionsScreenState extends State<AllTransactionsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[50],
+      backgroundColor: AppColors.floor_background,
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -142,7 +145,7 @@ class _AllTransactionsScreenState extends State<AllTransactionsScreen> {
                             "id": t.id,
                             "title": t.title,
                             "time": timeString,
-                            "money": "$tSign${t.amount.toStringAsFixed(0)} đ",
+                            "money": "$tSign${Format.formatnumber(t.amount)} đ",
                             "icon": AppIcons.getIconFromData(t.icon),
                             "color": t.type == 'income' ? Colors.green : Colors.red,
                           };

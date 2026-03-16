@@ -1,3 +1,4 @@
+import 'package:expense_management/core/utils/format.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -49,16 +50,13 @@ class _CardmanagerexpenseState extends State<Cardmanagerexpense> {
         child: Container(
           decoration: BoxDecoration(
             color: const Color(0xFFF4F6F8),
-            borderRadius: BorderRadius.circular(20),
-            border: Border.all(
-              color: Colors.grey.withOpacity(0.2),
-              width: 1
-            ),
+            borderRadius: BorderRadius.circular(15),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.05),
-                blurRadius: 12,
-                offset: const Offset(0, 6),
+                color: Colors.black.withValues(alpha: 0.05),
+                blurRadius: 20,
+                spreadRadius: 10,
+                offset: const Offset(4, 4),
               ),
             ],
           ),
@@ -69,7 +67,7 @@ class _CardmanagerexpenseState extends State<Cardmanagerexpense> {
               decoration: BoxDecoration(
                 color: Colors.grey[150],
                 borderRadius: BorderRadius.circular(15),
-                border: Border.all(color: Colors.grey.withValues(alpha: 0.1), width: 1),
+                border: Border.all(color: Colors.grey.withValues(alpha: 0.1), width: 2),
               ),
               child: InkWell(
                 onTap: () {
@@ -84,111 +82,89 @@ class _CardmanagerexpenseState extends State<Cardmanagerexpense> {
                     Colors.orange[100],
 
                 child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 17),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-
-                  /// HEADER
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  padding: const EdgeInsets.all(0),
+                  child: Column(
                     children: [
-
-                      /// LEFT
-                      Row(
-                        children: [
-                          Container(
-                            width: 43,
-                            height: 43,
-                            decoration: BoxDecoration(
-                              color: widget.Iconcolor?.withOpacity(0.15) ?? Colors.orange.withOpacity(0.15),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Icon(
-                              widget.Icon ?? Icons.fastfood,
-                              size: 20,
-                              color: widget.Iconcolor ?? Colors.orange,
-                            ),
-                          ),
-
-                          const SizedBox(width: 10),
-
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                widget.title ?? "Ăn uống",
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
+                      Padding(
+                        padding: EdgeInsetsGeometry.all(10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                    color: widget.Iconcolor?.withValues(alpha: 0.2) ??
+                                        Colors.orange[200],
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: Padding(
+                                    padding: EdgeInsets.all(5),
+                                    child: Icon(
+                                      widget.Icon ?? Icons.fastfood,
+                                      size: 30,
+                                      color: widget.Iconcolor ?? Colors.orange,
+                                    ),
+                                  ),
                                 ),
-                              ),
-                              Text(
-                                widget.total ?? "15 giao dịch",
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.grey[600],
+                                SizedBox(width: 10),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      widget.title ?? "Ăn uống",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                    Text(
+                                      (widget.total ?? "15"),
+                                      style: TextStyle(fontSize: 14),
+                                    ),
+                                  ],
                                 ),
-                              ),
-                            ],
-                          ),
-                        ],
+                              ],
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Text(
+                                  (Format.formattext(widget.allmoney?? "232.43243324.234"))+" ₫",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                                Text(
+                                  "${((widget.percen ?? 0.23) * 100).toInt()}%",
+                                  style: TextStyle(fontSize: 14, color: Colors.red),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
-
-                      /// RIGHT
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Text(
-                            "${widget.allmoney ?? "0"} ₫",
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                            ),
+                      Padding(
+                        padding: EdgeInsetsGeometry.only(
+                          left: 12,
+                          right: 12,
+                          top: 5,
+                          bottom: 15,
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: LinearProgressIndicator(
+                            value: widget.percen ?? 0.4,
+                            backgroundColor: Colors.grey[200],
+                            color: widget.Iconcolor ?? Colors.orange,
+                            minHeight: 8,
                           ),
-                          Text(
-                            "${((widget.percen ?? 0.23) * 100).toInt()}%",
-                            style: const TextStyle(
-                              fontSize: 13,
-                              color: Colors.red,
-                            ),
-                          ),
-                        ],
+                        ),
                       ),
                     ],
                   ),
-
-                  const SizedBox(height: 10),
-
-                  /// PROGRESS BAR
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(6),
-                    child: Stack(
-                      children: [
-
-                        /// background
-                        Container(
-                          height: 6,
-                          color: Colors.grey[200],
-                        ),
-
-                        /// progress
-                        FractionallySizedBox(
-                          widthFactor: widget.percen ?? 0.4,
-                          child: Container(
-                            height: 6,
-                            decoration: BoxDecoration(
-                              color: widget.Iconcolor ?? Colors.orange,
-                              borderRadius: BorderRadius.circular(6),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
+                ),
               ),
             ),
           ),

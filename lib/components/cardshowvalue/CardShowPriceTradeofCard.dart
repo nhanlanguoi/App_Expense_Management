@@ -1,3 +1,4 @@
+import 'package:expense_management/core/utils/format.dart';
 import 'package:flutter/material.dart';
 
 class Cardshowpricetrade extends StatefulWidget {
@@ -56,7 +57,7 @@ class _CardmanagerexpenseState extends State<Cardshowpricetrade> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          widget.title ?? "Ăn uống",
+                          Format.formattext(widget.title ?? "Ăn uống"),
                           style: TextStyle(
                             fontWeight: FontWeight.w600,
                             fontSize: 15,
@@ -72,7 +73,7 @@ class _CardmanagerexpenseState extends State<Cardshowpricetrade> {
                 ),
 
                 Text(
-                  (widget.allmoney ?? "-25.000 đ"),
+                  (Format.formattext(widget.allmoney?? "-25.000 đ") ),
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,

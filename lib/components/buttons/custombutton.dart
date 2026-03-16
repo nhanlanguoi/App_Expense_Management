@@ -10,8 +10,9 @@ class custombutton extends StatefulWidget {
   final Color? backgroundColor;
   final Color? textColor;
   final Widget? icon;
-  final double height;
-  final double width;
+
+  final double? height;
+  final double? width;
   final double borderRadius;
 
   const custombutton({
@@ -23,9 +24,9 @@ class custombutton extends StatefulWidget {
     this.backgroundColor,
     this.textColor,
     this.icon,
-    required this.height,
+    this.height,
+    this.width,
     required this.borderRadius,
-    required this.width,
     this.labelStyle,
   });
 
@@ -39,18 +40,22 @@ class _custombuttonState extends State<custombutton> {
     final primaryColor = widget.backgroundColor ?? Colors.purple;
     final onPrimaryColor = widget.textColor ?? Colors.white;
 
-    return SizedBox(
-      width: widget.width,
-      height: widget.height,
-      child: widget.isOutline
-          ? _buildOutlineButton(primaryColor)
-          : _buildElevatedButton(primaryColor, onPrimaryColor),
-    );
+    Widget button = widget.isOutline
+        ? _buildOutlineButton(primaryColor)
+        : _buildElevatedButton(primaryColor, onPrimaryColor);
+
+    if (widget.width != null || widget.height != null) {
+      return SizedBox(
+        width: widget.width,
+        height: widget.height,
+        child: button,
+      );
+    }
+    return button;
   }
 
   Widget _buildElevatedButton(Color bgColor, Color textColor) {
     Responsive.init(context);
-
     final bool isIconOnly = widget.icon != null && widget.label.isEmpty;
 
     return ElevatedButton(
@@ -59,11 +64,12 @@ class _custombuttonState extends State<custombutton> {
         backgroundColor: bgColor,
         foregroundColor: textColor,
         elevation: 0,
-
-        padding: isIconOnly ? EdgeInsets.zero : null,
-
-        minimumSize: isIconOnly ? Size(widget.width, widget.height) : null,
-
+        padding: isIconOnly
+            ? EdgeInsets.zero
+            : const EdgeInsets.symmetric(horizontal: 16),
+        minimumSize: (isIconOnly && widget.width != null && widget.height != null)
+            ? Size(widget.width!, widget.height!)
+            : null,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(widget.borderRadius),
         ),
@@ -74,20 +80,22 @@ class _custombuttonState extends State<custombutton> {
   }
 
   Widget _buildOutlineButton(Color color) {
+    final bool isIconOnly = widget.icon != null && widget.label.isEmpty;
+
     return OutlinedButton(
       onPressed: widget.isLoading ? null : widget.onPressed,
       style: OutlinedButton.styleFrom(
         foregroundColor: color,
-
         side: BorderSide(
           color: color,
           width: Responsive.w(1.5),
         ),
-
+        padding: isIconOnly
+            ? EdgeInsets.zero
+            : const EdgeInsets.symmetric(horizontal: 16),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(widget.borderRadius),
         ),
-        padding: EdgeInsets.zero,
       ),
       child: _buildChild(color),
     );
@@ -105,17 +113,16 @@ class _custombuttonState extends State<custombutton> {
       );
     }
 
-    /// icon-only button
-    if (widget.icon != null &&
-        widget.label.isEmpty) {
+    if (widget.icon != null && widget.label.isEmpty) {
       return Center(child: widget.icon);
     }
 
     Widget labelWidget = const SizedBox();
-
-    if (widget.label is String && (widget.label as String).isNotEmpty) {
+    if (widget.label.isNotEmpty) {
       labelWidget = Text(
         widget.label,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
         style: widget.labelStyle ??
             TextStyle(
               fontSize: Responsive.sp(16),
@@ -134,7 +141,9 @@ class _custombuttonState extends State<custombutton> {
           widget.icon!,
           SizedBox(width: Responsive.w(8)),
         ],
-        labelWidget,
+        Flexible(
+          child: labelWidget,
+        ),
       ],
     );
   }

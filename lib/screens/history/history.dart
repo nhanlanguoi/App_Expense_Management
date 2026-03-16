@@ -12,6 +12,7 @@ import '../../core/model/transactions.dart';
 import '../../configs/theme/icon.dart';
 import '../../core/utils/responsive.dart';
 import 'all_transactions.dart';
+import 'package:expense_management/core/utils/format.dart';
 
 class History extends StatefulWidget {
   const History({super.key});
@@ -25,14 +26,13 @@ class _HistoryState extends State<History> with TickerProviderStateMixin {
   bool _isExpense = true;
   late AnimationController _bottomSheetController;
 
-
   @override
   void initState() {
     super.initState();
     _bottomSheetController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 800),
-      reverseDuration: const Duration(milliseconds:600),
+      reverseDuration: const Duration(milliseconds: 600),
     );
   }
 
@@ -89,8 +89,8 @@ class _HistoryState extends State<History> with TickerProviderStateMixin {
             walletIdToName[w.id ?? ''] = w.name ?? 'Ví không tên';
           }
           List<TransactionRecord> monthlyTransactions = allTransactions.where((
-              t,
-              ) {
+            t,
+          ) {
             return t.date.month == _selectedMonth.month &&
                 t.date.year == _selectedMonth.year;
           }).toList();
@@ -120,7 +120,7 @@ class _HistoryState extends State<History> with TickerProviderStateMixin {
           int colorIndex = 0;
           for (var key in chartData.keys) {
             walletColors[key] =
-            sectionColors[colorIndex % sectionColors.length];
+                sectionColors[colorIndex % sectionColors.length];
             colorIndex++;
           }
           List<TransactionRecord> sortedTransactions = List.from(
@@ -157,13 +157,13 @@ class _HistoryState extends State<History> with TickerProviderStateMixin {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                            "history.title".tr(),
-                            style: TextStyles.h1.copyWith(color: Colors.black)
+                          "history.title".tr(),
+                          style: TextStyles.h1.copyWith(color: Colors.black),
                         ),
                         SizedBox(height: Responsive.h(30)),
                         Text(
-                            "Tổng quan",
-                            style: TextStyles.h2.copyWith(color: Colors.black)
+                          "Tổng quan",
+                          style: TextStyles.h2.copyWith(color: Colors.black),
                         ),
                         SizedBox(height: Responsive.h(15)),
 
@@ -171,7 +171,9 @@ class _HistoryState extends State<History> with TickerProviderStateMixin {
                           padding: EdgeInsets.all(Responsive.w(16)),
                           decoration: BoxDecoration(
                             color: Colors.white,
-                            borderRadius: BorderRadius.circular(Responsive.w(20)),
+                            borderRadius: BorderRadius.circular(
+                              Responsive.w(20),
+                            ),
                           ),
                           child: Column(
                             children: [
@@ -180,26 +182,39 @@ class _HistoryState extends State<History> with TickerProviderStateMixin {
                                 padding: EdgeInsets.all(Responsive.w(4)),
                                 decoration: BoxDecoration(
                                   color: AppColors.floor_background,
-                                  borderRadius: BorderRadius.circular(Responsive.w(30)),
+                                  borderRadius: BorderRadius.circular(
+                                    Responsive.w(30),
+                                  ),
                                 ),
                                 child: Stack(
                                   children: [
                                     AnimatedAlign(
-                                      duration: const Duration(milliseconds: 550),
+                                      duration: const Duration(
+                                        milliseconds: 550,
+                                      ),
                                       curve: Curves.easeInOut,
-                                      alignment: _isExpense ? Alignment.centerLeft : Alignment.centerRight,
+                                      alignment: _isExpense
+                                          ? Alignment.centerLeft
+                                          : Alignment.centerRight,
                                       child: FractionallySizedBox(
                                         widthFactor: 0.5,
                                         child: Container(
                                           decoration: BoxDecoration(
                                             color: Colors.blue,
-                                            borderRadius: BorderRadius.circular(Responsive.w(25)),
+                                            borderRadius: BorderRadius.circular(
+                                              Responsive.w(25),
+                                            ),
                                             boxShadow: [
                                               BoxShadow(
-                                                color: Colors.black.withAlpha(50),
+                                                color: Colors.black.withAlpha(
+                                                  50,
+                                                ),
                                                 blurRadius: Responsive.w(4),
-                                                offset: Offset(0, Responsive.h(2)),
-                                              )
+                                                offset: Offset(
+                                                  0,
+                                                  Responsive.h(2),
+                                                ),
+                                              ),
                                             ],
                                           ),
                                         ),
@@ -209,14 +224,20 @@ class _HistoryState extends State<History> with TickerProviderStateMixin {
                                       children: [
                                         Expanded(
                                           child: GestureDetector(
-                                            onTap: () => setState(() => _isExpense = true),
+                                            onTap: () => setState(
+                                              () => _isExpense = true,
+                                            ),
                                             child: Container(
                                               color: Colors.transparent,
                                               alignment: Alignment.center,
                                               child: AnimatedDefaultTextStyle(
-                                                duration: const Duration(milliseconds: 250),
+                                                duration: const Duration(
+                                                  milliseconds: 250,
+                                                ),
                                                 style: TextStyle(
-                                                  color: _isExpense ? Colors.white : Colors.grey[600],
+                                                  color: _isExpense
+                                                      ? Colors.white
+                                                      : Colors.grey[600],
                                                   fontWeight: FontWeight.bold,
                                                   fontFamily: 'BeVietnamPro',
                                                   fontSize: Responsive.sp(14),
@@ -228,14 +249,20 @@ class _HistoryState extends State<History> with TickerProviderStateMixin {
                                         ),
                                         Expanded(
                                           child: GestureDetector(
-                                            onTap: () => setState(() => _isExpense = false),
+                                            onTap: () => setState(
+                                              () => _isExpense = false,
+                                            ),
                                             child: Container(
                                               color: Colors.transparent,
                                               alignment: Alignment.center,
                                               child: AnimatedDefaultTextStyle(
-                                                duration: const Duration(milliseconds: 250),
+                                                duration: const Duration(
+                                                  milliseconds: 250,
+                                                ),
                                                 style: TextStyle(
-                                                  color: !_isExpense ? Colors.white : Colors.grey[600],
+                                                  color: !_isExpense
+                                                      ? Colors.white
+                                                      : Colors.grey[600],
                                                   fontWeight: FontWeight.bold,
                                                   fontFamily: 'BeVietnamPro',
                                                   fontSize: Responsive.sp(14),
@@ -253,10 +280,14 @@ class _HistoryState extends State<History> with TickerProviderStateMixin {
                               SizedBox(height: Responsive.h(15)),
                               Row(
                                 mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   IconButton(
-                                    icon: Icon(Icons.arrow_left_rounded , size: Responsive.w(30), color: Colors.grey,),
+                                    icon: Icon(
+                                      Icons.arrow_left_rounded,
+                                      size: Responsive.w(30),
+                                      color: Colors.grey,
+                                    ),
                                     onPressed: () => _changeMonth(-1),
                                   ),
                                   Text(
@@ -267,7 +298,11 @@ class _HistoryState extends State<History> with TickerProviderStateMixin {
                                     ),
                                   ),
                                   IconButton(
-                                    icon: Icon(Icons.arrow_right_rounded ,size: Responsive.w(30),color: Colors.grey,),
+                                    icon: Icon(
+                                      Icons.arrow_right_rounded,
+                                      size: Responsive.w(30),
+                                      color: Colors.grey,
+                                    ),
                                     onPressed: () => _changeMonth(1),
                                   ),
                                 ],
@@ -293,9 +328,7 @@ class _HistoryState extends State<History> with TickerProviderStateMixin {
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
                                         Text(
-                                          _isExpense
-                                              ? "Tổng chi"
-                                              : "Tổng thu",
+                                          _isExpense ? "Tổng chi" : "Tổng thu",
                                           style: TextStyle(
                                             fontSize: Responsive.sp(20),
                                             color: Colors.black,
@@ -374,46 +407,54 @@ class _HistoryState extends State<History> with TickerProviderStateMixin {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Text(
-                          "Giao dịch gần đây",
-                          style: TextStyles.h2.copyWith(color: Colors.black)
+                        "Giao dịch gần đây",
+                        style: TextStyles.h2.copyWith(color: Colors.black),
                       ),
                       GestureDetector(
-                          onTap: () {
-                            showModalBottomSheet(
-                              context: context,
-                              isScrollControlled: true,
-                              backgroundColor: Colors.transparent,
-                              constraints: const BoxConstraints(maxWidth: double.infinity),
-                              transitionAnimationController: _bottomSheetController,
-                              builder: (context) {
-                                return const AllTransactionsScreen();
-                              },
-                            );
-                          },
-                          child: Container(
-                            child: Column(
-                              children: [
-                                Text("Xem tất cả" , style: TextStyle(
+                        onTap: () {
+                          showModalBottomSheet(
+                            context: context,
+                            isScrollControlled: true,
+                            backgroundColor: Colors.transparent,
+                            constraints: const BoxConstraints(
+                              maxWidth: double.infinity,
+                            ),
+                            transitionAnimationController:
+                                _bottomSheetController,
+                            builder: (context) {
+                              return const AllTransactionsScreen();
+                            },
+                          );
+                        },
+                        child: Container(
+                          child: Column(
+                            children: [
+                              Text(
+                                "Xem tất cả",
+                                style: TextStyle(
                                   fontSize: Responsive.sp(16),
                                   color: Colors.blue,
                                   decoration: TextDecoration.underline,
                                   decorationColor: Colors.blue,
-                                )),
-                                // Container(
-                                //   height: 1,
-                                //   width:80 ,
-                                //   color: Colors.blue,
-                                // )
-                              ],
-                            ),
-                          )
+                                ),
+                              ),
+                              // Container(
+                              //   height: 1,
+                              //   width:80 ,
+                              //   color: Colors.blue,
+                              // )
+                            ],
+                          ),
+                        ),
                       ),
                     ],
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.symmetric(horizontal: Responsive.w(20), vertical: Responsive.h(10)),
-
+                  margin: EdgeInsets.symmetric(
+                    horizontal: Responsive.w(20),
+                    vertical: Responsive.h(10),
+                  ),
 
                   decoration: BoxDecoration(
                     color: Colors.white,
@@ -427,60 +468,63 @@ class _HistoryState extends State<History> with TickerProviderStateMixin {
                       ),
                     ],
                   ),
-                  child:
-                  recentTransactions.isEmpty
+                  child: recentTransactions.isEmpty
                       ? Padding(
-                    padding: EdgeInsets.only(top: Responsive.h(20), bottom: Responsive.h(40)),
-                    child: Text(
-                      "Không có giao dịch nào",
-                      style: const TextStyle(color: Colors.grey),
-                    ),
-                  )
+                          padding: EdgeInsets.only(
+                            top: Responsive.h(20),
+                            bottom: Responsive.h(40),
+                          ),
+                          child: Text(
+                            "Không có giao dịch nào",
+                            style: const TextStyle(color: Colors.grey),
+                          ),
+                        )
                       : Padding(
-                    padding: EdgeInsets.symmetric(horizontal: Responsive.w(20),vertical: Responsive.h(20)),
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: recentDateKeys.length,
-                      itemBuilder: (context, index) {
-                        String currentDate = recentDateKeys[index];
-                        List<TransactionRecord> dailyTrans =
-                        groupedRecentTrans[currentDate]!;
+                          padding: EdgeInsets.symmetric(
+                            horizontal: Responsive.w(20),
+                            vertical: Responsive.h(20),
+                          ),
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: recentDateKeys.length,
+                            itemBuilder: (context, index) {
+                              String currentDate = recentDateKeys[index];
+                              List<TransactionRecord> dailyTrans =
+                                  groupedRecentTrans[currentDate]!;
 
-                        List<Map<String, dynamic>>
-                        mappedTransactions = dailyTrans.map((t) {
-                          String minute = t.date.minute.toString().padLeft(
-                            2,
-                            '0',
-                          );
-                          String timeString = "${t.date.hour}:$minute";
-                          String tSign = t.type == 'income' ? '+' : '-';
+                              List<Map<String, dynamic>>
+                              mappedTransactions = dailyTrans.map((t) {
+                                String minute = t.date.minute
+                                    .toString()
+                                    .padLeft(2, '0');
+                                String timeString = "${t.date.hour}:$minute";
+                                String tSign = t.type == 'income' ? '+' : '-';
 
-                          return {
-                            "id": t.id,
-                            "title": t.title,
-                            "time": timeString,
-                            "money":
-                            "$tSign${t.amount.toStringAsFixed(0)} đ",
-                            "icon": AppIcons.getIconFromData(t.icon),
-                            "color": t.type == 'income'
-                                ? Colors.green
-                                : Colors.red,
-                          };
-                        }).toList();
+                                return {
+                                  "id": t.id,
+                                  "title": t.title,
+                                  "time": timeString,
+                                  "money":
+                                      "$tSign${Format.formatnumber(t.amount)} đ",
+                                  "icon": AppIcons.getIconFromData(t.icon),
+                                  "color": t.type == 'income'
+                                      ? Colors.green
+                                      : Colors.red,
+                                };
+                              }).toList();
 
-                        return Cardshowhistorytrade(
-                          date: currentDate,
-                          transactions: mappedTransactions,
-                          onSelect: (id, val) {},
-                          onSelectAll: (val) {},
-                          onLongPress: (id) {},
-                        );
-                      },
-                    ),
-                  ),
-                )
-
+                              return Cardshowhistorytrade(
+                                date: currentDate,
+                                transactions: mappedTransactions,
+                                onSelect: (id, val) {},
+                                onSelectAll: (val) {},
+                                onLongPress: (id) {},
+                              );
+                            },
+                          ),
+                        ),
+                ),
               ],
             ),
           );
@@ -490,9 +534,9 @@ class _HistoryState extends State<History> with TickerProviderStateMixin {
   }
 
   List<PieChartSectionData> _buildChartSections(
-      Map<String, double> data,
-      Map<String, Color> colors,
-      ) {
+    Map<String, double> data,
+    Map<String, Color> colors,
+  ) {
     if (data.isEmpty) {
       return [
         PieChartSectionData(
