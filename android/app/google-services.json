@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1007752954137",
+    "project_id": "app-expense-management",
+    "storage_bucket": "app-expense-management.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1007752954137:android:5bb631e123fa8c3c860588",
+        "android_client_info": {
+          "package_name": "com.example.expense_management"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1007752954137-ahufo86gprm2ndsnr9hpdvf7q8budlt3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.expense_management",
+            "certificate_hash": "f4793e711598ea1c95906dd653bff16ee0fdb682"
+          }
+        },
+        {
+          "client_id": "1007752954137-gffj7g13p9smd2s8siq7mrpqc3hanfem.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA1m5s79LWX81FH8HuK9thgDFjKMHe25sI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1007752954137-gffj7g13p9smd2s8siq7mrpqc3hanfem.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -13,13 +13,12 @@
 /ios
 migrate_working_dir/
 /web
-/android
+
 # IntelliJ related
 *.iml
 *.ipr
 *.iws
 .idea/
-android/
 web/
 backend-App_Expense_Management/node_modules/
 backend-App_Expense_Management/data/
