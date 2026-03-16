@@ -113,7 +113,7 @@ async function loginWithPassword(usernameRaw, passwordRaw) {
   };
 }
 
-async function loginWithFirebaseToken(idTokenRaw) {
+async function loginWithFirebaseToken(idTokenRaw, expectedProvider) {
   if (!initFirebaseAdmin()) {
     return { status: 503, body: { message: "Firebase is not configured on server" } };
   }
@@ -131,6 +131,16 @@ async function loginWithFirebaseToken(idTokenRaw) {
     return {
       status: 400,
       body: { message: "Only Google and Facebook OAuth are allowed in this endpoint" },
+    };
+  }
+
+  if (expectedProvider && authProvider !== expectedProvider) {
+    const providerName = expectedProvider === "google.com" ? "Google" : "Facebook";
+    return {
+      status: 400,
+      body: {
+        message: `This endpoint only accepts ${providerName} token`,
+      },
     };
   }
 

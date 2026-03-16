@@ -5,7 +5,9 @@
 This backend currently supports:
 
 - Username/password auth with session cookie
-- Firebase OAuth login (Google and Facebook) via `POST /auth/firebase`
+- Google login via `POST /auth/google`
+- Facebook login via `POST /auth/facebook`
+- Generic Firebase OAuth login via `POST /auth/firebase`
 
 ## Quick Start
 
@@ -26,6 +28,8 @@ npm run dev
 
 - `POST /auth/register` with body `{ "username": "...", "password": "..." }`
 - `POST /auth/login` with body `{ "username": "...", "password": "..." }`
+- `POST /auth/google` with body `{ "idToken": "FIREBASE_ID_TOKEN" }`
+- `POST /auth/facebook` with body `{ "idToken": "FIREBASE_ID_TOKEN" }`
 - `POST /auth/firebase` with body `{ "idToken": "FIREBASE_ID_TOKEN" }`
 - `GET /auth/me`
 - `POST /auth/logout`

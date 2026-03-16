@@ -23,6 +23,8 @@ android/
 web/
 backend-App_Expense_Management/node_modules/
 backend-App_Expense_Management/data/
+backend-App_Expense_Management/.env
+backend-App_Expense_Management/.env.*
 # The .vscode folder contains launch configuration and tasks you configure in
 # VS Code which you may wish to be included in version control, so this line
 # is commented out by default.

@@ -44,6 +44,36 @@ async function firebaseLogin(req, res) {
   }
 }
 
+async function googleLogin(req, res) {
+  try {
+    const result = await loginWithFirebaseToken(req.body?.idToken, "google.com");
+    if (result.user) {
+      req.session.userId = result.user.id;
+    }
+    return res.status(result.status).json(result.body);
+  } catch (error) {
+    return res.status(401).json({
+      message: "Invalid Google token",
+      error: String(error),
+    });
+  }
+}
+
+async function facebookLogin(req, res) {
+  try {
+    const result = await loginWithFirebaseToken(req.body?.idToken, "facebook.com");
+    if (result.user) {
+      req.session.userId = result.user.id;
+    }
+    return res.status(result.status).json(result.body);
+  } catch (error) {
+    return res.status(401).json({
+      message: "Invalid Facebook token",
+      error: String(error),
+    });
+  }
+}
+
 function logout(req, res) {
   req.session.destroy((err) => {
     if (err) {
@@ -69,6 +99,8 @@ module.exports = {
   register,
   login,
   firebaseLogin,
+  googleLogin,
+  facebookLogin,
   logout,
   me,
 };
