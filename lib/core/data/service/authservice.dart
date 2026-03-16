@@ -289,15 +289,28 @@ class AuthService {
 
 
   Future<void> updateUserBalance(String email, double newBalance) async {
-    var userData = userBox.get(email);
-    if (userData != null) {
-      final userMap = Map<String, dynamic>.from(userData);
-      userMap['total_balance'] = newBalance;
-      await userBox.put(email, userMap);
-      if (currentUser?.email == email) {
-        currentUser = Users.fromMap(userMap);
-      }
+
+    if (currentUser != null && currentUser!.email == email) {
+      currentUser = Users(
+        id: currentUser!.id,
+        username: currentUser!.username,
+        email: currentUser!.email,
+        password: currentUser!.password,
+        avatarUrl: currentUser!.avatarUrl,
+        totalBalance: newBalance,
+      );
     }
+
+
+    var userData = userBox.get(email);
+
+
+    Map<String, dynamic> userMap = userData != null
+        ? Map<String, dynamic>.from(userData)
+        : (currentUser?.toMap() ?? {});
+
+    userMap['total_balance'] = newBalance;
+    await userBox.put(email, userMap);
   }
 
 }
