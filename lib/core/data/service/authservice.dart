@@ -16,8 +16,8 @@ class AuthService {
 
   Users? currentUser;
 
-  Future<Users?> login(String username, String password) async {
-    final response = await _authApi.login(username: username, password: password);
+  Future<Users?> login(String identifier, String password) async {
+    final response = await _authApi.login(identifier: identifier, password: password);
     final userMap = response['user'] as Map<String, dynamic>?;
     if (userMap == null) {
       return null;
@@ -26,8 +26,16 @@ class AuthService {
     return currentUser;
   }
 
-  Future<Users?> register({required String username, required String password}) async {
-    final response = await _authApi.register(username: username, password: password);
+  Future<Users?> register({
+    required String identifier,
+    required String password,
+    String? displayName,
+  }) async {
+    final response = await _authApi.register(
+      identifier: identifier,
+      password: password,
+      displayName: displayName,
+    );
     final userMap = response['user'] as Map<String, dynamic>?;
     if (userMap == null) {
       return null;
@@ -84,5 +92,27 @@ class AuthService {
     }
     currentUser = Users.fromApi(userMap);
     return currentUser;
+  }
+
+  Future<void> logout() async {
+    try {
+      await _authApi.logout();
+    } catch (_) {
+      // If backend session is already expired or unreachable, we still clear local auth state.
+    }
+
+    try {
+      await _googleSignIn.signOut();
+    } catch (_) {}
+
+    try {
+      await FacebookAuth.instance.logOut();
+    } catch (_) {}
+
+    try {
+      await _firebaseAuth.signOut();
+    } catch (_) {}
+
+    currentUser = null;
   }
 }

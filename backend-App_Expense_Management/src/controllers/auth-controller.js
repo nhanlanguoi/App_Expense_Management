@@ -7,7 +7,11 @@ const {
 
 async function register(req, res) {
   try {
-    const result = await registerWithPassword(req.body?.username, req.body?.password);
+    const result = await registerWithPassword(
+      req.body?.identifier || req.body?.username,
+      req.body?.password,
+      req.body?.displayName,
+    );
     if (result.user) {
       req.session.userId = result.user.id;
     }
@@ -19,7 +23,7 @@ async function register(req, res) {
 
 async function login(req, res) {
   try {
-    const result = await loginWithPassword(req.body?.username, req.body?.password);
+    const result = await loginWithPassword(req.body?.identifier || req.body?.username, req.body?.password);
     if (result.user) {
       req.session.userId = result.user.id;
     }

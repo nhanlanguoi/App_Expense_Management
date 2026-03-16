@@ -36,8 +36,8 @@ class Users {
 
   factory Users.fromApi(Map<String, dynamic> json) => Users(
     id: json['id']?.toString(),
-    username: (json['username'] ?? '').toString(),
-    email: (json['email'] ?? json['firebaseUid'] ?? json['username'] ?? '').toString(),
+    username: (json['displayName'] ?? json['username'] ?? '').toString(),
+    email: (json['email'] ?? '').toString(),
     password: '',
     totalBalance: (json['total_balance'] ?? 0).toDouble(),
     avatarUrl: json['avatar_url'],

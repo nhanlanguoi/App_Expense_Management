@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:expense_management/configs/theme/color.dart';
+import 'package:expense_management/configs/routes/routesname.dart';
 import 'package:expense_management/configs/theme/textstyles.dart';
 import 'package:expense_management/screens/character/widget/LanguageSetting.dart';
 import 'package:expense_management/screens/character/widget/BalanceSetting.dart';
@@ -18,6 +19,39 @@ class Character extends StatefulWidget {
 }
 
 class _CharacterState extends State<Character> {
+  bool _isLoggingOut = false;
+
+  Future<void> _handleLogout() async {
+    if (_isLoggingOut) return;
+    setState(() {
+      _isLoggingOut = true;
+    });
+
+    try {
+      await AuthService().logout();
+      if (!mounted) return;
+      Navigator.pushNamedAndRemoveUntil(
+        context,
+        Routesname.auth,
+        (route) => false,
+      );
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(e.toString().replaceFirst('Exception: ', '')),
+          backgroundColor: Colors.red,
+        ),
+      );
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isLoggingOut = false;
+        });
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final currentUser = AuthService().currentUser;
@@ -61,7 +95,9 @@ class _CharacterState extends State<Character> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                    "profile.anonymous_user".tr(),
+                                  (currentUser?.username.isNotEmpty ?? false)
+                                    ? currentUser!.username
+                                    : "profile.anonymous_user".tr(),
                                     style: TextStyles.nameuser.copyWith(color: Colors.black)
                                 ),
                                 SizedBox(height: Responsive.h(5)),
@@ -122,6 +158,8 @@ class _CharacterState extends State<Character> {
                   height: Responsive.h(45),
                   width: Responsive.w(160),
                   borderRadius: Responsive.w(25),
+                  isLoading: _isLoggingOut,
+                  onPressed: _handleLogout,
                 ),
               ],
             ),

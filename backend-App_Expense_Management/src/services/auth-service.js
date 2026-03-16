@@ -2,11 +2,47 @@ const bcrypt = require("bcrypt");
 const { randomUUID } = require("crypto");
 const { admin, initFirebaseAdmin } = require("../config/firebase-admin");
 const { readUsers, writeUsers } = require("../repositories/user-repository");
+const { upsertFirebaseUserFromLocal } = require("./firebase-user-sync-service");
+const { normalizePhoneToE164VN } = require("../utils/phone");
+
+function isEmailLike(value) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(value || "").trim());
+}
+
+function normalizeIdentifier(raw) {
+  const value = String(raw || "").trim();
+  if (!value) {
+    return null;
+  }
+
+  if (isEmailLike(value)) {
+    return value.toLowerCase();
+  }
+
+  return normalizePhoneToE164VN(value);
+}
+
+function getUserIdentifier(user) {
+  return String(user.identifier || user.username || "").trim();
+}
+
+function getUserIdentifierLower(user) {
+  const stored = String(user.identifierLower || "").trim();
+  if (stored) {
+    return stored;
+  }
+  const normalized = normalizeIdentifier(getUserIdentifier(user));
+  return normalized ? normalized.toLowerCase() : "";
+}
 
 function sanitizeUser(user) {
+  const identifier = getUserIdentifier(user);
   return {
     id: user.id,
-    username: user.username,
+    identifier,
+    username: user.username || identifier,
+    displayName: user.displayName || user.username || identifier,
+    email: user.email || (isEmailLike(identifier) ? identifier : null),
     authProvider: user.authProvider || "local",
     firebaseUid: user.firebaseUid || null,
     createdAt: user.createdAt,
@@ -35,12 +71,16 @@ function buildOAuthUsername(users, decodedToken) {
   return candidate;
 }
 
-async function registerWithPassword(usernameRaw, passwordRaw) {
-  const username = String(usernameRaw || "").trim();
+async function registerWithPassword(identifierRaw, passwordRaw, displayNameRaw) {
+  const identifier = normalizeIdentifier(identifierRaw);
   const password = String(passwordRaw || "").trim();
+  const displayName = String(displayNameRaw || "").trim();
 
-  if (username.length < 3) {
-    return { status: 400, body: { message: "Username must have at least 3 characters" } };
+  if (!identifier) {
+    return {
+      status: 400,
+      body: { message: "Identifier must be a valid email or phone number" },
+    };
   }
 
   if (password.length < 6) {
@@ -48,17 +88,21 @@ async function registerWithPassword(usernameRaw, passwordRaw) {
   }
 
   const users = await readUsers();
-  const usernameLower = username.toLowerCase();
-  const existed = users.find((u) => u.usernameLower === usernameLower);
+  const identifierLower = identifier.toLowerCase();
+  const existed = users.find((u) => getUserIdentifierLower(u) === identifierLower);
   if (existed) {
-    return { status: 409, body: { message: "Username already exists" } };
+    return { status: 409, body: { message: "Email or phone already exists" } };
   }
 
   const passwordHash = await bcrypt.hash(password, 10);
   const user = {
     id: randomUUID(),
-    username,
-    usernameLower,
+    identifier,
+    identifierLower,
+    username: identifier,
+    usernameLower: identifierLower,
+    displayName: displayName || identifier,
+    email: isEmailLike(identifier) ? identifier : null,
     passwordHash,
     createdAt: new Date().toISOString(),
   };
@@ -66,29 +110,32 @@ async function registerWithPassword(usernameRaw, passwordRaw) {
   users.push(user);
   await writeUsers(users);
 
+  const firebaseSync = await upsertFirebaseUserFromLocal(user);
+
   return {
     status: 201,
     body: {
       message: "Register success",
       user: sanitizeUser(user),
+      firebaseSync,
     },
     user,
   };
 }
 
-async function loginWithPassword(usernameRaw, passwordRaw) {
-  const username = String(usernameRaw || "").trim();
+async function loginWithPassword(identifierRaw, passwordRaw) {
+  const identifier = normalizeIdentifier(identifierRaw);
   const password = String(passwordRaw || "").trim();
 
-  if (!username || !password) {
-    return { status: 400, body: { message: "Username and password are required" } };
+  if (!identifier || !password) {
+    return { status: 400, body: { message: "Email/phone and password are required" } };
   }
 
   const users = await readUsers();
-  const usernameLower = username.toLowerCase();
-  const user = users.find((u) => u.usernameLower === usernameLower);
+  const identifierLower = identifier.toLowerCase();
+  const user = users.find((u) => getUserIdentifierLower(u) === identifierLower);
   if (!user) {
-    return { status: 401, body: { message: "Invalid username or password" } };
+    return { status: 401, body: { message: "Invalid email/phone or password" } };
   }
 
   if (!user.passwordHash) {
@@ -100,7 +147,7 @@ async function loginWithPassword(usernameRaw, passwordRaw) {
 
   const ok = await bcrypt.compare(password, user.passwordHash);
   if (!ok) {
-    return { status: 401, body: { message: "Invalid username or password" } };
+    return { status: 401, body: { message: "Invalid email/phone or password" } };
   }
 
   return {
@@ -146,12 +193,17 @@ async function loginWithFirebaseToken(idTokenRaw, expectedProvider) {
 
   const users = await readUsers();
   let user = users.find((u) => u.firebaseUid === firebaseUid);
+  const oauthDisplayName = String(decodedToken.name || "").trim();
+  const oauthIdentifier = decodedToken.email ? String(decodedToken.email).toLowerCase() : null;
 
   if (!user) {
     const username = buildOAuthUsername(users, decodedToken);
     user = {
       id: randomUUID(),
+      identifier: oauthIdentifier,
+      identifierLower: oauthIdentifier,
       username,
+      displayName: oauthDisplayName || username,
       usernameLower: username.toLowerCase(),
       authProvider,
       firebaseUid,
@@ -161,6 +213,13 @@ async function loginWithFirebaseToken(idTokenRaw, expectedProvider) {
     users.push(user);
   } else {
     user.authProvider = authProvider;
+    if (oauthDisplayName) {
+      user.displayName = oauthDisplayName;
+    }
+    if (oauthIdentifier) {
+      user.identifier = oauthIdentifier;
+      user.identifierLower = oauthIdentifier;
+    }
     user.email = decodedToken.email || user.email || null;
   }
 

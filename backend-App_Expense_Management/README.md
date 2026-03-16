@@ -4,10 +4,11 @@
 
 This backend currently supports:
 
-- Username/password auth with session cookie
+- Email/phone + password auth with session cookie
 - Google login via `POST /auth/google`
 - Facebook login via `POST /auth/facebook`
 - Generic Firebase OAuth login via `POST /auth/firebase`
+- Auto upsert registered form users to Firebase Auth Users (best effort)
 
 ## Quick Start
 
@@ -26,8 +27,8 @@ npm run dev
 
 ## API
 
-- `POST /auth/register` with body `{ "username": "...", "password": "..." }`
-- `POST /auth/login` with body `{ "username": "...", "password": "..." }`
+- `POST /auth/register` with body `{ "identifier": "email-or-phone", "password": "..." }`
+- `POST /auth/login` with body `{ "identifier": "email-or-phone", "password": "..." }`
 - `POST /auth/google` with body `{ "idToken": "FIREBASE_ID_TOKEN" }`
 - `POST /auth/facebook` with body `{ "idToken": "FIREBASE_ID_TOKEN" }`
 - `POST /auth/firebase` with body `{ "idToken": "FIREBASE_ID_TOKEN" }`
@@ -70,3 +71,4 @@ npm run dev
 
 - This project intentionally uses session cookie only (no custom JWT refresh flow).
 - OAuth accounts do not use local password in backend.
+- `POST /auth/register` now includes `firebaseSync` in response body to indicate Firebase upsert status.

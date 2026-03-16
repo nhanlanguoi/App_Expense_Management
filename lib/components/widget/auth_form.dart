@@ -38,6 +38,16 @@ class _AuthFormState extends State<AuthForm> {
 
   bool _isLoading = false;
 
+  bool _looksLikeEmailOrPhone(String value) {
+    final v = value.trim();
+    final emailRegex = RegExp(r'^[^\s@]+@[^\s@]+\.[^\s@]+$');
+    if (emailRegex.hasMatch(v)) {
+      return true;
+    }
+    final digits = v.replaceAll(RegExp(r'\D'), '');
+    return digits.length >= 9 && digits.length <= 11;
+  }
+
   String _toUserMessage(Object error) {
     final raw = error.toString();
     if (raw.contains('SocketException') || raw.contains('SocketConnection')) {
@@ -111,11 +121,11 @@ class _AuthFormState extends State<AuthForm> {
               ],
               textbox(
                 keyboardType: TextInputType.emailAddress,
-                label: 'Email hoặc Số điện thoại',
+                label: 'Email hoặc số điện thoại',
                 controller: _identifierController,
                 prefixIcon:
-                const Icon(Icons.mail, color: Colors.grey),
-                hintText: 'moi@example.com',
+                const Icon(Icons.alternate_email, color: Colors.grey),
+                hintText: 'name@gmail.com hoặc 0987654321',
               ),
               SizedBox(height: _heightMode),
 
@@ -242,17 +252,28 @@ class _AuthFormState extends State<AuthForm> {
                   try {
                     Users? user;
                     if (isLogin) {
+                      if (!_looksLikeEmailOrPhone(_identifierController.text)) {
+                        throw Exception('Vui lòng nhập đúng email hoặc số điện thoại');
+                      }
                       user = await AuthService().login(
-                        _identifierController.text,
+                        _identifierController.text.trim(),
                         _passwordController.text,
                       );
                     } else {
+                      final identifier = _identifierController.text.trim();
+                      if (identifier.isEmpty) {
+                        throw Exception('Vui lòng nhập email hoặc số điện thoại');
+                      }
+                      if (!_looksLikeEmailOrPhone(identifier)) {
+                        throw Exception('Email hoặc số điện thoại không hợp lệ');
+                      }
                       if (_passwordController.text != _confirmPasswordController.text) {
                         throw Exception('Mật khẩu xác nhận không khớp');
                       }
                       user = await AuthService().register(
-                        username: _nameController.text.trim(),
+                        identifier: identifier,
                         password: _passwordController.text,
+                        displayName: _nameController.text.trim(),
                       );
                     }
                     await _goToMainIfUser(user);
