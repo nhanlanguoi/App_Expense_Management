@@ -181,6 +181,46 @@ class AuthService {
     await _firebaseAuth.sendPasswordResetEmail(email: email.trim());
   }
 
+  // Legacy OTP helpers are kept for compatibility with older screens.
+  Future<Map<String, dynamic>> requestEmailOtp({
+    required String email,
+    required String purpose,
+  }) {
+    return _authApi.requestEmailOtp(email: email, purpose: purpose);
+  }
+
+  Future<Users?> verifyRegisterOtp({
+    required String email,
+    required String code,
+    required String password,
+    String? displayName,
+  }) async {
+    final response = await _authApi.verifyRegisterOtp(
+      email: email,
+      code: code,
+      password: password,
+      displayName: displayName,
+    );
+    final userMap = response['user'] as Map<String, dynamic>?;
+    if (userMap == null) {
+      return null;
+    }
+    currentUser = Users.fromApi(userMap);
+    return currentUser;
+  }
+
+  Future<void> verifyResetOtp({
+    required String email,
+    required String code,
+    required String newPassword,
+  }) async {
+    await _authApi.verifyResetOtp(
+      email: email,
+      code: code,
+      newPassword: newPassword,
+    );
+  }
+
   Future<void> logout() async {
     try {
       await _authApi.logout();
