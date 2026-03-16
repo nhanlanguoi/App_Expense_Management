@@ -63,7 +63,7 @@ class _MainLayoutState extends State<MainLayout> {
             },
           );
         },
-        backgroundColor: Colors.blueAccent,
+        backgroundColor: AppColors.background,
         shape: const CircleBorder(),
         child: Icon(Icons.add, color: Colors.white, size: Responsive.w(30)),
       ),

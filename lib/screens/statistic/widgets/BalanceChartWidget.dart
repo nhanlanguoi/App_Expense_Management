@@ -59,7 +59,7 @@ class _BalanceChartWidgetState extends State<BalanceChartWidget> {
           color: isSelected ? Colors.white : Colors.white,
           borderRadius: BorderRadius.circular(Responsive.w(12)),
           border: Border.all(
-            color: isSelected ? Colors.blue : Colors.grey.withValues(alpha: 0.3),
+            color: isSelected ? AppColors.background : Colors.grey.withValues(alpha: 0.3),
             width: Responsive.w(1),
           ),
         ),
@@ -75,7 +75,7 @@ class _BalanceChartWidgetState extends State<BalanceChartWidget> {
               ),
             ),
             if (isSelected)
-              Icon(Icons.check, color: Colors.blue, size: Responsive.w(22)),
+              Icon(Icons.check, color: AppColors.background, size: Responsive.w(22)),
           ],
         ),
       ),
@@ -225,9 +225,9 @@ class _BalanceChartWidgetState extends State<BalanceChartWidget> {
               padding: EdgeInsets.all(Responsive.w(15)),
               margin: EdgeInsets.only(bottom: Responsive.h(15)),
               decoration: BoxDecoration(
-                color: Colors.blue.withOpacity(0.05),
+                color: AppColors.floor_background,
                 borderRadius: BorderRadius.circular(Responsive.w(15)),
-                border: Border.all(color: Colors.blue.withOpacity(0.2)),
+                border: Border.all(color: AppColors.background.withValues(alpha: 0.3)),
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -354,7 +354,7 @@ class _BalanceChartWidgetState extends State<BalanceChartWidget> {
                           return FlSpot(entry.key.toDouble(), entry.value['balance']);
                         }).toList(),
                         isCurved: false,
-                        color: Colors.blue,
+                        color: AppColors.background,
                         barWidth: Responsive.w(3),
                         isStrokeCapRound: true,
                         dotData: FlDotData(
@@ -364,9 +364,9 @@ class _BalanceChartWidgetState extends State<BalanceChartWidget> {
 
                             return FlDotCirclePainter(
                               radius: Responsive.w(isSelected ? 8 : 5),
-                              color: isSelected ? Colors.blue : Colors.white,
+                              color: isSelected ? AppColors.background : Colors.white,
                               strokeWidth: Responsive.w(isSelected ? 3 : 2),
-                              strokeColor: Colors.blue,
+                              strokeColor: AppColors.background,
                             );
                           },
                         ),
@@ -391,7 +391,7 @@ class _BalanceChartWidgetState extends State<BalanceChartWidget> {
                   width: Responsive.w(_currentPage == index ? 16 : 6),
                   height: Responsive.h(6),
                   decoration: BoxDecoration(
-                    color: _currentPage == index ? Colors.blue : Colors.grey[300],
+                    color: _currentPage == index ? AppColors.background : Colors.grey[300],
                     borderRadius: BorderRadius.circular(Responsive.w(6)),
                   ),
                 );

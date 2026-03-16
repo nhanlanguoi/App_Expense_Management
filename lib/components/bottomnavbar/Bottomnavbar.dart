@@ -1,16 +1,21 @@
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
+import 'package:expense_management/configs/theme/color.dart';
 import 'package:flutter/material.dart';
 
 class Bottomnavbar extends StatelessWidget {
   final List<IconData> listicon;
   final int activeIndex;
   final Function(int) onTap;
+  final Color activeColor;
+  final Color inactiveColor;
 
   const Bottomnavbar({
     super.key,
     required this.listicon,
     required this.activeIndex,
     required this.onTap,
+    this.activeColor = AppColors.background,
+    this.inactiveColor = Colors.grey,
   });
 
   @override
@@ -21,7 +26,7 @@ class Bottomnavbar extends StatelessWidget {
         return Icon(
           listicon[index],
           size: 24,
-          color: isActive ? Colors.blue : Colors.grey,
+          color: isActive ? activeColor : inactiveColor,
         );
       },
       activeIndex: activeIndex,

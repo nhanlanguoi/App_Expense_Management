@@ -80,13 +80,13 @@ class _CharacterState extends State<Character> {
                           Container(
                             padding: EdgeInsets.all(Responsive.w(4)),
                             decoration: const BoxDecoration(
-                              color: Colors.blue,
+                              color: AppColors.background,
                               shape: BoxShape.circle,
                             ),
                             child: CircleAvatar(
                               radius: Responsive.w(25),
                               backgroundColor: AppColors.floor_background,
-                              child: Icon(Icons.person, size: Responsive.w(30), color: Colors.blueAccent),
+                              child: Icon(Icons.person, size: Responsive.w(30), color: AppColors.background),
                             ),
                           ),
                           SizedBox(width: Responsive.w(15)),
@@ -136,7 +136,7 @@ class _CharacterState extends State<Character> {
                 SettingItem(
                   icon: Icons.language,
                   title: "profile.language".tr(),
-                  iconColor: Colors.blueAccent,
+                  iconColor: AppColors.background,
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => const LanguageSettingScreen()));
                   },
@@ -145,7 +145,7 @@ class _CharacterState extends State<Character> {
                 SettingItem(
                   icon: Icons.account_balance_wallet,
                   title: "profile.balance_setup".tr(),
-                  iconColor: Colors.blueAccent,
+                  iconColor: AppColors.background,
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => const BalanceSettingScreen()));
                   },

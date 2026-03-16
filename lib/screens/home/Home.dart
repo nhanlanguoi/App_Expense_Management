@@ -9,6 +9,7 @@ import 'package:expense_management/components/cardshowvalue/CardManagerExpense.d
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:expense_management/configs/theme/color.dart';
 import 'package:expense_management/configs/theme/icon.dart';
+import '../../core/data/service/authservice.dart';
 import '../../core/data/service/transactionservice.dart';
 import '../../core/data/service/walletservice.dart';
 import '../../core/model/users.dart';
@@ -137,7 +138,7 @@ class _MyHomeState extends State<MyHome> {
       child: Column(
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Text(
                 "Chi tiêu tháng này",
@@ -147,38 +148,36 @@ class _MyHomeState extends State<MyHome> {
                   fontFamily: 'BeVietnamPro',
                 ),
               ),
-              Text(
-                "Tháng $_currentMonth",
-                style: TextStyle(
-                  fontSize: Responsive.sp(14),
-                  fontWeight: FontWeight.w600,
-                  fontFamily: 'BeVietnamPro',
-                  color: const Color(0xFF7B3FE4),
-                ),
-              ),
             ],
           ),
           ValueListenableBuilder(
             valueListenable: Hive.box('transactions').listenable(),
-            builder: (context, box, _) {
-              final myWallets = WalletService().getWallets(widget.users.email);
-              double monthlyExpense = 0;
+            builder: (context, transBox, _) {
+              return ValueListenableBuilder(
+                valueListenable: Hive.box('users').listenable(),
+                builder: (context, userBox, _) {
+                  final myWallets = WalletService().getWallets(widget.users.email);
+                  double monthlyExpense = 0;
+                  final updatedUser = AuthService.instance.currentUser;
+                  double currentTotalBalance = updatedUser?.totalBalance ?? widget.users.totalBalance;
 
-              for (var wallet in myWallets) {
-                final transList = TransactionService().getTransactionsByWallet(wallet.id!);
-                for (var t in transList) {
-                  if (t.type == 'expense' &&
-                      t.date.month == _currentMonth &&
-                      t.date.year == _currentYear) {
-                    monthlyExpense += t.amount;
+                  for (var wallet in myWallets) {
+                    final transList = TransactionService().getTransactionsByWallet(wallet.id!);
+                    for (var t in transList) {
+                      if (t.type == 'expense' &&
+                          t.date.month == _currentMonth &&
+                          t.date.year == _currentYear) {
+                        monthlyExpense += t.amount;
+                      }
+                    }
                   }
-                }
-              }
 
-              return MonthlySpendingCard(
-                collapsed: _collapsed,
-                spent: monthlyExpense,
-                total: widget.users.totalBalance,
+                  return MonthlySpendingCard(
+                    collapsed: _collapsed,
+                    spent: monthlyExpense,
+                    total: currentTotalBalance,
+                  );
+                },
               );
             },
           ),

@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-
+import 'package:hive_flutter/hive_flutter.dart';
 import '../../network/auth_api.dart';
 import '../../model/users.dart';
 
@@ -14,6 +14,7 @@ class AuthService {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
 
+  final userBox = Hive.box('users');
   Users? currentUser;
 
   Future<Users?> login(String identifier, String password) async {
@@ -43,6 +44,7 @@ class AuthService {
     currentUser = Users.fromApi(userMap);
     return currentUser;
   }
+
 
   Future<Users?> loginWithGoogle() async {
     // Clear stale local sessions to avoid reusing old cached tokens.
@@ -283,6 +285,19 @@ class AuthService {
     } catch (_) {}
 
     currentUser = null;
+  }
+
+
+  Future<void> updateUserBalance(String email, double newBalance) async {
+    var userData = userBox.get(email);
+    if (userData != null) {
+      final userMap = Map<String, dynamic>.from(userData);
+      userMap['total_balance'] = newBalance;
+      await userBox.put(email, userMap);
+      if (currentUser?.email == email) {
+        currentUser = Users.fromMap(userMap);
+      }
+    }
   }
 
 }

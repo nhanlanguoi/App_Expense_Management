@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class AppColors {
-  static const Color background = Color(0xFFFCF6FD);
+  static const Color background = Color(0xFF756AE4);
   static final Color? floor_background = Color(0xFFFCF6FD);
   static const Gradient gradientcard = LinearGradient(
     colors: [Color(0xFF9C61E7), Color(0xFF756AE4),],
