@@ -22,6 +22,21 @@ function normalizeIdentifier(raw) {
   return normalizePhoneToE164VN(value);
 }
 
+function normalizeLoginKey(raw) {
+  const value = String(raw || "").trim();
+  if (!value) {
+    return null;
+  }
+
+  const identifier = normalizeIdentifier(value);
+  if (identifier) {
+    return identifier.toLowerCase();
+  }
+
+  // Fallback for legacy/local username login (e.g. admin test account).
+  return value.toLowerCase();
+}
+
 function getUserIdentifier(user) {
   return String(user.identifier || user.username || "").trim();
 }
@@ -124,18 +139,19 @@ async function registerWithPassword(identifierRaw, passwordRaw, displayNameRaw) 
 }
 
 async function loginWithPassword(identifierRaw, passwordRaw) {
-  const identifier = normalizeIdentifier(identifierRaw);
+  const loginKey = normalizeLoginKey(identifierRaw);
   const password = String(passwordRaw || "").trim();
 
-  if (!identifier || !password) {
-    return { status: 400, body: { message: "Email/phone and password are required" } };
+  if (!loginKey || !password) {
+    return { status: 400, body: { message: "Email/phone/username and password are required" } };
   }
 
   const users = await readUsers();
-  const identifierLower = identifier.toLowerCase();
-  const user = users.find((u) => getUserIdentifierLower(u) === identifierLower);
+  const user = users.find(
+    (u) => getUserIdentifierLower(u) === loginKey || String(u.usernameLower || "") === loginKey,
+  );
   if (!user) {
-    return { status: 401, body: { message: "Invalid email/phone or password" } };
+    return { status: 401, body: { message: "Invalid email/phone/username or password" } };
   }
 
   if (!user.passwordHash) {
@@ -147,7 +163,7 @@ async function loginWithPassword(identifierRaw, passwordRaw) {
 
   const ok = await bcrypt.compare(password, user.passwordHash);
   if (!ok) {
-    return { status: 401, body: { message: "Invalid email/phone or password" } };
+    return { status: 401, body: { message: "Invalid email/phone/username or password" } };
   }
 
   return {
@@ -158,6 +174,31 @@ async function loginWithPassword(identifierRaw, passwordRaw) {
     },
     user,
   };
+}
+
+async function ensureDefaultAdminAccount() {
+  const users = await readUsers();
+  const existed = users.find((u) => String(u.usernameLower || "") === "admin");
+  if (existed) {
+    return false;
+  }
+
+  const passwordHash = await bcrypt.hash("123", 10);
+  users.push({
+    id: randomUUID(),
+    identifier: null,
+    identifierLower: null,
+    username: "admin",
+    usernameLower: "admin",
+    displayName: "Admin",
+    email: null,
+    passwordHash,
+    createdAt: new Date().toISOString(),
+    seedDataReady: true,
+  });
+
+  await writeUsers(users);
+  return true;
 }
 
 async function loginWithFirebaseToken(idTokenRaw, expectedProvider) {
@@ -270,4 +311,5 @@ module.exports = {
   loginWithPassword,
   loginWithFirebaseToken,
   getCurrentUserById,
+  ensureDefaultAdminAccount,
 };

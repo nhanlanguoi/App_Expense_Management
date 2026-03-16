@@ -48,6 +48,17 @@ class _AuthFormState extends State<AuthForm> {
     return digits.length >= 9 && digits.length <= 11;
   }
 
+  bool _looksLikeLoginIdentifier(String value) {
+    final v = value.trim();
+    if (v.isEmpty) {
+      return false;
+    }
+    if (_looksLikeEmailOrPhone(v)) {
+      return true;
+    }
+    return RegExp(r'^[a-zA-Z0-9_]{3,32}$').hasMatch(v);
+  }
+
   bool _looksLikeEmail(String value) {
     final v = value.trim();
     return RegExp(r'^[^\s@]+@[^\s@]+\.[^\s@]+$').hasMatch(v);
@@ -343,7 +354,9 @@ class _AuthFormState extends State<AuthForm> {
                       Users? user;
                       if (isLogin) {
                         if (!_looksLikeEmailOrPhone(_identifierController.text)) {
-                          throw Exception('Vui lòng nhập đúng email hoặc số điện thoại');
+                            if (!_looksLikeLoginIdentifier(_identifierController.text)) {
+                              throw Exception('Vui lòng nhập email, số điện thoại hoặc username');
+                            }
                         }
                         final identifier = _identifierController.text.trim();
                         if (_looksLikeEmail(identifier)) {
