@@ -13,8 +13,8 @@ async function startServer() {
     console.log("Firebase Admin is not configured yet");
   }
 
-  app.listen(env.port, () => {
-    console.log(`Auth server is running at http://localhost:${env.port}`);
+  app.listen(env.port, "0.0.0.0", () => {
+    console.log(`Auth server is running on port ${env.port} (host: 0.0.0.0)`);
   });
 }
 

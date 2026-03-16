@@ -1,5 +1,5 @@
 class Users {
-  final int? id;
+  final String? id;
   final String username;
   final String email;
   final String password;
@@ -26,9 +26,19 @@ class Users {
   }
 
   factory Users.fromMap(Map<String, dynamic> json) => Users(
+    id: json['id']?.toString(),
     username: json['username'],
     email: json['email'],
     password: json['password'],
+    totalBalance: (json['total_balance'] ?? 0).toDouble(),
+    avatarUrl: json['avatar_url'],
+  );
+
+  factory Users.fromApi(Map<String, dynamic> json) => Users(
+    id: json['id']?.toString(),
+    username: (json['username'] ?? '').toString(),
+    email: (json['email'] ?? json['firebaseUid'] ?? json['username'] ?? '').toString(),
+    password: '',
     totalBalance: (json['total_balance'] ?? 0).toDouble(),
     avatarUrl: json['avatar_url'],
   );

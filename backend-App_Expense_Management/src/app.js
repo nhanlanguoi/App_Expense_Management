@@ -7,6 +7,11 @@ const authRoutes = require("./routes/auth-routes");
 function createApp() {
   const app = express();
 
+  app.use((req, _res, next) => {
+    console.log(`[${new Date().toISOString()}] ${req.method} ${req.originalUrl}`);
+    next();
+  });
+
   app.use(
     cors({
       origin: env.corsOrigin,

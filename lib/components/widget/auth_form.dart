@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:expense_management/core/utils/responsive.dart';
-import 'package:expense_management/screens/home/Home.dart';
 import '../../core/data/service/authservice.dart';
 import '../../core/model/users.dart';
 import '../../core/utils/enum/authtype.dart';
@@ -38,6 +37,42 @@ class _AuthFormState extends State<AuthForm> {
   final _formKey = GlobalKey<FormState>();
 
   bool _isLoading = false;
+
+  String _toUserMessage(Object error) {
+    final raw = error.toString();
+    if (raw.contains('SocketException') || raw.contains('SocketConnection')) {
+      if (raw.contains('10.0.2.2')) {
+        return 'Khong ket noi duoc backend. 10.0.2.2 chi dung cho emulator. Neu dung may that, hay chay app voi --dart-define=API_BASE_URL=http://<LAN_IP>:3000';
+      }
+      return 'Khong ket noi duoc backend NodeJS. Hay kiem tra server dang chay va API_BASE_URL.';
+    }
+    if (raw.contains('sign_in_failed') &&
+        (raw.contains('Api10') || raw.contains('ApiException: 10'))) {
+      return 'Google Sign-In chưa cấu hình đúng SHA-1/Google Services. Hãy cập nhật Firebase rồi build lại app.';
+    }
+    return raw.replaceFirst('Exception: ', '');
+  }
+
+  Future<void> _goToMainIfUser(Users? user) async {
+    if (!mounted) {
+      return;
+    }
+    if (user == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Đăng nhập thất bại. Vui lòng thử lại.'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => MainLayout(user: user),
+      ),
+    );
+  }
 
   @override
   void dispose() {
@@ -204,42 +239,37 @@ class _AuthFormState extends State<AuthForm> {
                   setState(() {
                     _isLoading = true;
                   });
-                  Users? user = await AuthService().login(
-                      _identifierController.text,
-                      _passwordController.text
-                  );
-                  await Future.delayed(const Duration(seconds: 2));
-                  if (mounted) {
-                    setState(() {
-                      _isLoading = false;
-                    });
+                  try {
+                    Users? user;
                     if (isLogin) {
-
-                      if (user != null) {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => MainLayout(user: user,),
-                          ),
-                        );
-
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text("Sai tài khoản hoặc mật khẩu! (Thử: admin / 123)"),
-                            backgroundColor: Colors.red,
-                          ),
-                        );
-                      }
+                      user = await AuthService().login(
+                        _identifierController.text,
+                        _passwordController.text,
+                      );
                     } else {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => MainLayout(
-                              user: Users.testUser()
-                          ),
+                      if (_passwordController.text != _confirmPasswordController.text) {
+                        throw Exception('Mật khẩu xác nhận không khớp');
+                      }
+                      user = await AuthService().register(
+                        username: _nameController.text.trim(),
+                        password: _passwordController.text,
+                      );
+                    }
+                    await _goToMainIfUser(user);
+                  } catch (e) {
+                    if (mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(_toUserMessage(e)),
+                          backgroundColor: Colors.red,
                         ),
                       );
+                    }
+                  } finally {
+                    if (mounted) {
+                      setState(() {
+                        _isLoading = false;
+                      });
                     }
                   }
                 },
@@ -296,6 +326,31 @@ class _AuthFormState extends State<AuthForm> {
                 color: const Color(0xFFDB4437),
                 size: Responsive.w(20),
               ),
+              onPressed: () async {
+                if (_isLoading) return;
+                setState(() {
+                  _isLoading = true;
+                });
+                try {
+                  final user = await AuthService().loginWithGoogle();
+                  await _goToMainIfUser(user);
+                } catch (e) {
+                  if (mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(_toUserMessage(e)),
+                        backgroundColor: Colors.red,
+                      ),
+                    );
+                  }
+                } finally {
+                  if (mounted) {
+                    setState(() {
+                      _isLoading = false;
+                    });
+                  }
+                }
+              },
             ),
             custombutton(
               label: "Facebook",
@@ -316,6 +371,31 @@ class _AuthFormState extends State<AuthForm> {
                 color: const Color(0xFF1877F2),
                 size: Responsive.w(20),
               ),
+              onPressed: () async {
+                if (_isLoading) return;
+                setState(() {
+                  _isLoading = true;
+                });
+                try {
+                  final user = await AuthService().loginWithFacebook();
+                  await _goToMainIfUser(user);
+                } catch (e) {
+                  if (mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(_toUserMessage(e)),
+                        backgroundColor: Colors.red,
+                      ),
+                    );
+                  }
+                } finally {
+                  if (mounted) {
+                    setState(() {
+                      _isLoading = false;
+                    });
+                  }
+                }
+              },
             ),
           ],
         ),

@@ -26,6 +26,7 @@ class _MainLayoutState extends State<MainLayout> {
 
   @override
   Widget build(BuildContext context) {
+    Responsive.init(context);
 
     final List<Widget> _screens = [
       MyHome(users: widget.user,),
