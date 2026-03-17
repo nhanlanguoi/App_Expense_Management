@@ -28,6 +28,8 @@ class MyHome extends StatefulWidget {
 class _MyHomeState extends State<MyHome> {
   final ScrollController _scrollController = ScrollController();
   bool _collapsed = false;
+  int _selectedMonth = DateTime.now().month;
+  int _selectedYear = DateTime.now().year;
 
   @override
   void initState() {
@@ -130,15 +132,12 @@ class _MyHomeState extends State<MyHome> {
   }
 
   Widget _monlySpending() {
-    int _currentMonth = DateTime.now().month;
-    int _currentYear = DateTime.now().year;
-
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: Responsive.w(15)),
       child: Column(
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
                 "Chi tiêu tháng này",
@@ -146,6 +145,59 @@ class _MyHomeState extends State<MyHome> {
                   fontSize: Responsive.sp(16),
                   fontWeight: FontWeight.bold,
                   fontFamily: 'BeVietnamPro',
+                ),
+              ),
+              PopupMenuButton<int>(
+                initialValue: _selectedMonth,
+                onSelected: (month) {
+                  setState(() {
+                    _selectedMonth = month;
+                  });
+                },
+                itemBuilder: (context) {
+                  return List.generate(12, (index) => index + 1)
+                      .map(
+                        (month) => PopupMenuItem<int>(
+                          value: month,
+                          child: Text(
+                            'Tháng $month',
+                            style: TextStyle(
+                              fontFamily: 'BeVietnamPro',
+                              fontSize: Responsive.sp(14),
+                            ),
+                          ),
+                        ),
+                      )
+                      .toList();
+                },
+                child: Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: Responsive.w(10),
+                    vertical: Responsive.h(6),
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(Responsive.r(12)),
+                  ),
+                  child: Row(
+                    children: [
+                      Text(
+                        'Tháng $_selectedMonth',
+                        style: TextStyle(
+                          fontFamily: 'BeVietnamPro',
+                          fontSize: Responsive.sp(14),
+                          color: const Color(0xFF7B3FE4),
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      SizedBox(width: Responsive.w(2)),
+                      Icon(
+                        Icons.keyboard_arrow_down_rounded,
+                        color: const Color(0xFF7B3FE4),
+                        size: Responsive.sp(18),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],
@@ -165,8 +217,8 @@ class _MyHomeState extends State<MyHome> {
                     final transList = TransactionService().getTransactionsByWallet(wallet.id!);
                     for (var t in transList) {
                       if (t.type == 'expense' &&
-                          t.date.month == _currentMonth &&
-                          t.date.year == _currentYear) {
+                          t.date.month == _selectedMonth &&
+                          t.date.year == _selectedYear) {
                         monthlyExpense += t.amount;
                       }
                     }
