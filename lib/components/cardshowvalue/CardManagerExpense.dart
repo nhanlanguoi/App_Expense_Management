@@ -44,20 +44,21 @@ class _CardmanagerexpenseState extends State<Cardmanagerexpense> {
         setState(() => _isPressed = false);
       },
       child: AnimatedScale(
-        scale: _isPressed ? 0.96 : 1.0,
+        scale: _isPressed ? 0.985 : 1.0,
         duration: const Duration(milliseconds: 100),
         curve: Curves.easeInOut,
 
         child: Container(
           decoration: BoxDecoration(
-            color: const Color(0xFFF4F6F8),
-            borderRadius: BorderRadius.circular(Responsive.r(15)),
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(Responsive.r(16)),
+            border: Border.all(color: const Color(0xFFEAECEF), width: Responsive.w(1.2)),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withValues(alpha: 0.05),
-                blurRadius: 20,
-                spreadRadius: 10,
-                offset: const Offset(4, 4),
+                color: Colors.black.withValues(alpha: 0.03),
+                blurRadius: Responsive.r(10),
+                spreadRadius: 0,
+                offset: Offset(0, Responsive.h(3)),
               ),
             ],
           ),
@@ -66,9 +67,8 @@ class _CardmanagerexpenseState extends State<Cardmanagerexpense> {
             color: Colors.transparent,
             child: Ink(
               decoration: BoxDecoration(
-                color: Colors.grey[150],
-                borderRadius: BorderRadius.circular(Responsive.r(15)),
-                border: Border.all(color: Colors.grey.withValues(alpha: 0.1), width: 2),
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(Responsive.r(16)),
               ),
               child: InkWell(
                 onTap: () {
@@ -76,90 +76,104 @@ class _CardmanagerexpenseState extends State<Cardmanagerexpense> {
                     Future.delayed(const Duration(milliseconds: 150), widget.onPressed);
                   }
                 },
-                borderRadius: BorderRadius.circular(Responsive.r(15)),
+                borderRadius: BorderRadius.circular(Responsive.r(16)),
                 splashColor: widget.Iconcolor?.withValues(alpha: 0.2) ??
                     Colors.orange[200],
                 highlightColor: widget.Iconcolor?.withValues(alpha: 0.1) ??
                     Colors.orange[100],
 
                 child: Padding(
-                  padding: const EdgeInsets.all(0),
+                  padding: EdgeInsets.symmetric(horizontal: Responsive.w(12), vertical: Responsive.h(10)),
                   child: Column(
                     children: [
-                      Padding(
-                        padding: EdgeInsetsGeometry.all(10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: Row(
                               children: [
                                 Container(
+                                  width: Responsive.r(44),
+                                  height: Responsive.r(44),
                                   decoration: BoxDecoration(
-                                    color: widget.Iconcolor?.withValues(alpha: 0.2) ??
-                                        Colors.orange[200],
-                                    borderRadius: BorderRadius.circular(Responsive.r(10)),
+                                    color: widget.Iconcolor?.withValues(alpha: 0.18) ?? Colors.orange[100],
+                                    borderRadius: BorderRadius.circular(Responsive.r(12)),
                                   ),
-                                  child: Padding(
-                                    padding: EdgeInsets.all(5),
-                                    child: Icon(
-                                      widget.Icon ?? Icons.fastfood,
-                                      size: 30,
-                                      color: widget.Iconcolor ?? Colors.orange,
-                                    ),
+                                  child: Icon(
+                                    widget.Icon ?? Icons.fastfood,
+                                    size: Responsive.sp(24),
+                                    color: widget.Iconcolor ?? Colors.orange,
                                   ),
                                 ),
                                 SizedBox(width: Responsive.w(10)),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      widget.title ?? "Ăn uống",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: Responsive.sp(16),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        widget.title ?? "Ăn uống",
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                          fontFamily: 'BeVietnamPro',
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: Responsive.sp(15),
+                                          color: const Color(0xFF1D2939),
+                                        ),
                                       ),
-                                    ),
-                                    Text(
-                                      (widget.total ?? "15"),
-                                      style: TextStyle(fontSize: Responsive.sp(14)),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                Text(
-                                  (Format.formattext(widget.allmoney?? "232.43243324.234"))+" ₫",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: Responsive.sp(16),
+                                      SizedBox(height: Responsive.h(2)),
+                                      Text(
+                                        (widget.total ?? "15"),
+                                        style: TextStyle(
+                                          fontFamily: 'BeVietnamPro',
+                                          fontSize: Responsive.sp(12),
+                                          fontWeight: FontWeight.w500,
+                                          color: const Color(0xFF98A2B3),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                                Text(
-                                  "${((widget.percen ?? 0.23) * 100).toInt()}%",
-                                  style: TextStyle(fontSize: Responsive.sp(14), color: Colors.red),
-                                ),
                               ],
                             ),
-                          ],
-                        ),
+                          ),
+                          SizedBox(width: Responsive.w(8)),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Text(
+                                (Format.formattext(widget.allmoney ?? "0")) + " ₫",
+                                style: TextStyle(
+                                  fontFamily: 'BeVietnamPro',
+                                  fontWeight: FontWeight.w800,
+                                  fontSize: Responsive.sp(15),
+                                  color: const Color(0xFF1D2939),
+                                ),
+                              ),
+                              SizedBox(height: Responsive.h(2)),
+                              Text(
+                                "${((widget.percen ?? 0.23) * 100).toInt()}%",
+                                style: TextStyle(
+                                  fontFamily: 'BeVietnamPro',
+                                  fontSize: Responsive.sp(12),
+                                  fontWeight: FontWeight.w700,
+                                  color: const Color(0xFFF97066),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
+                      SizedBox(height: Responsive.h(10)),
                       Padding(
-                        padding: EdgeInsetsGeometry.only(
-                          left: 12,
-                          right: 12,
-                          top: 5,
-                          bottom: 15,
-                        ),
+                        padding: EdgeInsets.symmetric(horizontal: Responsive.w(2)),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(Responsive.r(10)),
                           child: LinearProgressIndicator(
                             value: widget.percen ?? 0.4,
-                            backgroundColor: Colors.grey[200],
+                            backgroundColor: const Color(0xFFEAECEF),
                             color: widget.Iconcolor ?? Colors.orange,
-                            minHeight: 8,
+                            minHeight: Responsive.h(6),
                           ),
                         ),
                       ),
