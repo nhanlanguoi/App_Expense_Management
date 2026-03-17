@@ -7,6 +7,8 @@ class Users {
   final double totalBalance;
   final double monthlySalary;
   final String? salaryLastCreditedMonth;
+  final double savingsBalance;
+  final String? balanceMonthKey;
 
   static double _safeDouble(dynamic value) {
     if (value is num) return value.toDouble();
@@ -23,6 +25,8 @@ class Users {
     this.totalBalance = 0,
     this.monthlySalary = 0,
     this.salaryLastCreditedMonth,
+    this.savingsBalance = 0,
+    this.balanceMonthKey,
   });
 
   factory Users.testUser() {
@@ -32,6 +36,7 @@ class Users {
       password: "123",
       totalBalance: 12000000,
       monthlySalary: 0,
+      savingsBalance: 0,
       avatarUrl: "assets/images/avatar_default.png",
     );
   }
@@ -44,6 +49,8 @@ class Users {
     totalBalance: _safeDouble(json['total_balance']),
     monthlySalary: _safeDouble(json['monthly_salary']),
     salaryLastCreditedMonth: json['salary_last_credited_month']?.toString(),
+    savingsBalance: _safeDouble(json['savings_balance']),
+    balanceMonthKey: json['balance_month_key']?.toString(),
     avatarUrl: json['avatar_url'],
   );
 
@@ -55,6 +62,8 @@ class Users {
     totalBalance: _safeDouble(json['total_balance']),
     monthlySalary: _safeDouble(json['monthly_salary']),
     salaryLastCreditedMonth: json['salary_last_credited_month']?.toString(),
+    savingsBalance: _safeDouble(json['savings_balance']),
+    balanceMonthKey: json['balance_month_key']?.toString(),
     avatarUrl: json['avatar_url'],
   );
 
@@ -66,6 +75,8 @@ class Users {
     'total_balance': totalBalance,
     'monthly_salary': monthlySalary,
     'salary_last_credited_month': salaryLastCreditedMonth,
+    'savings_balance': savingsBalance,
+    'balance_month_key': balanceMonthKey,
     'avatar_url': avatarUrl,
   };
 }

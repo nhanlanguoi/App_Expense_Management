@@ -1,54 +1,65 @@
-import 'package:expense_management/components/buttons/custombutton.dart';
-import 'package:expense_management/components/cardshowvalue/CardShowTotalofCard.dart';
+import 'package:expense_management/components/cardshowvalue/CardShowHistoryTrade.dart';
 import 'package:expense_management/components/widget/purple_header.dart';
-import 'package:expense_management/screens/home/Home.dart';
-import 'package:flutter/material.dart';
-import 'package:expense_management/screens/mainlayoutcontrol.dart';
-import 'package:hive/hive.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import '../../../components/cardshowvalue/CardShowHistoryTrade.dart';
-import '../../../configs/theme/icon.dart';
-import '../../../core/data/service/transactionservice.dart';
-import '../../../core/model/wallet.dart';
-import 'package:expense_management/screens/home/widgets/AddTransaction.dart';
-
-import '../../../core/utils/format.dart';
+import 'package:expense_management/configs/theme/icon.dart';
+import 'package:expense_management/core/data/service/transactionservice.dart';
+import 'package:expense_management/core/model/transactions.dart';
+import 'package:expense_management/core/model/users.dart';
+import 'package:expense_management/core/utils/format.dart';
 import 'package:expense_management/core/utils/responsive.dart';
+import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
-class categoryDetail extends StatefulWidget {
-  final Wallet wallet;
+class CategoryDetailScreen extends StatefulWidget {
+  final Users user;
+  final String categoryName;
+  final int categoryIconCode;
+  final Color headerColor;
+  final int month;
+  final int year;
 
-  const categoryDetail({super.key, required this.wallet});
+  const CategoryDetailScreen({
+    super.key,
+    required this.user,
+    required this.categoryName,
+    required this.categoryIconCode,
+    required this.headerColor,
+    required this.month,
+    required this.year,
+  });
 
   @override
-  State<categoryDetail> createState() => _categoryDetailState();
+  State<CategoryDetailScreen> createState() => _CategoryDetailScreenState();
 }
 
-class _categoryDetailState extends State<categoryDetail> {
+class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
   bool isSelectionMode = false;
-  List<String> selectedTransIds = [];
+  List<String> selectedTransIds = <String>[];
 
-  Color _getColor(String hexColor) {
-    try {
-      return Color(int.parse(hexColor.replaceAll('#', '0xff')));
-    } catch (e) {
-      return Colors.blue;
-    }
+  List<TransactionRecord> _categoryTransactions() {
+    final all = TransactionService().getAllUserTransactions(widget.user.email);
+    return all.where((t) {
+      return t.type == 'expense' &&
+          t.icon == widget.categoryIconCode.toString() &&
+          t.date.month == widget.month &&
+          t.date.year == widget.year;
+    }).toList();
   }
 
   @override
   Widget build(BuildContext context) {
-    final walletColor = _getColor(widget.wallet.color);
+    final iconData = IconData(widget.categoryIconCode, fontFamily: 'MaterialIcons');
+
     return Scaffold(
       body: Stack(
         children: [
-          PurpleHeader(height: 250, color: walletColor),
+          PurpleHeader(height: Responsive.h(235), color: widget.headerColor),
           SafeArea(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
+              padding: EdgeInsets.symmetric(horizontal: Responsive.w(16)),
               child: Column(
                 children: [
-                  SizedBox(height: Responsive.h(60),
+                  SizedBox(
+                    height: Responsive.h(54),
                     child: Stack(
                       alignment: Alignment.center,
                       children: [
@@ -68,240 +79,159 @@ class _categoryDetailState extends State<categoryDetail> {
                             icon: Icon(
                               isSelectionMode ? Icons.close : Icons.arrow_back,
                               color: Colors.white,
-                              size: 30,
+                              size: Responsive.sp(24),
                             ),
                           ),
                         ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    child: Column(
-                      children: [
-                        SizedBox(height: Responsive.h(25)),
                         Text(
-                          "Tổng chi tháng này",
+                          widget.categoryName,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: Responsive.sp(14),
-                            fontWeight: FontWeight.w500,
+                            fontSize: Responsive.sp(18),
+                            fontWeight: FontWeight.w800,
                             fontFamily: 'BeVietnamPro',
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
-                          child: FittedBox(
-                            fit: BoxFit.scaleDown,
-                            alignment: Alignment.center,
-                            child: Text(
-                              "${Format.formatnumber(widget.wallet.balance)} ₫",
-                              maxLines: 1,
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: Responsive.sp(40),
-                                fontWeight: FontWeight.w800,
-                                fontFamily: 'BeVietnamPro',
-                              ),
-                            ),
-                          ),
-                        ),
                       ],
                     ),
                   ),
+                  SizedBox(height: Responsive.h(16)),
+                  Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.symmetric(vertical: Responsive.h(12), horizontal: Responsive.w(14)),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.14),
+                      borderRadius: BorderRadius.circular(Responsive.r(16)),
+                      border: Border.all(color: Colors.white.withOpacity(0.25)),
+                    ),
+                    child: ValueListenableBuilder(
+                      valueListenable: Hive.box('transactions').listenable(),
+                      builder: (context, _, __) {
+                        final listTrans = _categoryTransactions();
+                        final totalExpense = listTrans.fold<double>(0, (sum, t) => sum + t.amount);
+
+                        return Column(
+                          children: [
+                            Text(
+                              'Tổng chi tháng ${widget.month}',
+                              style: TextStyle(
+                                color: Colors.white70,
+                                fontSize: Responsive.sp(13),
+                                fontWeight: FontWeight.w600,
+                                fontFamily: 'BeVietnamPro',
+                              ),
+                            ),
+                            SizedBox(height: Responsive.h(6)),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(iconData, color: Colors.white, size: Responsive.sp(18)),
+                                SizedBox(width: Responsive.w(6)),
+                                Text(
+                                  '${Format.formatnumber(totalExpense)} đ',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: Responsive.sp(28),
+                                    fontWeight: FontWeight.w800,
+                                    fontFamily: 'BeVietnamPro',
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        );
+                      },
+                    ),
+                  ),
+                  SizedBox(height: Responsive.h(14)),
                   Expanded(
                     child: ValueListenableBuilder(
                       valueListenable: Hive.box('transactions').listenable(),
-                      builder: (context, box, widgetUI) {
-                        final listTrans = TransactionService()
-                            .getTransactionsByWallet(widget.wallet.id!);
-                        double totalIncomeOfWallet = 0;
-                        double totalExpenseOfWallet = 0;
-                        for (var t in listTrans) {
-                          if (t.type == 'income') {
-                            totalIncomeOfWallet += t.amount;
-                          } else if (t.type == 'expense') {
-                            totalExpenseOfWallet += t.amount;
-                          }
-                        }
-                        double totalActive =
-                            totalIncomeOfWallet + totalExpenseOfWallet;
-                        double percentActive = widget.wallet.balance > 0
-                            ? (totalActive / widget.wallet.balance)
-                            : 0.0;
-                        return Column(
-                          children: [
-                            SizedBox(height: Responsive.h(40)),
-                            Cardshowtotalofcard(
-                              Background: Colors.white,
-                              total: listTrans.length.toString(),
-                              percen: percentActive,
-                              icon: AppIcons.getIconFromData(
-                                widget.wallet.icon,
+                      builder: (context, _, __) {
+                        final listTrans = _categoryTransactions();
+
+                        if (listTrans.isEmpty) {
+                          return Center(
+                            child: Text(
+                              'Chưa có giao dịch nào cho danh mục này trong tháng đã chọn.',
+                              style: TextStyle(
+                                fontFamily: 'BeVietnamPro',
+                                fontSize: Responsive.sp(13),
+                                color: const Color(0xFF98A2B3),
                               ),
-                              Iconcolor: walletColor,
-                              totalIncome: totalIncomeOfWallet,
-                              totalExpense: totalExpenseOfWallet,
+                              textAlign: TextAlign.center,
                             ),
-                            SizedBox(height: Responsive.h(20)),
-                            Row(
-                              spacing: 20,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                custombutton(
-                                  onPressed: () {
-                                    setState(() {
-                                      var backgroundColor = Colors.purple;
-                                    });
-                                  },
-                                  label: "Tất cả",
-                                  height: 30,
-                                  borderRadius: 30,
-                                  backgroundColor: Colors.purple[500],
-                                  textColor: Colors.white,
-                                ),
-                                if (isSelectionMode)
-                                  custombutton(
-                                    onPressed: () async {
-                                      if (selectedTransIds.isEmpty) return;
-                                      await TransactionService()
-                                          .deleteTransactions(selectedTransIds);
-                                      setState(() {
-                                        isSelectionMode = false;
-                                        selectedTransIds.clear();
-                                      });
-                                      ScaffoldMessenger.of(
-                                        context,
-                                      ).showSnackBar(
-                                        const SnackBar(
-                                          content: Text(
-                                            "Đã xóa giao dịch thành công!",
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                    label: "Xóa",
-                                    height: 30,
-                                    borderRadius: 30,
-                                    width: 100,
-                                    backgroundColor: Colors.red[500],
-                                    textColor: Colors.white,
-                                  ),
-                              ],
-                            ),
-                            SizedBox(height: Responsive.h(20)),
-                            Expanded(
-                              child: listTrans.isEmpty
-                                  ? const Center(
-                                      child: Text("Chưa có giao dịch nào."),
-                                    )
-                                  : Builder(
-                                      builder: (context) {
-                                        Map<String, List<dynamic>>
-                                        groupedTrans = {};
+                          );
+                        }
 
-                                        for (var t in listTrans) {
-                                          String dateString =
-                                              "${t.date.day}/${t.date.month}/${t.date.year}";
+                        final groupedTrans = <String, List<TransactionRecord>>{};
+                        for (final t in listTrans) {
+                          final dateString = '${t.date.day}/${t.date.month}/${t.date.year}';
+                          groupedTrans.putIfAbsent(dateString, () => <TransactionRecord>[]).add(t);
+                        }
 
-                                          if (!groupedTrans.containsKey(
-                                            dateString,
-                                          )) {
-                                            groupedTrans[dateString] = [];
-                                          }
-                                          groupedTrans[dateString]!.add(t);
-                                        }
+                        final dateKeys = groupedTrans.keys.toList();
 
-                                        final dateKeys = groupedTrans.keys
-                                            .toList();
+                        return ListView.builder(
+                          padding: EdgeInsets.only(bottom: Responsive.h(18)),
+                          itemCount: dateKeys.length,
+                          itemBuilder: (context, index) {
+                            final currentDate = dateKeys[index];
+                            final dailyTrans = groupedTrans[currentDate]!;
 
-                                        return ListView.builder(
-                                          padding: const EdgeInsets.only(
-                                            bottom: 20,
-                                          ),
-                                          itemCount: dateKeys.length,
-                                          itemBuilder: (context, index) {
-                                            String currentDate =
-                                                dateKeys[index];
-                                            List<dynamic> dailyTrans =
-                                                groupedTrans[currentDate]!;
+                            final mapped = dailyTrans.map((t) {
+                              final minute = t.date.minute.toString().padLeft(2, '0');
+                              final time = '${t.date.hour}:$minute';
+                              final sign = t.type == 'income' ? '+' : '-';
+                              final moneyColor = t.type == 'income' ? Colors.green : Colors.red;
 
-                                            List<Map<String, dynamic>>
-                                            mappedTransactions = dailyTrans.map((
-                                              t,
-                                            ) {
-                                              String minute = t.date.minute
-                                                  .toString()
-                                                  .padLeft(2, '0');
-                                              String timeString =
-                                                  "${t.date.hour}:$minute";
+                              return {
+                                'id': t.id,
+                                'title': t.title,
+                                'time': time,
+                                'money': '$sign${Format.formatnumber(t.amount)} đ',
+                                'icon': AppIcons.getIconFromData(t.icon),
+                                'color': moneyColor,
+                              };
+                            }).toList();
 
-                                              String sign = t.type == 'income'
-                                                  ? '+'
-                                                  : '-';
-                                              Color moneyColor =
-                                                  t.type == 'income'
-                                                  ? Colors.green
-                                                  : Colors.red;
-                                              return {
-                                                "id": t.id,
-                                                "title": t.title,
-                                                "time": timeString,
-                                                "money":
-                                                    "$sign${Format.formatnumber(t.amount)} đ",
-                                                "icon":
-                                                    AppIcons.getIconFromData(
-                                                      t.icon,
-                                                    ),
-                                                "color": moneyColor,
-                                              };
-                                            }).toList();
-                                            return Cardshowhistorytrade(
-                                              date: currentDate,
-                                              transactions: mappedTransactions,
-                                              isSelectionMode: isSelectionMode,
-                                              selectedIds: selectedTransIds,
-                                              onLongPress: (id) {
-                                                setState(() {
-                                                  isSelectionMode = true;
-                                                  if (!selectedTransIds
-                                                      .contains(id)) {
-                                                    selectedTransIds.add(id);
-                                                  }
-                                                });
-                                              },
-                                              onSelect: (id, isSelected) {
-                                                setState(() {
-                                                  if (isSelected) {
-                                                    selectedTransIds.add(id);
-                                                  } else {
-                                                    selectedTransIds.remove(id);
-                                                  }
-                                                });
-                                              },
-                                              onSelectAll: (isSelected) {
-                                                setState(() {
-                                                  for (var t in dailyTrans) {
-                                                    if (isSelected &&
-                                                        !selectedTransIds
-                                                            .contains(t.id)) {
-                                                      selectedTransIds.add(
-                                                        t.id,
-                                                      );
-                                                    } else if (!isSelected) {
-                                                      selectedTransIds.remove(
-                                                        t.id,
-                                                      );
-                                                    }
-                                                  }
-                                                });
-                                              },
-                                            );
-                                          },
-                                        );
-                                      },
-                                    ),
-                            ),
-                          ],
+                            return Cardshowhistorytrade(
+                              date: currentDate,
+                              transactions: mapped,
+                              isSelectionMode: isSelectionMode,
+                              selectedIds: selectedTransIds,
+                              onLongPress: (id) {
+                                setState(() {
+                                  isSelectionMode = true;
+                                  if (!selectedTransIds.contains(id)) {
+                                    selectedTransIds.add(id);
+                                  }
+                                });
+                              },
+                              onSelect: (id, isSelected) {
+                                setState(() {
+                                  if (isSelected) {
+                                    selectedTransIds.add(id);
+                                  } else {
+                                    selectedTransIds.remove(id);
+                                  }
+                                });
+                              },
+                              onSelectAll: (isSelected) {
+                                setState(() {
+                                  for (final t in dailyTrans) {
+                                    if (isSelected && !selectedTransIds.contains(t.id)) {
+                                      selectedTransIds.add(t.id!);
+                                    } else if (!isSelected) {
+                                      selectedTransIds.remove(t.id);
+                                    }
+                                  }
+                                });
+                              },
+                            );
+                          },
                         );
                       },
                     ),
@@ -312,23 +242,6 @@ class _categoryDetailState extends State<categoryDetail> {
           ),
         ],
       ),
-      floatingActionButton: isSelectionMode
-          ? null
-          : FloatingActionButton(
-              heroTag: null,
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AddTransaction(walletId: widget.wallet.id!);
-                  },
-                );
-              },
-              backgroundColor: walletColor,
-              elevation: 4,
-              shape: const CircleBorder(),
-              child: const Icon(Icons.add, color: Colors.white, size: 32),
-            ),
     );
   }
 }

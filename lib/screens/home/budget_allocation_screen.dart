@@ -26,6 +26,12 @@ class _BudgetAllocationScreenState extends State<BudgetAllocationScreen> {
   List<Map<String, dynamic>> _groups = <Map<String, dynamic>>[];
   final Map<String, List<Map<String, dynamic>>> _categoriesByGroupId = <String, List<Map<String, dynamic>>>{};
 
+  String _currentMonthKey() {
+    final now = DateTime.now();
+    final month = now.month.toString().padLeft(2, '0');
+    return '${now.year}-$month';
+  }
+
   @override
   void initState() {
     super.initState();
@@ -46,6 +52,8 @@ class _BudgetAllocationScreenState extends State<BudgetAllocationScreen> {
     _budgetBox = Hive.box('budget_allocations');
     _groupBox = Hive.box('category_groups');
     _categoryBox = Hive.box('categories');
+
+    await AuthService.instance.reconcileMonthlyBalance(widget.user.email);
 
     _loadFromDatabase();
 
@@ -128,8 +136,18 @@ class _BudgetAllocationScreenState extends State<BudgetAllocationScreen> {
     _amountByCategoryId.clear();
     final rawBudget = budgetBox.get(userEmail);
     if (rawBudget is Map) {
-      final amounts = rawBudget['amounts'];
-      if (amounts is Map) {
+      final monthKey = _currentMonthKey();
+      final months = rawBudget['months'];
+      if (months is Map) {
+        final monthRaw = months[monthKey];
+        if (monthRaw is Map && monthRaw['amounts'] is Map) {
+          final amounts = Map<String, dynamic>.from(monthRaw['amounts'] as Map);
+          for (final e in amounts.entries) {
+            _amountByCategoryId[e.key.toString()] = _safeDouble(e.value);
+          }
+        }
+      } else if (rawBudget['amounts'] is Map) {
+        final amounts = Map<String, dynamic>.from(rawBudget['amounts'] as Map);
         for (final e in amounts.entries) {
           _amountByCategoryId[e.key.toString()] = _safeDouble(e.value);
         }
@@ -170,9 +188,22 @@ class _BudgetAllocationScreenState extends State<BudgetAllocationScreen> {
     final budgetBox = _budgetBox;
     if (budgetBox == null) return;
 
+    final monthKey = _currentMonthKey();
+    final existingRaw = budgetBox.get(widget.user.email);
+    final existing = existingRaw is Map
+        ? Map<String, dynamic>.from(existingRaw)
+        : <String, dynamic>{'user_email': widget.user.email};
+
+    final monthsRaw = existing['months'];
+    final months = monthsRaw is Map ? Map<String, dynamic>.from(monthsRaw) : <String, dynamic>{};
+    final monthRaw = months[monthKey];
+    final monthData = monthRaw is Map ? Map<String, dynamic>.from(monthRaw) : <String, dynamic>{};
+    monthData['amounts'] = Map<String, dynamic>.from(_amountByCategoryId);
+    months[monthKey] = monthData;
+
     await budgetBox.put(widget.user.email, {
       'user_email': widget.user.email,
-      'amounts': _amountByCategoryId,
+      'months': months,
       'updated_at': DateTime.now().toIso8601String(),
     });
 

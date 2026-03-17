@@ -22,6 +22,56 @@ class AuthService {
     return '${date.year}-$month';
   }
 
+  DateTime? _monthFromKey(String key) {
+    final parts = key.split('-');
+    if (parts.length != 2) return null;
+    final year = int.tryParse(parts[0]);
+    final month = int.tryParse(parts[1]);
+    if (year == null || month == null || month < 1 || month > 12) return null;
+    return DateTime(year, month);
+  }
+
+  String _nextMonthKey(String key) {
+    final month = _monthFromKey(key);
+    if (month == null) return key;
+    final next = DateTime(month.year, month.month + 1);
+    return _monthKey(next);
+  }
+
+  Future<Box> _ensureBudgetBox() async {
+    if (!Hive.isBoxOpen('budget_allocations')) {
+      await Hive.openBox('budget_allocations');
+    }
+    return Hive.box('budget_allocations');
+  }
+
+  double _getAllocatedForMonth(Map<String, dynamic> budgetMap, String monthKey) {
+    final months = budgetMap['months'];
+    if (months is Map) {
+      final monthDataRaw = months[monthKey];
+      if (monthDataRaw is Map) {
+        final monthData = Map<String, dynamic>.from(monthDataRaw);
+        final amountsRaw = monthData['amounts'];
+        if (amountsRaw is Map) {
+          final amounts = Map<String, dynamic>.from(amountsRaw);
+          return amounts.values.fold<double>(0, (sum, value) => sum + _safeDouble(value));
+        }
+      }
+    }
+    return 0;
+  }
+
+  void _ensureCurrentMonthBudgetNode(Map<String, dynamic> budgetMap, String monthKey) {
+    final rawMonths = budgetMap['months'];
+    final months = rawMonths is Map ? Map<String, dynamic>.from(rawMonths) : <String, dynamic>{};
+    final monthRaw = months[monthKey];
+    final monthData = monthRaw is Map ? Map<String, dynamic>.from(monthRaw) : <String, dynamic>{};
+    final amountsRaw = monthData['amounts'];
+    monthData['amounts'] = amountsRaw is Map ? Map<String, dynamic>.from(amountsRaw) : <String, dynamic>{};
+    months[monthKey] = monthData;
+    budgetMap['months'] = months;
+  }
+
   double _safeDouble(dynamic value) {
     if (value is num) return value.toDouble();
     if (value is String) return double.tryParse(value) ?? 0;
@@ -324,49 +374,93 @@ class AuthService {
         ? Map<String, dynamic>.from(userData)
         : (currentUser?.toMap() ?? <String, dynamic>{'email': email});
 
-    final previousSalary = _safeDouble(userMap['monthly_salary']);
-    final nowKey = _monthKey(DateTime.now());
     userMap['monthly_salary'] = salary;
-
-    // First time setting salary: credit immediately for current month.
-    if (previousSalary <= 0 && salary > 0) {
-      final lastCredited = userMap['salary_last_credited_month']?.toString();
-      if (lastCredited != nowKey) {
-        final currentBalance = _safeDouble(userMap['total_balance']);
-        userMap['total_balance'] = currentBalance + salary;
-        userMap['salary_last_credited_month'] = nowKey;
-      }
-    }
-
     await userBox.put(email, userMap);
-    _syncCurrentUserFromMap(userMap);
+    await reconcileMonthlyBalance(email, rebuildCurrentMonthBalance: true);
   }
 
   Future<bool> applyMonthlySalaryIfNeeded(String email) async {
+    return reconcileMonthlyBalance(email);
+  }
+
+  Future<bool> reconcileMonthlyBalance(
+    String email, {
+    bool rebuildCurrentMonthBalance = false,
+  }) async {
     final userData = userBox.get(email);
     final userMap = userData != null
         ? Map<String, dynamic>.from(userData)
         : (currentUser?.toMap() ?? <String, dynamic>{'email': email});
 
+    final budgetBox = await _ensureBudgetBox();
+    final rawBudget = budgetBox.get(email);
+    final budgetMap = rawBudget is Map ? Map<String, dynamic>.from(rawBudget) : <String, dynamic>{'user_email': email};
+
+    // Migration: old format {'amounts': {...}} -> {'months': {'YYYY-MM': {'amounts': {...}}}}
+    if (budgetMap['months'] is! Map && budgetMap['amounts'] is Map) {
+      final nowKey = _monthKey(DateTime.now());
+      budgetMap['months'] = {
+        nowKey: {
+          'amounts': Map<String, dynamic>.from(budgetMap['amounts'] as Map),
+        }
+      };
+      budgetMap.remove('amounts');
+    }
+
     final monthlySalary = _safeDouble(userMap['monthly_salary']);
-    if (monthlySalary <= 0) {
-      return false;
-    }
-
     final nowKey = _monthKey(DateTime.now());
-    final lastCredited = userMap['salary_last_credited_month']?.toString();
+    String? balanceMonthKey = userMap['balance_month_key']?.toString();
+    double savingsBalance = _safeDouble(userMap['savings_balance']);
+    double currentMonthBalance = _safeDouble(userMap['total_balance']);
 
-    if (lastCredited == nowKey) {
-      return false;
+    bool changed = false;
+
+    if (balanceMonthKey == null || balanceMonthKey.isEmpty) {
+      balanceMonthKey = nowKey;
+      if (rebuildCurrentMonthBalance || currentMonthBalance <= 0) {
+        currentMonthBalance = savingsBalance + monthlySalary;
+      }
+      userMap['balance_month_key'] = balanceMonthKey;
+      userMap['total_balance'] = currentMonthBalance;
+      changed = true;
     }
 
-    final currentBalance = _safeDouble(userMap['total_balance']);
-    userMap['total_balance'] = currentBalance + monthlySalary;
-    userMap['salary_last_credited_month'] = nowKey;
+    // Roll through month boundaries and carry remaining balance into savings.
+    while (balanceMonthKey != nowKey) {
+      final allocated = _getAllocatedForMonth(budgetMap, balanceMonthKey!);
+      final leftover = (currentMonthBalance - allocated) < 0 ? 0.0 : (currentMonthBalance - allocated);
+      savingsBalance = leftover;
 
+      final nextKey = _nextMonthKey(balanceMonthKey);
+      if (nextKey == balanceMonthKey) {
+        break;
+      }
+
+      balanceMonthKey = nextKey;
+      currentMonthBalance = savingsBalance + monthlySalary;
+
+      userMap['savings_balance'] = savingsBalance;
+      userMap['balance_month_key'] = balanceMonthKey;
+      userMap['total_balance'] = currentMonthBalance;
+      changed = true;
+    }
+
+    if (rebuildCurrentMonthBalance) {
+      currentMonthBalance = savingsBalance + monthlySalary;
+      userMap['total_balance'] = currentMonthBalance;
+      userMap['balance_month_key'] = nowKey;
+      changed = true;
+    }
+
+    userMap['salary_last_credited_month'] = nowKey;
+    userMap['savings_balance'] = savingsBalance;
+    _ensureCurrentMonthBudgetNode(budgetMap, nowKey);
+    budgetMap['updated_at'] = DateTime.now().toIso8601String();
+
+    await budgetBox.put(email, budgetMap);
     await userBox.put(email, userMap);
     _syncCurrentUserFromMap(userMap);
-    return true;
+    return changed;
   }
 
 }

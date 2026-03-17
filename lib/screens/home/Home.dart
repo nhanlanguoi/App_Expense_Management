@@ -13,6 +13,7 @@ import 'package:expense_management/core/model/users.dart';
 import 'package:expense_management/core/utils/responsive.dart';
 import 'package:expense_management/screens/home/widgets/MonthlySpendingCard.dart';
 import 'package:expense_management/screens/home/budget_allocation_screen.dart';
+import 'package:expense_management/screens/home/widgets/catrgoryDetail.dart';
 import 'package:expense_management/screens/home/widgets/category_group_filter_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -33,6 +34,43 @@ class _MyHomeState extends State<MyHome> {
   int _selectedMonth = DateTime.now().month;
   int _selectedYear = DateTime.now().year;
   String? _selectedGroupId;
+
+  String _currentMonthKey() {
+    final now = DateTime.now();
+    final month = now.month.toString().padLeft(2, '0');
+    return '${now.year}-$month';
+  }
+
+  double _getAllocatedCurrentMonth() {
+    final budgetMap = Hive.box('budget_allocations').get(widget.users.email);
+    if (budgetMap is! Map) return 0;
+
+    final monthKey = _currentMonthKey();
+    final months = budgetMap['months'];
+    if (months is Map) {
+      final monthRaw = months[monthKey];
+      if (monthRaw is Map && monthRaw['amounts'] is Map) {
+        final amounts = Map<String, dynamic>.from(monthRaw['amounts'] as Map);
+        return amounts.values.fold<double>(0, (sum, value) {
+          if (value is num) return sum + value.toDouble();
+          if (value is String) return sum + (double.tryParse(value) ?? 0);
+          return sum;
+        });
+      }
+    }
+
+    // Backward compatibility for legacy payload.
+    if (budgetMap['amounts'] is Map) {
+      final amounts = Map<String, dynamic>.from(budgetMap['amounts'] as Map);
+      return amounts.values.fold<double>(0, (sum, value) {
+        if (value is num) return sum + value.toDouble();
+        if (value is String) return sum + (double.tryParse(value) ?? 0);
+        return sum;
+      });
+    }
+
+    return 0;
+  }
 
   Future<void> _ensureMonthlySalaryApplied() async {
     await AuthService.instance.applyMonthlySalaryIfNeeded(widget.users.email);
@@ -191,33 +229,28 @@ class _MyHomeState extends State<MyHome> {
                     return ValueListenableBuilder(
                       valueListenable: Hive.box('users').listenable(),
                       builder: (context, _, __) {
-                        final budgetMap = Hive.box('budget_allocations').get(widget.users.email);
-                        double allocatedAmount = 0;
-                        if (budgetMap is Map && budgetMap['amounts'] is Map) {
-                          final amounts = Map<String, dynamic>.from(budgetMap['amounts'] as Map);
-                          allocatedAmount = amounts.values.fold<double>(0, (sum, value) {
-                            if (value is num) return sum + value.toDouble();
-                            if (value is String) return sum + (double.tryParse(value) ?? 0);
-                            return sum;
-                          });
-                        }
+                        return ValueListenableBuilder(
+                          valueListenable: Hive.box('budget_allocations').listenable(),
+                          builder: (context, _, __) {
+                            final allocatedAmount = _getAllocatedCurrentMonth();
+                            final updatedUser = AuthService.instance.currentUser;
+                            final currentTotalBalance = updatedUser?.totalBalance ?? widget.users.totalBalance;
+                            final double remainingAmount = (currentTotalBalance - allocatedAmount) < 0
+                                ? 0.0
+                                : (currentTotalBalance - allocatedAmount).toDouble();
 
-                        final updatedUser = AuthService.instance.currentUser;
-                        final currentTotalBalance = updatedUser?.totalBalance ?? widget.users.totalBalance;
-                        final double remainingAmount = (currentTotalBalance - allocatedAmount) < 0
-                          ? 0.0
-                          : (currentTotalBalance - allocatedAmount).toDouble();
-
-                        return CardGeneralTotal(
-                          total: currentTotalBalance,
-                          income: remainingAmount,
-                          expense: allocatedAmount,
-                          onBudgetPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) => BudgetAllocationScreen(user: widget.users),
-                              ),
+                            return CardGeneralTotal(
+                              total: currentTotalBalance,
+                              income: remainingAmount,
+                              expense: allocatedAmount,
+                              onBudgetPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => BudgetAllocationScreen(user: widget.users),
+                                  ),
+                                );
+                              },
                             );
                           },
                         );
@@ -284,31 +317,27 @@ class _MyHomeState extends State<MyHome> {
               return ValueListenableBuilder(
                 valueListenable: Hive.box('users').listenable(),
                 builder: (context, _, __) {
-                  final allTransactions = TransactionService().getAllUserTransactions(widget.users.email);
-                  double monthlyExpense = 0;
-                  final updatedUser = AuthService.instance.currentUser;
-                  final currentTotalBalance = updatedUser?.totalBalance ?? widget.users.totalBalance;
-                  final budgetMap = Hive.box('budget_allocations').get(widget.users.email);
-                  double allocatedAmount = 0;
-                  if (budgetMap is Map && budgetMap['amounts'] is Map) {
-                    final amounts = Map<String, dynamic>.from(budgetMap['amounts'] as Map);
-                    allocatedAmount = amounts.values.fold<double>(0, (sum, value) {
-                      if (value is num) return sum + value.toDouble();
-                      if (value is String) return sum + (double.tryParse(value) ?? 0);
-                      return sum;
-                    });
-                  }
-                    final double remainingAmount = (currentTotalBalance - allocatedAmount) < 0
-                      ? 0.0
-                      : (currentTotalBalance - allocatedAmount).toDouble();
+                  return ValueListenableBuilder(
+                    valueListenable: Hive.box('budget_allocations').listenable(),
+                    builder: (context, _, __) {
+                      final allTransactions = TransactionService().getAllUserTransactions(widget.users.email);
+                      double monthlyExpense = 0;
+                      final updatedUser = AuthService.instance.currentUser;
+                      final currentTotalBalance = updatedUser?.totalBalance ?? widget.users.totalBalance;
+                      final allocatedAmount = _getAllocatedCurrentMonth();
+                      final double remainingAmount = (currentTotalBalance - allocatedAmount) < 0
+                          ? 0.0
+                          : (currentTotalBalance - allocatedAmount).toDouble();
 
-                  for (final t in allTransactions) {
-                    if (t.type == 'expense' && t.date.month == _selectedMonth && t.date.year == _selectedYear) {
-                      monthlyExpense += t.amount;
-                    }
-                  }
+                      for (final t in allTransactions) {
+                        if (t.type == 'expense' && t.date.month == _selectedMonth && t.date.year == _selectedYear) {
+                          monthlyExpense += t.amount;
+                        }
+                      }
 
-                  return MonthlySpendingCard(collapsed: _collapsed, spent: monthlyExpense, total: remainingAmount);
+                      return MonthlySpendingCard(collapsed: _collapsed, spent: monthlyExpense, total: remainingAmount);
+                    },
+                  );
                 },
               );
             },
@@ -382,6 +411,7 @@ class _MyHomeState extends State<MyHome> {
                         return {
                           'title': (category['name'] ?? 'Danh mục').toString(),
                           'icon': iconData,
+                          'iconCode': iconCode,
                           'color': Color(colorValue),
                           'count': matched.length,
                           'amount': amount,
@@ -425,7 +455,16 @@ class _MyHomeState extends State<MyHome> {
                               onPressed: () {
                                 Navigator.push(
                                   context,
-                                  MaterialPageRoute(builder: (_) => Categorymanager(users: widget.users)),
+                                  MaterialPageRoute(
+                                    builder: (_) => CategoryDetailScreen(
+                                      user: widget.users,
+                                      categoryName: row['title'] as String,
+                                      categoryIconCode: row['iconCode'] as int,
+                                      headerColor: row['color'] as Color,
+                                      month: _selectedMonth,
+                                      year: _selectedYear,
+                                    ),
+                                  ),
                                 );
                               },
                             ),
