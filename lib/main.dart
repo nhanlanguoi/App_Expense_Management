@@ -44,6 +44,9 @@ class Main extends StatelessWidget {
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,
       locale: context.locale,
+      theme: ThemeData(
+        fontFamily: 'BeVietnamPro',
+      ),
       debugShowCheckedModeBanner: false,
       initialRoute: Routesname.auth,
       onGenerateRoute: Routes.generateRoute,
