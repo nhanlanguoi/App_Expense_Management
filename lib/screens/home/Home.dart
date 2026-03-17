@@ -233,6 +233,55 @@ class _MyHomeState extends State<MyHome> {
     });
   }
 
+  Future<void> _deleteCategoryFromHome({
+    required String categoryId,
+    required String categoryName,
+  }) async {
+    await Hive.box('categories').delete(categoryId);
+
+    final budgetBox = Hive.box('budget_allocations');
+    final raw = budgetBox.get(widget.users.email);
+    if (raw is Map) {
+      final updated = Map<String, dynamic>.from(raw);
+
+      final monthsRaw = updated['months'];
+      if (monthsRaw is Map) {
+        final months = Map<String, dynamic>.from(monthsRaw);
+        for (final entry in months.entries) {
+          final monthRaw = entry.value;
+          if (monthRaw is! Map) continue;
+          final monthData = Map<String, dynamic>.from(monthRaw);
+          final amountsRaw = monthData['amounts'];
+          if (amountsRaw is Map) {
+            final amounts = Map<String, dynamic>.from(amountsRaw);
+            amounts.remove(categoryId);
+            monthData['amounts'] = amounts;
+            months[entry.key] = monthData;
+          }
+        }
+        updated['months'] = months;
+      }
+
+      final legacyAmountsRaw = updated['amounts'];
+      if (legacyAmountsRaw is Map) {
+        final legacyAmounts = Map<String, dynamic>.from(legacyAmountsRaw);
+        legacyAmounts.remove(categoryId);
+        updated['amounts'] = legacyAmounts;
+      }
+
+      updated['updated_at'] = DateTime.now().toIso8601String();
+      await budgetBox.put(widget.users.email, updated);
+    }
+
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Đã xóa danh mục "$categoryName"'),
+        backgroundColor: const Color(0xFF344054),
+      ),
+    );
+  }
+
   Widget _homeHeader() {
     return Stack(
       children: [
@@ -361,6 +410,7 @@ class _MyHomeState extends State<MyHome> {
                     builder: (context, _, __) {
                       final allTransactions = TransactionService().getAllUserTransactions(widget.users.email);
                       double monthlyExpense = 0;
+                      double unallocatedIncome = 0;
                       final updatedUser = AuthService.instance.currentUser;
                       final monthlySalary = updatedUser?.monthlySalary ?? widget.users.monthlySalary;
 
@@ -368,12 +418,20 @@ class _MyHomeState extends State<MyHome> {
                         if (t.type == 'expense' && t.date.month == _selectedMonth && t.date.year == _selectedYear) {
                           monthlyExpense += t.amount;
                         }
+                        if (t.type == 'income' && t.date.month == _selectedMonth && t.date.year == _selectedYear) {
+                          final noCategory = (t.categoryId ?? '').trim().isEmpty;
+                          if (noCategory) {
+                            unallocatedIncome += t.amount;
+                          }
+                        }
                       }
+
+                      final effectiveMonthlySalary = monthlySalary + unallocatedIncome;
 
                       return MonthlySpendingCard(
                         collapsed: _collapsed,
                         spent: monthlyExpense,
-                        total: monthlySalary,
+                        total: effectiveMonthlySalary,
                       );
                     },
                   );
@@ -502,32 +560,90 @@ class _MyHomeState extends State<MyHome> {
 
                           return Column(
                             children: rows.map((row) {
-                              return Padding(
-                                padding: EdgeInsets.only(bottom: Responsive.h(12)),
-                                child: Cardmanagerexpense(
-                                  title: row['title'] as String,
-                                  transactionCount: row['count'] as int,
-                                  spentAmount: row['spent'] as double,
-                                  allocatedAmount: row['allocated'] as double,
-                                  remainingAmount: row['remaining'] as double,
-                                  progressPercent: row['percent'] as double,
-                                  Icon: row['icon'] as IconData,
-                                  Iconcolor: row['color'] as Color,
-                                  onPressed: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (_) => CategoryDetailScreen(
-                                          user: widget.users,
-                                          categoryName: row['title'] as String,
-                                          categoryIconCode: row['iconCode'] as int,
-                                          headerColor: row['color'] as Color,
-                                          month: _selectedMonth,
-                                          year: _selectedYear,
+                              final categoryId = row['id'] as String;
+                              final categoryName = row['title'] as String;
+
+                              return Dismissible(
+                                key: ValueKey('home_category_$categoryId'),
+                                direction: DismissDirection.endToStart,
+                                background: Container(
+                                  margin: EdgeInsets.only(bottom: Responsive.h(12)),
+                                  padding: EdgeInsets.symmetric(horizontal: Responsive.w(18)),
+                                  alignment: Alignment.centerRight,
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xFFF04438),
+                                    borderRadius: BorderRadius.circular(Responsive.r(16)),
+                                  ),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Icon(Icons.delete_forever_rounded, color: Colors.white, size: Responsive.sp(20)),
+                                      SizedBox(width: Responsive.w(6)),
+                                      Text(
+                                        'Xóa',
+                                        style: TextStyle(
+                                          fontFamily: 'BeVietnamPro',
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: Responsive.sp(14),
                                         ),
                                       ),
-                                    );
-                                  },
+                                    ],
+                                  ),
+                                ),
+                                confirmDismiss: (_) async {
+                                  return await showDialog<bool>(
+                                        context: context,
+                                        builder: (dialogContext) => AlertDialog(
+                                          title: const Text('Xóa danh mục'),
+                                          content: Text('Bạn có chắc muốn xóa danh mục "$categoryName"?'),
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () => Navigator.pop(dialogContext, false),
+                                              child: const Text('Hủy'),
+                                            ),
+                                            TextButton(
+                                              onPressed: () => Navigator.pop(dialogContext, true),
+                                              child: const Text('Xóa'),
+                                            ),
+                                          ],
+                                        ),
+                                      ) ??
+                                      false;
+                                },
+                                onDismissed: (_) {
+                                  _deleteCategoryFromHome(
+                                    categoryId: categoryId,
+                                    categoryName: categoryName,
+                                  );
+                                },
+                                child: Padding(
+                                  padding: EdgeInsets.only(bottom: Responsive.h(12)),
+                                  child: Cardmanagerexpense(
+                                    title: categoryName,
+                                    transactionCount: row['count'] as int,
+                                    spentAmount: row['spent'] as double,
+                                    allocatedAmount: row['allocated'] as double,
+                                    remainingAmount: row['remaining'] as double,
+                                    progressPercent: row['percent'] as double,
+                                    Icon: row['icon'] as IconData,
+                                    Iconcolor: row['color'] as Color,
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (_) => CategoryDetailScreen(
+                                            user: widget.users,
+                                            categoryName: categoryName,
+                                            categoryIconCode: row['iconCode'] as int,
+                                            headerColor: row['color'] as Color,
+                                            month: _selectedMonth,
+                                            year: _selectedYear,
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  ),
                                 ),
                               );
                             }).toList(),

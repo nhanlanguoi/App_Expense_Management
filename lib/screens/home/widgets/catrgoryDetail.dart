@@ -188,7 +188,7 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
                               final moneyColor = t.type == 'income' ? Colors.green : Colors.red;
 
                               return {
-                                'id': t.id,
+                                'id': (t.id ?? '').toString(),
                                 'title': t.title,
                                 'time': time,
                                 'money': '$sign${Format.formatnumber(t.amount)} đ',
@@ -200,9 +200,21 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
                             return Cardshowhistorytrade(
                               date: currentDate,
                               transactions: mapped,
+                              enableSwipeToDelete: true,
+                              onDismissTransaction: (id) async {
+                                await TransactionService().deleteTransactions([id]);
+                                if (!mounted) return;
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('Đã xóa giao dịch'),
+                                    backgroundColor: Color(0xFF344054),
+                                  ),
+                                );
+                              },
                               isSelectionMode: isSelectionMode,
                               selectedIds: selectedTransIds,
                               onLongPress: (id) {
+                                if (id.isEmpty) return;
                                 setState(() {
                                   isSelectionMode = true;
                                   if (!selectedTransIds.contains(id)) {
@@ -222,10 +234,12 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
                               onSelectAll: (isSelected) {
                                 setState(() {
                                   for (final t in dailyTrans) {
-                                    if (isSelected && !selectedTransIds.contains(t.id)) {
-                                      selectedTransIds.add(t.id!);
+                                    final id = (t.id ?? '').toString();
+                                    if (id.isEmpty) continue;
+                                    if (isSelected && !selectedTransIds.contains(id)) {
+                                      selectedTransIds.add(id);
                                     } else if (!isSelected) {
-                                      selectedTransIds.remove(t.id);
+                                      selectedTransIds.remove(id);
                                     }
                                   }
                                 });

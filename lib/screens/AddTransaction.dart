@@ -5,6 +5,7 @@ import 'package:expense_management/components/inputs/CustomTextField.dart';
 import 'package:expense_management/components/buttons/custombutton.dart';
 import 'package:expense_management/configs/theme/color.dart';
 import 'package:expense_management/configs/theme/icon.dart';
+import 'package:expense_management/core/data/service/authservice.dart';
 import '../../../core/data/service/transactionservice.dart';
 import '../../../core/data/service/walletservice.dart';
 import '../../../core/model/transactions.dart';
@@ -71,9 +72,6 @@ class _AddTransactionState extends State<AddTransaction> {
 
     setState(() {
       _categories = list;
-      if (_categories.isNotEmpty && _selectedCategoryId == null) {
-        _selectedCategoryId = (_categories.first['id'] ?? '').toString();
-      }
     });
   }
 
@@ -122,9 +120,43 @@ class _AddTransactionState extends State<AddTransaction> {
                         ),
                       )
                     : ListView.builder(
-                        itemCount: _categories.length,
+                        itemCount: _categories.length + (_selectedType == 'income' ? 1 : 0),
                         itemBuilder: (context, index) {
-                          final category = _categories[index];
+                          if (_selectedType == 'income' && index == 0) {
+                            final isSelected = _selectedCategoryId == null;
+                            return ListTile(
+                              contentPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 4),
+                              leading: Container(
+                                padding: const EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  color: const Color(0xFF12B76A).withOpacity(0.15),
+                                  shape: BoxShape.circle,
+                                ),
+                                child: const Icon(Icons.help_outline_rounded, color: Color(0xFF12B76A)),
+                              ),
+                              title: Text(
+                                'Không xác định (chưa phân bổ)',
+                                style: TextStyle(
+                                  fontSize: Responsive.sp(16),
+                                  fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
+                                  color: isSelected ? Colors.blueAccent : Colors.black87,
+                                  fontFamily: 'BeVietnamPro',
+                                ),
+                              ),
+                              trailing: isSelected
+                                  ? const Icon(Icons.check_circle, color: Colors.blueAccent)
+                                  : null,
+                              onTap: () {
+                                setState(() {
+                                  _selectedCategoryId = null;
+                                });
+                                Navigator.pop(context);
+                              },
+                            );
+                          }
+
+                          final dataIndex = _selectedType == 'income' ? index - 1 : index;
+                          final category = _categories[dataIndex];
                           final categoryId = (category['id'] ?? '').toString();
                           final isSelected = categoryId == _selectedCategoryId;
                           final iconCode = (category['icon_code'] ?? Icons.category.codePoint) as int;
@@ -193,7 +225,9 @@ class _AddTransactionState extends State<AddTransaction> {
   }
 
   void _saveTransaction() async {
-    if (_selectedCategoryId == null) {
+    final isIncome = _selectedType == 'income';
+
+    if (!isIncome && _selectedCategoryId == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Vui lòng chọn danh mục trước!'),
@@ -229,8 +263,13 @@ class _AddTransactionState extends State<AddTransaction> {
       orElse: () => {},
     );
 
-    final categoryIconCode = (selectedCategory['icon_code'] ?? Icons.category.codePoint) as int;
-    final categoryColor = Color((selectedCategory['color_value'] ?? const Color(0xFF7B61FF).value) as int);
+    final hasCategory = _selectedCategoryId != null && selectedCategory.isNotEmpty;
+    final categoryIconCode = hasCategory
+        ? (selectedCategory['icon_code'] ?? Icons.category.codePoint) as int
+        : (isIncome ? Icons.help_outline_rounded.codePoint : Icons.category.codePoint);
+    final categoryColor = hasCategory
+        ? Color((selectedCategory['color_value'] ?? const Color(0xFF7B61FF).value) as int)
+        : (isIncome ? const Color(0xFF12B76A) : const Color(0xFF7B61FF));
 
     final fallbackWalletId = _selectedWalletId ?? (_myWallets.isNotEmpty ? _myWallets.first.id : null) ?? 'general';
 
@@ -248,6 +287,16 @@ class _AddTransactionState extends State<AddTransaction> {
     );
 
     await TransactionService().addTransaction(newTrans);
+
+    // Income without category is treated as unallocated money of that month.
+    if (isIncome && _selectedCategoryId == null) {
+      final now = DateTime.now();
+      final isCurrentMonth = _selectedDate.month == now.month && _selectedDate.year == now.year;
+      if (isCurrentMonth) {
+        final current = AuthService.instance.currentUser?.totalBalance ?? widget.users.totalBalance;
+        await AuthService.instance.updateUserBalance(widget.users.email, current + amount);
+      }
+    }
 
     if (mounted) {
       Navigator.pop(context);
@@ -295,7 +344,14 @@ class _AddTransactionState extends State<AddTransaction> {
               children: [
                 Expanded(
                   child: GestureDetector(
-                    onTap: () => setState(() => _selectedType = 'expense'),
+                    onTap: () {
+                      setState(() {
+                        _selectedType = 'expense';
+                        if (_selectedCategoryId == null && _categories.isNotEmpty) {
+                          _selectedCategoryId = (_categories.first['id'] ?? '').toString();
+                        }
+                      });
+                    },
                     child: Container(
                       padding: const EdgeInsets.symmetric(vertical: 12),
                       decoration: BoxDecoration(
@@ -376,7 +432,9 @@ class _AddTransactionState extends State<AddTransaction> {
                       SizedBox(width: Responsive.w(12)),
                       Expanded(
                         child: Text(
-                          _categories.isEmpty ? 'Bạn chưa có danh mục nào!' : 'Vui lòng chọn danh mục...',
+                          _selectedType == 'income'
+                              ? 'Không xác định (chưa phân bổ)'
+                              : (_categories.isEmpty ? 'Bạn chưa có danh mục nào!' : 'Vui lòng chọn danh mục...'),
                           style: TextStyle(fontSize: Responsive.sp(16), color: Colors.grey, fontFamily: 'BeVietnamPro'),
                         ),
                       ),

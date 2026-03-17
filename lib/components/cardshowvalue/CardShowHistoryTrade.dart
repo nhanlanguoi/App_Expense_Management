@@ -10,6 +10,8 @@ class Cardshowhistorytrade extends StatelessWidget {
   final Function(String, bool) onSelect;
   final Function(bool) onSelectAll;
   final Function(String) onLongPress;
+  final bool enableSwipeToDelete;
+  final Future<void> Function(String id)? onDismissTransaction;
 
   const Cardshowhistorytrade({
     super.key,
@@ -20,6 +22,8 @@ class Cardshowhistorytrade extends StatelessWidget {
     required this.onSelect,
     required this.onSelectAll,
     required this.onLongPress,
+    this.enableSwipeToDelete = false,
+    this.onDismissTransaction,
   });
 
   @override
@@ -54,13 +58,14 @@ class Cardshowhistorytrade extends StatelessWidget {
           child: Column(
             children: List.generate(transactions.length, (index) {
               final item = transactions[index];
-              bool isSelected = selectedIds.contains(item['id']);
+              final transactionId = (item['id'] ?? '').toString();
+              bool isSelected = selectedIds.contains(transactionId);
 
-              return GestureDetector(
+              final rowContent = GestureDetector(
                 onLongPress: () => onLongPress(item['id']),
                 onTap: () {
                   if (isSelectionMode) {
-                    onSelect(item['id'], !isSelected);
+                    onSelect(transactionId, !isSelected);
                   }
                 },
                 child: Container(
@@ -82,7 +87,7 @@ class Cardshowhistorytrade extends StatelessWidget {
                               shape: const CircleBorder(),
                               value: isSelected,
                               activeColor: Colors.red,
-                              onChanged: (value) => onSelect(item['id'], value ?? false),
+                              onChanged: (value) => onSelect(transactionId, value ?? false),
                             ),
                           SizedBox(width: Responsive.w(10),)
                         ],
@@ -95,6 +100,50 @@ class Cardshowhistorytrade extends StatelessWidget {
                     ],
                   ),
                 ),
+              );
+
+              if (!enableSwipeToDelete || isSelectionMode || transactionId.isEmpty) {
+                return rowContent;
+              }
+
+              return Dismissible(
+                key: ValueKey('history_$transactionId'),
+                direction: DismissDirection.endToStart,
+                background: Container(
+                  alignment: Alignment.centerRight,
+                  padding: EdgeInsets.symmetric(horizontal: Responsive.w(20)),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFF04438),
+                    borderRadius: BorderRadius.circular(Responsive.r(15)),
+                  ),
+                  child: Icon(Icons.delete_forever_rounded, color: Colors.white, size: Responsive.sp(22)),
+                ),
+                confirmDismiss: (_) async {
+                  return await showDialog<bool>(
+                        context: context,
+                        builder: (dialogContext) => AlertDialog(
+                          title: const Text('Xóa giao dịch'),
+                          content: const Text('Bạn có chắc muốn xóa giao dịch này?'),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.pop(dialogContext, false),
+                              child: const Text('Hủy'),
+                            ),
+                            TextButton(
+                              onPressed: () => Navigator.pop(dialogContext, true),
+                              child: const Text('Xóa'),
+                            ),
+                          ],
+                        ),
+                      ) ??
+                      false;
+                },
+                onDismissed: (_) async {
+                  if (onDismissTransaction != null) {
+                    await onDismissTransaction!(transactionId);
+                  }
+                },
+                child: rowContent,
               );
             }),
           ),
