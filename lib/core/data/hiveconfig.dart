@@ -9,6 +9,7 @@ class HiveConfig {
     await Hive.openBox('transactions');
     await Hive.openBox('category_groups');
     await Hive.openBox('categories');
+    await Hive.openBox('budget_allocations');
 
     print("tạo xong Box.");
   }

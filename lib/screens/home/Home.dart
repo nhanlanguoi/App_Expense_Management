@@ -12,6 +12,7 @@ import 'package:expense_management/core/data/service/walletservice.dart';
 import 'package:expense_management/core/model/users.dart';
 import 'package:expense_management/core/utils/responsive.dart';
 import 'package:expense_management/screens/home/widgets/MonthlySpendingCard.dart';
+import 'package:expense_management/screens/home/budget_allocation_screen.dart';
 import 'package:expense_management/screens/home/widgets/category_group_filter_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -33,9 +34,17 @@ class _MyHomeState extends State<MyHome> {
   int _selectedYear = DateTime.now().year;
   String? _selectedGroupId;
 
+  Future<void> _ensureMonthlySalaryApplied() async {
+    await AuthService.instance.applyMonthlySalaryIfNeeded(widget.users.email);
+    if (mounted) {
+      setState(() {});
+    }
+  }
+
   @override
   void initState() {
     super.initState();
+    _ensureMonthlySalaryApplied();
     _scrollController.addListener(() {
       if (_scrollController.offset > Responsive.h(40) && !_collapsed) {
         setState(() => _collapsed = true);
@@ -180,26 +189,38 @@ class _MyHomeState extends State<MyHome> {
                   valueListenable: Hive.box('transactions').listenable(),
                   builder: (context, _, __) {
                     return ValueListenableBuilder(
-                      valueListenable: Hive.box('wallets').listenable(),
+                      valueListenable: Hive.box('users').listenable(),
                       builder: (context, _, __) {
-                        final myWallets = WalletService().getWallets(widget.users.email);
-                        double totalBalance = 0;
-                        double totalIncome = 0;
-                        double totalExpense = 0;
-                        final now = DateTime.now();
-
-                        for (final wallet in myWallets) {
-                          totalBalance += wallet.balance;
-                          final transList = TransactionService().getTransactionsByWallet(wallet.id!);
-                          for (final t in transList) {
-                            if (t.date.month == now.month && t.date.year == now.year) {
-                              if (t.type == 'income') totalIncome += t.amount;
-                              if (t.type == 'expense') totalExpense += t.amount;
-                            }
-                          }
+                        final budgetMap = Hive.box('budget_allocations').get(widget.users.email);
+                        double allocatedAmount = 0;
+                        if (budgetMap is Map && budgetMap['amounts'] is Map) {
+                          final amounts = Map<String, dynamic>.from(budgetMap['amounts'] as Map);
+                          allocatedAmount = amounts.values.fold<double>(0, (sum, value) {
+                            if (value is num) return sum + value.toDouble();
+                            if (value is String) return sum + (double.tryParse(value) ?? 0);
+                            return sum;
+                          });
                         }
 
-                        return CardGeneralTotal(total: totalBalance, income: totalIncome, expense: totalExpense);
+                        final updatedUser = AuthService.instance.currentUser;
+                        final currentTotalBalance = updatedUser?.totalBalance ?? widget.users.totalBalance;
+                        final double remainingAmount = (currentTotalBalance - allocatedAmount) < 0
+                          ? 0.0
+                          : (currentTotalBalance - allocatedAmount).toDouble();
+
+                        return CardGeneralTotal(
+                          total: currentTotalBalance,
+                          income: remainingAmount,
+                          expense: allocatedAmount,
+                          onBudgetPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => BudgetAllocationScreen(user: widget.users),
+                              ),
+                            );
+                          },
+                        );
                       },
                     );
                   },
@@ -263,21 +284,31 @@ class _MyHomeState extends State<MyHome> {
               return ValueListenableBuilder(
                 valueListenable: Hive.box('users').listenable(),
                 builder: (context, _, __) {
-                  final myWallets = WalletService().getWallets(widget.users.email);
+                  final allTransactions = TransactionService().getAllUserTransactions(widget.users.email);
                   double monthlyExpense = 0;
                   final updatedUser = AuthService.instance.currentUser;
                   final currentTotalBalance = updatedUser?.totalBalance ?? widget.users.totalBalance;
+                  final budgetMap = Hive.box('budget_allocations').get(widget.users.email);
+                  double allocatedAmount = 0;
+                  if (budgetMap is Map && budgetMap['amounts'] is Map) {
+                    final amounts = Map<String, dynamic>.from(budgetMap['amounts'] as Map);
+                    allocatedAmount = amounts.values.fold<double>(0, (sum, value) {
+                      if (value is num) return sum + value.toDouble();
+                      if (value is String) return sum + (double.tryParse(value) ?? 0);
+                      return sum;
+                    });
+                  }
+                    final double remainingAmount = (currentTotalBalance - allocatedAmount) < 0
+                      ? 0.0
+                      : (currentTotalBalance - allocatedAmount).toDouble();
 
-                  for (final wallet in myWallets) {
-                    final transList = TransactionService().getTransactionsByWallet(wallet.id!);
-                    for (final t in transList) {
-                      if (t.type == 'expense' && t.date.month == _selectedMonth && t.date.year == _selectedYear) {
-                        monthlyExpense += t.amount;
-                      }
+                  for (final t in allTransactions) {
+                    if (t.type == 'expense' && t.date.month == _selectedMonth && t.date.year == _selectedYear) {
+                      monthlyExpense += t.amount;
                     }
                   }
 
-                  return MonthlySpendingCard(collapsed: _collapsed, spent: monthlyExpense, total: currentTotalBalance);
+                  return MonthlySpendingCard(collapsed: _collapsed, spent: monthlyExpense, total: remainingAmount);
                 },
               );
             },

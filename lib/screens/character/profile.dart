@@ -144,7 +144,7 @@ class _CharacterState extends State<Character> {
 
                 SettingItem(
                   icon: Icons.account_balance_wallet,
-                  title: "profile.balance_setup".tr(),
+                  title: "Thiết lập lương hàng tháng",
                   iconColor: AppColors.background,
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => const BalanceSettingScreen()));

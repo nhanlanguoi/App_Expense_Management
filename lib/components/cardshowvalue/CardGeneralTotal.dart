@@ -7,12 +7,14 @@ class CardGeneralTotal extends StatelessWidget {
   final double total;
   final double income;
   final double expense;
+  final VoidCallback? onBudgetPressed;
 
   const CardGeneralTotal({
     super.key,
     required this.total,
     required this.income,
     required this.expense,
+    this.onBudgetPressed,
   });
 
   String money(double value) {
@@ -35,27 +37,60 @@ class CardGeneralTotal extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            "home.total_balance".tr(),
-            style: TextStyle(
-              color: Colors.white70,
-              fontSize: Responsive.sp(12),
-            ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "home.total_balance".tr(),
+                      style: TextStyle(
+                        color: Colors.white70,
+                        fontSize: Responsive.sp(12),
+                      ),
+                    ),
+                    SizedBox(height: Responsive.h(5)),
+                    Text(
+                      money(total),
+                      style: TextStyle(
+                        fontSize: Responsive.sp(26),
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              if (onBudgetPressed != null)
+                InkWell(
+                  onTap: onBudgetPressed,
+                  borderRadius: BorderRadius.circular(Responsive.r(12)),
+                  child: Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: Responsive.w(10),
+                      vertical: Responsive.h(6),
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.16),
+                      borderRadius: BorderRadius.circular(Responsive.r(12)),
+                      border: Border.all(color: Colors.white.withOpacity(0.3)),
+                    ),
+                    child: Text(
+                      'Phân bổ tiền',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: Responsive.sp(12),
+                        fontWeight: FontWeight.w700,
+                        fontFamily: 'BeVietnamPro',
+                      ),
+                    ),
+                  ),
+                ),
+            ],
           ),
-
-          SizedBox(height: Responsive.h(5)),
-
-          Text(
-            money(total),
-            style: TextStyle(
-              fontSize: Responsive.sp(26),
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-            ),
-          ),
-
           SizedBox(height: Responsive.h(10)),
-
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -69,7 +104,6 @@ class CardGeneralTotal extends StatelessWidget {
                   ),
                 ],
               ),
-
               Row(
                 children: [
                   const Icon(Icons.circle, size: 10, color: Colors.orange),

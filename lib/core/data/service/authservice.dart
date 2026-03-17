@@ -17,6 +17,24 @@ class AuthService {
   final userBox = Hive.box('users');
   Users? currentUser;
 
+  String _monthKey(DateTime date) {
+    final month = date.month.toString().padLeft(2, '0');
+    return '${date.year}-$month';
+  }
+
+  double _safeDouble(dynamic value) {
+    if (value is num) return value.toDouble();
+    if (value is String) return double.tryParse(value) ?? 0;
+    return 0;
+  }
+
+  void _syncCurrentUserFromMap(Map<String, dynamic> userMap) {
+    final email = userMap['email']?.toString();
+    if (currentUser != null && currentUser!.email == email) {
+      currentUser = Users.fromMap(userMap);
+    }
+  }
+
   Future<Users?> login(String identifier, String password) async {
     final response = await _authApi.login(identifier: identifier, password: password);
     final userMap = response['user'] as Map<String, dynamic>?;
@@ -290,27 +308,65 @@ class AuthService {
 
   Future<void> updateUserBalance(String email, double newBalance) async {
 
-    if (currentUser != null && currentUser!.email == email) {
-      currentUser = Users(
-        id: currentUser!.id,
-        username: currentUser!.username,
-        email: currentUser!.email,
-        password: currentUser!.password,
-        avatarUrl: currentUser!.avatarUrl,
-        totalBalance: newBalance,
-      );
-    }
-
-
-    var userData = userBox.get(email);
-
-
-    Map<String, dynamic> userMap = userData != null
+    final userData = userBox.get(email);
+    final userMap = userData != null
         ? Map<String, dynamic>.from(userData)
-        : (currentUser?.toMap() ?? {});
+        : (currentUser?.toMap() ?? <String, dynamic>{'email': email});
 
     userMap['total_balance'] = newBalance;
     await userBox.put(email, userMap);
+    _syncCurrentUserFromMap(userMap);
+  }
+
+  Future<void> updateUserMonthlySalary(String email, double salary) async {
+    final userData = userBox.get(email);
+    final userMap = userData != null
+        ? Map<String, dynamic>.from(userData)
+        : (currentUser?.toMap() ?? <String, dynamic>{'email': email});
+
+    final previousSalary = _safeDouble(userMap['monthly_salary']);
+    final nowKey = _monthKey(DateTime.now());
+    userMap['monthly_salary'] = salary;
+
+    // First time setting salary: credit immediately for current month.
+    if (previousSalary <= 0 && salary > 0) {
+      final lastCredited = userMap['salary_last_credited_month']?.toString();
+      if (lastCredited != nowKey) {
+        final currentBalance = _safeDouble(userMap['total_balance']);
+        userMap['total_balance'] = currentBalance + salary;
+        userMap['salary_last_credited_month'] = nowKey;
+      }
+    }
+
+    await userBox.put(email, userMap);
+    _syncCurrentUserFromMap(userMap);
+  }
+
+  Future<bool> applyMonthlySalaryIfNeeded(String email) async {
+    final userData = userBox.get(email);
+    final userMap = userData != null
+        ? Map<String, dynamic>.from(userData)
+        : (currentUser?.toMap() ?? <String, dynamic>{'email': email});
+
+    final monthlySalary = _safeDouble(userMap['monthly_salary']);
+    if (monthlySalary <= 0) {
+      return false;
+    }
+
+    final nowKey = _monthKey(DateTime.now());
+    final lastCredited = userMap['salary_last_credited_month']?.toString();
+
+    if (lastCredited == nowKey) {
+      return false;
+    }
+
+    final currentBalance = _safeDouble(userMap['total_balance']);
+    userMap['total_balance'] = currentBalance + monthlySalary;
+    userMap['salary_last_credited_month'] = nowKey;
+
+    await userBox.put(email, userMap);
+    _syncCurrentUserFromMap(userMap);
+    return true;
   }
 
 }
