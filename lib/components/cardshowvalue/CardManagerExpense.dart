@@ -1,6 +1,7 @@
 import 'package:expense_management/core/utils/format.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:expense_management/core/utils/responsive.dart';
 
 class Cardmanagerexpense extends StatefulWidget {
   final VoidCallback? onPressed;
@@ -50,7 +51,7 @@ class _CardmanagerexpenseState extends State<Cardmanagerexpense> {
         child: Container(
           decoration: BoxDecoration(
             color: const Color(0xFFF4F6F8),
-            borderRadius: BorderRadius.circular(15),
+            borderRadius: BorderRadius.circular(Responsive.r(15)),
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withValues(alpha: 0.05),
@@ -66,7 +67,7 @@ class _CardmanagerexpenseState extends State<Cardmanagerexpense> {
             child: Ink(
               decoration: BoxDecoration(
                 color: Colors.grey[150],
-                borderRadius: BorderRadius.circular(15),
+                borderRadius: BorderRadius.circular(Responsive.r(15)),
                 border: Border.all(color: Colors.grey.withValues(alpha: 0.1), width: 2),
               ),
               child: InkWell(
@@ -75,7 +76,7 @@ class _CardmanagerexpenseState extends State<Cardmanagerexpense> {
                     Future.delayed(const Duration(milliseconds: 150), widget.onPressed);
                   }
                 },
-                borderRadius: BorderRadius.circular(15),
+                borderRadius: BorderRadius.circular(Responsive.r(15)),
                 splashColor: widget.Iconcolor?.withValues(alpha: 0.2) ??
                     Colors.orange[200],
                 highlightColor: widget.Iconcolor?.withValues(alpha: 0.1) ??
@@ -96,7 +97,7 @@ class _CardmanagerexpenseState extends State<Cardmanagerexpense> {
                                   decoration: BoxDecoration(
                                     color: widget.Iconcolor?.withValues(alpha: 0.2) ??
                                         Colors.orange[200],
-                                    borderRadius: BorderRadius.circular(10),
+                                    borderRadius: BorderRadius.circular(Responsive.r(10)),
                                   ),
                                   child: Padding(
                                     padding: EdgeInsets.all(5),
@@ -107,7 +108,7 @@ class _CardmanagerexpenseState extends State<Cardmanagerexpense> {
                                     ),
                                   ),
                                 ),
-                                SizedBox(width: 10),
+                                SizedBox(width: Responsive.w(10)),
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -115,12 +116,12 @@ class _CardmanagerexpenseState extends State<Cardmanagerexpense> {
                                       widget.title ?? "Ăn uống",
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
-                                        fontSize: 16,
+                                        fontSize: Responsive.sp(16),
                                       ),
                                     ),
                                     Text(
                                       (widget.total ?? "15"),
-                                      style: TextStyle(fontSize: 14),
+                                      style: TextStyle(fontSize: Responsive.sp(14)),
                                     ),
                                   ],
                                 ),
@@ -133,12 +134,12 @@ class _CardmanagerexpenseState extends State<Cardmanagerexpense> {
                                   (Format.formattext(widget.allmoney?? "232.43243324.234"))+" ₫",
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
-                                    fontSize: 16,
+                                    fontSize: Responsive.sp(16),
                                   ),
                                 ),
                                 Text(
                                   "${((widget.percen ?? 0.23) * 100).toInt()}%",
-                                  style: TextStyle(fontSize: 14, color: Colors.red),
+                                  style: TextStyle(fontSize: Responsive.sp(14), color: Colors.red),
                                 ),
                               ],
                             ),
@@ -153,7 +154,7 @@ class _CardmanagerexpenseState extends State<Cardmanagerexpense> {
                           bottom: 15,
                         ),
                         child: ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
+                          borderRadius: BorderRadius.circular(Responsive.r(10)),
                           child: LinearProgressIndicator(
                             value: widget.percen ?? 0.4,
                             backgroundColor: Colors.grey[200],

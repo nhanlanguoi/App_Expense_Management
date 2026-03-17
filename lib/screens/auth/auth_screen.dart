@@ -37,10 +37,10 @@ class _AuthScreenState extends State<AuthScreen> {
           colors: [Color(0xFF7B3FE4), Color(0xFF5A2DBD)],
         ),
         borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(isRegister ? 0 : Responsive.w(30)),
-          topRight: Radius.circular(isRegister ? 0 : Responsive.w(30)),
-          bottomLeft: Radius.circular(isRegister ? Responsive.w(35) : Responsive.w(30)),
-          bottomRight: Radius.circular(isRegister ? Responsive.w(35) : Responsive.w(30)),
+          topLeft: Radius.circular(isRegister ? 0 : Responsive.r(30)),
+          topRight: Radius.circular(isRegister ? 0 : Responsive.r(30)),
+          bottomLeft: Radius.circular(isRegister ? Responsive.r(35) : Responsive.r(30)),
+          bottomRight: Radius.circular(isRegister ? Responsive.r(35) : Responsive.r(30)),
         ),
       ),
 
@@ -49,16 +49,16 @@ class _AuthScreenState extends State<AuthScreen> {
         duration: const Duration(milliseconds: 600),
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 600),
-          width: isRegister ? Responsive.w(70) : Responsive.w(100),
-          height: isRegister ? Responsive.w(70) : Responsive.w(100),
+          width: isRegister ? Responsive.r(70) : Responsive.r(100),
+          height: isRegister ? Responsive.r(70) : Responsive.r(100),
           decoration: BoxDecoration(
             color: Colors.white.withOpacity(0.15),
-            borderRadius: BorderRadius.circular(Responsive.w(24)),
+            borderRadius: BorderRadius.circular(Responsive.r(24)),
           ),
           child: Icon(
             Icons.account_balance_wallet,
             color: Colors.white,
-            size: Responsive.w(40),
+            size: Responsive.r(40),
           ),
         ),
       ),
@@ -103,7 +103,7 @@ class _AuthScreenState extends State<AuthScreen> {
             ),
             decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.circular(Responsive.w(30)),
+              borderRadius: BorderRadius.circular(Responsive.r(30)),
               border: Border.all(color: Colors.grey.shade200),
               boxShadow: [
                 BoxShadow(
@@ -187,7 +187,7 @@ class _AuthScreenState extends State<AuthScreen> {
               color: const Color(0xFF7B3FE4),
             ),
             height: Responsive.h(34),
-            borderRadius: Responsive.w(18),
+            borderRadius: Responsive.r(18),
             width: Responsive.w(140),
           ),
         ],
@@ -199,7 +199,6 @@ class _AuthScreenState extends State<AuthScreen> {
   Widget build(BuildContext context) {
     Responsive.init(context);
     final screenHeight = MediaQuery.of(context).size.height;
-    final screenWidth = MediaQuery.of(context).size.width;
     return SafeArea(
     child: Scaffold(
       body: gradientbackground(
@@ -213,7 +212,7 @@ class _AuthScreenState extends State<AuthScreen> {
                   children: [
                     // --- PHẦN HEADER + LOGO ---
                     Positioned(
-                      top: _mode == AuthType.login ? 20 : 0,
+                      top: _mode == AuthType.login ? Responsive.h(20) : 0,
                       left: 0,
                       right: 0,
 
@@ -222,7 +221,11 @@ class _AuthScreenState extends State<AuthScreen> {
                       ),
                     ),
                     Padding(
-                        padding:  EdgeInsets.only(top: _mode == AuthType.login ? 160 : 100),
+                        padding: EdgeInsets.only(
+                          top: _mode == AuthType.login
+                              ? Responsive.h(160)
+                              : Responsive.h(100),
+                        ),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [

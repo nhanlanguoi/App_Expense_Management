@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:expense_management/core/utils/responsive.dart';
 
 class CardInfo extends StatelessWidget {
   final String? username;
@@ -20,12 +21,12 @@ class CardInfo extends StatelessWidget {
         children: [
           Text(
             "hello".tr(),
-            style: const TextStyle(fontSize: 14, color: Colors.white70),
+            style: TextStyle(fontSize: Responsive.sp(14), color: Colors.white70),
           ),
-          const SizedBox(height: 4),
+          SizedBox(height: Responsive.h(4)),
           Text(
             username ??"User",
-            style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.white),
+            style: TextStyle(fontSize: Responsive.sp(15), fontWeight: FontWeight.bold, color: Colors.white),
           ),
         ],
       ),

@@ -1,5 +1,6 @@
 import 'package:expense_management/configs/theme/textstyles.dart';
 import 'package:flutter/material.dart';
+import 'package:expense_management/core/utils/responsive.dart';
 
 class SettingItem extends StatelessWidget {
   final IconData icon;
@@ -24,7 +25,7 @@ class SettingItem extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(Responsive.r(16)),
           boxShadow: [
             BoxShadow(
               color: Colors.grey.withOpacity(0.05),
@@ -43,7 +44,7 @@ class SettingItem extends StatelessWidget {
               ),
               child: Icon(icon, color: iconColor, size: 24),
             ),
-            const SizedBox(width: 15),
+            SizedBox(width: Responsive.w(15)),
 
             Expanded(
               child: Text(

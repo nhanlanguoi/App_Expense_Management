@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:expense_management/core/utils/responsive.dart';
 
 class Cardshowtotalofcard extends StatefulWidget {
   final String? total;
@@ -30,7 +31,7 @@ class _CardmanagerexpenseState extends State<Cardshowtotalofcard> {
     return Container(
       decoration: BoxDecoration(
         color: widget.Background ?? Colors.grey[200],
-        borderRadius: BorderRadius.circular(15),
+        borderRadius: BorderRadius.circular(Responsive.r(15)),
         border: Border.all(color: Colors.grey.withValues(alpha: 0.1), width: 2),
         boxShadow: [
           BoxShadow(
@@ -56,7 +57,7 @@ class _CardmanagerexpenseState extends State<Cardshowtotalofcard> {
                         color:
                         widget.Iconcolor?.withValues(alpha: 0.2) ??
                             Colors.orange[200],
-                        borderRadius: BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(Responsive.r(10)),
                       ),
                       child: Padding(
                         padding: const EdgeInsets.all(5),
@@ -67,18 +68,18 @@ class _CardmanagerexpenseState extends State<Cardshowtotalofcard> {
                         ),
                       ),
                     ),
-                    const SizedBox(width: 3),
+                    SizedBox(width: Responsive.w(3)),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
+                        Text(
                           "Thống kê",
-                          style: TextStyle(fontSize: 14, color: Colors.grey),
+                          style: TextStyle(fontSize: Responsive.sp(14), color: Colors.grey),
                         ),
                         Text(
                           "${widget.total ?? '15'} giao dịch",
-                          style: const TextStyle(
-                            fontSize: 16,
+                          style: TextStyle(
+                            fontSize: Responsive.sp(16),
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -89,14 +90,14 @@ class _CardmanagerexpenseState extends State<Cardshowtotalofcard> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    const Text(
+                    Text(
                       "Tỉ trọng",
-                      style: TextStyle(fontSize: 14, color: Colors.grey),
+                      style: TextStyle(fontSize: Responsive.sp(14), color: Colors.grey),
                     ),
                     Text(
                       "${((widget.percen ?? 0.23) * 100).toInt()}%",
                       style: TextStyle(
-                        fontSize: 16,
+                        fontSize: Responsive.sp(16),
                         fontWeight: FontWeight.bold,
                         color: widget.Iconcolor ?? Colors.orange,
                       ),

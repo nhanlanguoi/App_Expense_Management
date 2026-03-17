@@ -13,6 +13,7 @@ import '../../../core/model/wallet.dart';
 import 'package:expense_management/screens/home/widgets/AddTransaction.dart';
 
 import '../../../core/utils/format.dart';
+import 'package:expense_management/core/utils/responsive.dart';
 
 class categoryDetail extends StatefulWidget {
   final Wallet wallet;
@@ -47,8 +48,7 @@ class _categoryDetailState extends State<categoryDetail> {
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Column(
                 children: [
-                  SizedBox(
-                    height: 60,
+                  SizedBox(height: Responsive.h(60),
                     child: Stack(
                       alignment: Alignment.center,
                       children: [
@@ -78,12 +78,12 @@ class _categoryDetailState extends State<categoryDetail> {
                   SizedBox(
                     child: Column(
                       children: [
-                        const SizedBox(height: 25),
-                        const Text(
+                        SizedBox(height: Responsive.h(25)),
+                        Text(
                           "Tổng chi tháng này",
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 14,
+                            fontSize: Responsive.sp(14),
                             fontWeight: FontWeight.w500,
                             fontFamily: 'BeVietnamPro',
                           ),
@@ -96,9 +96,9 @@ class _categoryDetailState extends State<categoryDetail> {
                             child: Text(
                               "${Format.formatnumber(widget.wallet.balance)} ₫",
                               maxLines: 1,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 color: Colors.white,
-                                fontSize: 40,
+                                fontSize: Responsive.sp(40),
                                 fontWeight: FontWeight.w800,
                                 fontFamily: 'BeVietnamPro',
                               ),
@@ -130,7 +130,7 @@ class _categoryDetailState extends State<categoryDetail> {
                             : 0.0;
                         return Column(
                           children: [
-                            const SizedBox(height: 40),
+                            SizedBox(height: Responsive.h(40)),
                             Cardshowtotalofcard(
                               Background: Colors.white,
                               total: listTrans.length.toString(),
@@ -142,7 +142,7 @@ class _categoryDetailState extends State<categoryDetail> {
                               totalIncome: totalIncomeOfWallet,
                               totalExpense: totalExpenseOfWallet,
                             ),
-                            const SizedBox(height: 20),
+                            SizedBox(height: Responsive.h(20)),
                             Row(
                               spacing: 20,
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -188,7 +188,7 @@ class _categoryDetailState extends State<categoryDetail> {
                                   ),
                               ],
                             ),
-                            const SizedBox(height: 20),
+                            SizedBox(height: Responsive.h(20)),
                             Expanded(
                               child: listTrans.isEmpty
                                   ? const Center(

@@ -10,6 +10,7 @@ import '../../configs/theme/color.dart';
 import '../../configs/theme/icon.dart';
 import '../../core/data/service/walletservice.dart';
 import '../../core/model/users.dart';
+import 'package:expense_management/core/utils/responsive.dart';
 
 class Categorymanager extends StatefulWidget {
   final Users users;
@@ -58,11 +59,11 @@ class _CategorymanagerState extends State<Categorymanager> {
                         ),
                       ),
 
-                      const Text(
+                      Text(
                         "Quản lý danh mục",
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: 23,
+                          fontSize: Responsive.sp(23),
                           fontWeight: FontWeight.bold,
                           fontFamily: 'BeVietnamPro',
                         ),
@@ -73,7 +74,7 @@ class _CategorymanagerState extends State<Categorymanager> {
               ),
             ],
           ),
-          const SizedBox(height: 20),
+          SizedBox(height: Responsive.h(20)),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -90,10 +91,10 @@ class _CategorymanagerState extends State<Categorymanager> {
                           return Container(
                             height: MediaQuery.of(context).size.height * 0.7,
                             width: double.infinity,
-                            decoration: const BoxDecoration(
+                            decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.vertical(
-                                top: Radius.circular(24),
+                                top: Radius.circular(Responsive.r(24)),
                               ),
                             ),
                             clipBehavior: Clip.antiAlias,
@@ -112,13 +113,13 @@ class _CategorymanagerState extends State<Categorymanager> {
                       size: 30,
                     ),
                     labelStyle: TextStyle(
-                      fontSize: 18,
+                      fontSize: Responsive.sp(18),
                       fontWeight: FontWeight.bold,
                       fontFamily: 'BeVietnamPro',
                     ),
                     backgroundColor: Color(0xFF9147F2),
                   ),
-                  const SizedBox(height: 20),
+                  SizedBox(height: Responsive.h(20)),
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -132,7 +133,7 @@ class _CategorymanagerState extends State<Categorymanager> {
                             return Center(
                               child: Text(
                                 "home.no_wallet".tr(),
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontFamily: 'BeVietnamPro',
                                   color: Colors.grey,
                                 ),
@@ -160,7 +161,7 @@ class _CategorymanagerState extends State<Categorymanager> {
                                   background: Container(
                                     decoration: BoxDecoration(
                                       color: const Color(0xFFFF4B4B),
-                                      borderRadius: BorderRadius.circular(15),
+                                      borderRadius: BorderRadius.circular(Responsive.r(15)),
                                       boxShadow: [
                                         BoxShadow(
                                           color: const Color(
@@ -178,14 +179,14 @@ class _CategorymanagerState extends State<Categorymanager> {
                                       children: [
                                         Text(
                                           "home.delete_wallet".tr(),
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                             color: Colors.white,
                                             fontWeight: FontWeight.bold,
-                                            fontSize: 15,
+                                            fontSize: Responsive.sp(15),
                                             fontFamily: 'BeVietnamPro',
                                           ),
                                         ),
-                                        const SizedBox(width: 8),
+                                        SizedBox(width: Responsive.w(8)),
                                         const Icon(
                                           Icons.delete_sweep_rounded,
                                           color: Colors.white,
@@ -225,18 +226,18 @@ class _CategorymanagerState extends State<Categorymanager> {
                                                     size: 40,
                                                   ),
                                                 ),
-                                                const SizedBox(height: 20),
+                                                SizedBox(height: Responsive.h(20)),
                                                 Text(
                                                   "home.delete_wallet_confirm"
                                                       .tr(),
-                                                  style: const TextStyle(
-                                                    fontSize: 20,
+                                                  style: TextStyle(
+                                                    fontSize: Responsive.sp(20),
                                                     fontWeight: FontWeight.bold,
                                                     fontFamily: 'BeVietnamPro',
                                                   ),
                                                   textAlign: TextAlign.center,
                                                 ),
-                                                const SizedBox(height: 12),
+                                                SizedBox(height: Responsive.h(12)),
                                                 Row(
                                                   children: [
                                                     Expanded(
@@ -264,7 +265,7 @@ class _CategorymanagerState extends State<Categorymanager> {
                                                         child: Text(
                                                           "home.cancel".tr(),
                                                           style:
-                                                              const TextStyle(
+                                                              TextStyle(
                                                                 color: Colors
                                                                     .black87,
                                                                 fontWeight:
@@ -274,7 +275,7 @@ class _CategorymanagerState extends State<Categorymanager> {
                                                         ),
                                                       ),
                                                     ),
-                                                    const SizedBox(width: 12),
+                                                    SizedBox(width: Responsive.w(12)),
                                                     Expanded(
                                                       child: ElevatedButton(
                                                         onPressed: () =>
@@ -302,7 +303,7 @@ class _CategorymanagerState extends State<Categorymanager> {
                                                           "home.delete_now"
                                                               .tr(),
                                                           style:
-                                                              const TextStyle(
+                                                              TextStyle(
                                                                 color: Colors
                                                                     .white,
                                                                 fontWeight:
@@ -331,7 +332,7 @@ class _CategorymanagerState extends State<Categorymanager> {
                                               Icons.check_circle,
                                               color: Colors.white,
                                             ),
-                                            const SizedBox(width: 12),
+                                            SizedBox(width: Responsive.w(12)),
                                             Text(
                                               "home.deleted_wallet".tr() +
                                                   " ${wallet.name}",
@@ -363,7 +364,7 @@ class _CategorymanagerState extends State<Categorymanager> {
                                       ),
                                       decoration: BoxDecoration(
                                         color: Colors.white,
-                                        borderRadius: BorderRadius.circular(16),
+                                        borderRadius: BorderRadius.circular(Responsive.r(16)),
                                         boxShadow: [
                                           BoxShadow(
                                             color: Colors.grey.withOpacity(
@@ -394,12 +395,12 @@ class _CategorymanagerState extends State<Categorymanager> {
                                               size: 26,
                                             ),
                                           ),
-                                          const SizedBox(width: 16),
+                                          SizedBox(width: Responsive.w(16)),
                                           Expanded(
                                             child: Text(
                                               Format.formattext(wallet.name),
-                                              style: const TextStyle(
-                                                fontSize: 14,
+                                              style: TextStyle(
+                                                fontSize: Responsive.sp(14),
                                                 fontWeight: FontWeight.bold,
                                                 fontFamily: 'BeVietnamPro',
                                                 color: Colors.black87,
@@ -409,7 +410,7 @@ class _CategorymanagerState extends State<Categorymanager> {
                                           Text(
                                             Format.formattext("${Format.formatnumber(wallet.balance)}")+ " đ",
                                             style: TextStyle(
-                                              fontSize: 14,
+                                              fontSize: Responsive.sp(14),
                                               fontWeight: FontWeight.bold,
                                               color: Colors.blue[700],
                                               fontFamily: 'BeVietnamPro',

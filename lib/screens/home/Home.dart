@@ -330,7 +330,7 @@ class _MyHomeState extends State<MyHome> {
                                                 ),
                                                 child: Text(
                                                     "home.cancel".tr(),
-                                                    style: const TextStyle(
+                                                    style: TextStyle(
                                                         color:
                                                         Colors.black87,
                                                         fontWeight:
@@ -365,7 +365,7 @@ class _MyHomeState extends State<MyHome> {
                                                 ),
                                                 child: Text(
                                                     "home.delete_now".tr(),
-                                                    style: const TextStyle(
+                                                    style: TextStyle(
                                                         color: Colors.white,
                                                         fontWeight:
                                                         FontWeight

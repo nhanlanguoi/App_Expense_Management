@@ -239,7 +239,7 @@ class _BalanceChartWidgetState extends State<BalanceChartWidget> {
                       SizedBox(height: Responsive.h(4)),
                       Text(
                         "${Format.formattext(Format.formatnumber(displayData['balance']))} đ",
-                        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: Colors.black87),
+                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: Responsive.sp(18), color: Colors.black87),
 
                       ),
                     ],
@@ -297,10 +297,10 @@ class _BalanceChartWidgetState extends State<BalanceChartWidget> {
                     titlesData: FlTitlesData(
                       show: true,
                       topTitles: AxisTitles(
-                        sideTitles: SideTitles(showTitles: true, reservedSize: Responsive.h(20), getTitlesWidget: (v, m) => const SizedBox()),
+                        sideTitles: SideTitles(showTitles: true, reservedSize: Responsive.h(20), getTitlesWidget: (v, m) => SizedBox()),
                       ),
                       rightTitles: AxisTitles(
-                        sideTitles: SideTitles(showTitles: true, reservedSize: Responsive.w(15), getTitlesWidget: (v, m) => const SizedBox()),
+                        sideTitles: SideTitles(showTitles: true, reservedSize: Responsive.w(15), getTitlesWidget: (v, m) => SizedBox()),
                       ),
                       bottomTitles: AxisTitles(
                         sideTitles: SideTitles(
@@ -308,8 +308,8 @@ class _BalanceChartWidgetState extends State<BalanceChartWidget> {
                           reservedSize: Responsive.h(40),
                           interval: 1,
                           getTitlesWidget: (value, meta) {
-                            if (value != value.toInt()) return const SizedBox();
-                            if (value.toInt() < 0 || value.toInt() >= pageData.length) return const SizedBox();
+                            if (value != value.toInt()) return SizedBox();
+                            if (value.toInt() < 0 || value.toInt() >= pageData.length) return SizedBox();
                             return SideTitleWidget(
                               meta: meta,
                               child: Text(
@@ -326,7 +326,7 @@ class _BalanceChartWidgetState extends State<BalanceChartWidget> {
                           reservedSize: Responsive.w(45),
                           interval: yInterval,
                           getTitlesWidget: (value, meta) {
-                            if (value >= maxY * 0.99) return const SizedBox();
+                            if (value >= maxY * 0.99) return SizedBox();
                             return SideTitleWidget(
                               meta: meta,
                               space: Responsive.w(8),

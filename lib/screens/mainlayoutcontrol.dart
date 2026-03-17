@@ -53,9 +53,9 @@ class _MainLayoutState extends State<MainLayout> {
             backgroundColor: Colors.transparent,
             builder: (context) {
               return Container(
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(Responsive.r(24))),
                 ),
                 clipBehavior: Clip.antiAlias,
                 child: AddTransaction(walletId: null, users: widget.user),

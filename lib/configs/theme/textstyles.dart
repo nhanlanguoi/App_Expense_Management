@@ -1,45 +1,46 @@
 import 'package:flutter/material.dart';
+import 'package:expense_management/core/utils/responsive.dart';
 
 class TextStyles {
   static const String fontFamily = 'BeVietnamPro';
 
   // dungf cho tên trang hoặc title của một bậc
-  static const TextStyle h1 = TextStyle(
+  static final TextStyle h1 = TextStyle(
     fontFamily: fontFamily,
-    fontSize: 30,
+    fontSize: Responsive.sp(30),
     fontWeight: FontWeight.w500
   );
 
-  static const TextStyle h2 = TextStyle(
+  static final TextStyle h2 = TextStyle(
     fontFamily: fontFamily,
-    fontSize: 23,
+    fontSize: Responsive.sp(23),
   );
 
-  static const TextStyle h3 = TextStyle(
+  static final TextStyle h3 = TextStyle(
     fontFamily: fontFamily,
-    fontSize: 18,
+    fontSize: Responsive.sp(18),
   );
 
-  static const TextStyle h4 = TextStyle(
+  static final TextStyle h4 = TextStyle(
     fontFamily: fontFamily,
-    fontSize: 15,
+    fontSize: Responsive.sp(15),
   );
 
   ////////
-  static const TextStyle nameuser = TextStyle(
+  static final TextStyle nameuser = TextStyle(
     fontFamily: fontFamily,
-    fontSize: 18,
+    fontSize: Responsive.sp(18),
     fontWeight: FontWeight.bold,
   );
 
-  static const TextStyle emailuser = TextStyle(
+  static final TextStyle emailuser = TextStyle(
     fontFamily: fontFamily,
-    fontSize: 15,
+    fontSize: Responsive.sp(15),
   );
 
   //dungf cho các chữ trong các nút
-  static const TextStyle buttonsetting =TextStyle(
-    fontSize: 16,
+  static final TextStyle buttonsetting =TextStyle(
+    fontSize: Responsive.sp(16),
     fontWeight: FontWeight.w600,
     fontFamily: 'BeVietnamPro',
   );

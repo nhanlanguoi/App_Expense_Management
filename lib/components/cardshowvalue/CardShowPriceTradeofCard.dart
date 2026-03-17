@@ -1,5 +1,6 @@
 import 'package:expense_management/core/utils/format.dart';
 import 'package:flutter/material.dart';
+import 'package:expense_management/core/utils/responsive.dart';
 
 class Cardshowpricetrade extends StatefulWidget {
   final String? title;
@@ -41,7 +42,7 @@ class _CardmanagerexpenseState extends State<Cardshowpricetrade> {
                         color:
                             widget.Iconcolor?.withValues(alpha: 0.2) ??
                             Colors.orange[200],
-                        borderRadius: BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(Responsive.r(10)),
                       ),
                       child: Padding(
                         padding: EdgeInsets.all(5),
@@ -52,7 +53,7 @@ class _CardmanagerexpenseState extends State<Cardshowpricetrade> {
                         ),
                       ),
                     ),
-                    SizedBox(width: 10),
+                    SizedBox(width: Responsive.w(10)),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -60,12 +61,12 @@ class _CardmanagerexpenseState extends State<Cardshowpricetrade> {
                           Format.formattext(widget.title ?? "Ăn uống"),
                           style: TextStyle(
                             fontWeight: FontWeight.w600,
-                            fontSize: 15,
+                            fontSize: Responsive.sp(15),
                           ),
                         ),
                         Text(
                           (widget.time ?? "8:30"),
-                          style: TextStyle(fontSize: 14),
+                          style: TextStyle(fontSize: Responsive.sp(14)),
                         ),
                       ],
                     ),
@@ -76,7 +77,7 @@ class _CardmanagerexpenseState extends State<Cardshowpricetrade> {
                   (Format.formattext(widget.allmoney?? "-25.000 đ") ),
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: 16,
+                    fontSize: Responsive.sp(16),
                     color: widget.Iconcolor ?? Colors.red,
                   ),
                 ),

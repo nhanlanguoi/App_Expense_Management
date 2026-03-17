@@ -11,6 +11,7 @@ import '../../core/model/transactions.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'dart:math' as math;
 import 'package:expense_management/configs/theme/textstyles.dart';
+import 'package:expense_management/core/utils/responsive.dart';
 
 class StatisticScreen extends StatefulWidget {
   const StatisticScreen({super.key});
@@ -66,21 +67,21 @@ class _StatisticScreenState extends State<StatisticScreen> {
                       averagePerDay: averagePerDay,
                       maxExpense: maxExpense,
                     ),
-                    const SizedBox(height: 30),
+                    SizedBox(height: Responsive.h(30)),
                     Text(
                       "Thu nhập và Chi tiêu",
                       style: TextStyles.h2.copyWith(color: Colors.black)
                     ),
-                    const SizedBox(height: 10),
+                    SizedBox(height: Responsive.h(10)),
                     BarChartWidget(transactions: allTransactions),
-                    const SizedBox(height: 30),
+                    SizedBox(height: Responsive.h(30)),
                     Text(
                       "Biến động số dư",
                       style: TextStyles.h2.copyWith(color: Colors.black)
                     ),
-                    const SizedBox(height: 10),
+                    SizedBox(height: Responsive.h(10)),
                     BalanceChartWidget(transactions: allTransactions),
-                    const SizedBox(height: 30),
+                    SizedBox(height: Responsive.h(30)),
                   ],
                 ),
               ),

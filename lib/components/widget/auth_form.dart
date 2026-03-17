@@ -335,8 +335,8 @@ class _AuthFormState extends State<AuthForm> {
                   gradient: const LinearGradient(
                       colors: [Color(0xFF7B3FE4), Color(0xFF5A2DBD)]
                   ),
-                  labelStyle: const TextStyle(
-                    fontSize: 18,
+                  labelStyle: TextStyle(
+                    fontSize: Responsive.sp(18),
                     fontWeight: FontWeight.bold,
                     fontFamily: 'BeVietnamPro',
                     color: Colors.white,

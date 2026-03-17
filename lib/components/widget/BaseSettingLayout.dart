@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:expense_management/configs/theme/color.dart';
 import 'package:flutter/material.dart';
 import '../buttons/custombutton.dart';
+import 'package:expense_management/core/utils/responsive.dart';
 
 class BaseSettingLayout extends StatelessWidget {
   final String title;
@@ -33,15 +34,15 @@ class BaseSettingLayout extends StatelessWidget {
                   Expanded(
                     child: Text(
                       title,
-                      style: const TextStyle(
-                        fontSize: 20,
+                      style: TextStyle(
+                        fontSize: Responsive.sp(20),
                         fontWeight: FontWeight.bold,
                         fontFamily: 'BeVietnamPro',
                       ),
                       textAlign: TextAlign.center,
                     ),
                   ),
-                  const SizedBox(width: 48),
+                  SizedBox(width: Responsive.w(48)),
                 ],
               ),
             ),

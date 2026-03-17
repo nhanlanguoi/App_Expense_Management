@@ -476,7 +476,7 @@ class _HistoryState extends State<History> with TickerProviderStateMixin {
                           ),
                           child: Text(
                             "Không có giao dịch nào",
-                            style: const TextStyle(color: Colors.grey),
+                            style: TextStyle(color: Colors.grey),
                           ),
                         )
                       : Padding(

@@ -8,6 +8,7 @@ import '../../../core/data/service/walletservice.dart';
 import '../../../core/model/wallet.dart';
 import 'package:expense_management/configs/theme/color.dart';
 import 'package:expense_management/configs/theme/icon.dart';
+import 'package:expense_management/core/utils/responsive.dart';
 
 class Addwallet extends StatefulWidget {
   const Addwallet({super.key});
@@ -35,14 +36,14 @@ class _AddwalletState extends State<Addwallet> {
       context: context,
       builder: (context) {
         return Dialog(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(Responsive.r(20))),
           child: Padding(
             padding: const EdgeInsets.all(20),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Text("Chọn màu sắc", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                const SizedBox(height: 20),
+                Text("Chọn màu sắc", style: TextStyle(fontSize: Responsive.sp(18), fontWeight: FontWeight.bold)),
+                SizedBox(height: Responsive.h(20)),
                 Wrap(
                   spacing: 15,
                   runSpacing: 15,
@@ -83,14 +84,14 @@ class _AddwalletState extends State<Addwallet> {
       context: context,
       builder: (context) {
         return Dialog(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(Responsive.r(20))),
           child: Padding(
             padding: const EdgeInsets.all(20),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Text("Chọn biểu tượng", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                const SizedBox(height: 20),
+                Text("Chọn biểu tượng", style: TextStyle(fontSize: Responsive.sp(18), fontWeight: FontWeight.bold)),
+                SizedBox(height: Responsive.h(20)),
                 Wrap(
                   spacing: 15,
                   runSpacing: 15,
@@ -176,7 +177,7 @@ class _AddwalletState extends State<Addwallet> {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(Responsive.r(30))),
       backgroundColor: Colors.white,
       elevation: 10,
       insetPadding: const EdgeInsets.all(20),
@@ -200,35 +201,35 @@ class _AddwalletState extends State<Addwallet> {
                   ),
                   Text(
                     "add_wallet.title".tr(),
-                    style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold, fontFamily: 'BeVietnamPro'),
+                    style: TextStyle(fontSize: Responsive.sp(22), fontWeight: FontWeight.bold, fontFamily: 'BeVietnamPro'),
                   ),
                 ],
               ),
-              const SizedBox(height: 8),
+              SizedBox(height: Responsive.h(8)),
               Center(
                 child: Text(
                   "add_wallet.subtitle".tr(),
-                  style: const TextStyle(color: Colors.grey, fontSize: 14),
+                  style: TextStyle(color: Colors.grey, fontSize: Responsive.sp(14)),
                   textAlign: TextAlign.center,
                 ),
               ),
-              const SizedBox(height: 30),
+              SizedBox(height: Responsive.h(30)),
 
               CustomTextField(
                 controller: _nameController,
                 hintText: "add_wallet.name_hint".tr(),
                 suffixIcon: Icons.account_balance_wallet_outlined,
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: Responsive.h(16)),
               CustomTextField(
                 controller: _balanceController,
                 hintText: "add_wallet.balance_hint".tr(),
                 suffixIcon: Icons.attach_money,
                 keyboardType: TextInputType.number,
               ),
-              const SizedBox(height: 24),
-              Text("add_wallet.choose_color".tr(), style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 15)),
-              const SizedBox(height: 12),
+              SizedBox(height: Responsive.h(24)),
+              Text("add_wallet.choose_color".tr(), style: TextStyle(fontWeight: FontWeight.w600, fontSize: Responsive.sp(15))),
+              SizedBox(height: Responsive.h(12)),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -260,10 +261,10 @@ class _AddwalletState extends State<Addwallet> {
                 ],
               ),
 
-              const SizedBox(height: 24),
+              SizedBox(height: Responsive.h(24)),
 
-              Text("add_wallet.choose_icon".tr(), style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 15)),
-              const SizedBox(height: 12),
+              Text("add_wallet.choose_icon".tr(), style: TextStyle(fontWeight: FontWeight.w600, fontSize: Responsive.sp(15))),
+              SizedBox(height: Responsive.h(12)),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -299,7 +300,7 @@ class _AddwalletState extends State<Addwallet> {
                 ],
               ),
 
-              const SizedBox(height: 32),
+              SizedBox(height: Responsive.h(32)),
 
               custombutton(
                 label: "add_wallet.save_btn".tr(),

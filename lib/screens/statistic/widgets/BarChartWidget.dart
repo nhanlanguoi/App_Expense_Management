@@ -5,6 +5,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/model/transactions.dart';
+import 'package:expense_management/core/utils/responsive.dart';
 
 class BarChartWidget extends StatefulWidget {
   final List<TransactionRecord> transactions;
@@ -37,25 +38,25 @@ class _BarChartWidgetState extends State<BarChartWidget> {
       context: context,
       backgroundColor: AppColors.floor_background,
       constraints: const BoxConstraints(maxWidth: double.infinity),
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(Responsive.r(20))),
       ),
       builder: (context) {
         return SafeArea(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Padding(
-                padding: EdgeInsets.all(16.0),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
                 child: Text(
                   "Chọn khoảng thời gian",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: Responsive.sp(18), fontWeight: FontWeight.bold),
                 ),
               ),
               _buildOption(3, "3 Tháng gần đây"),
               _buildOption(6, "6 Tháng gần đây"),
               _buildOption(12, "12 Tháng gần đây"),
-              SizedBox(height: 100,)
+              SizedBox(height: Responsive.h(100),)
             ],
           ),
         );
@@ -82,7 +83,7 @@ class _BarChartWidgetState extends State<BarChartWidget> {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         decoration: BoxDecoration(
           color: isSelected ? Colors.white : Colors.white,
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(Responsive.r(12)),
           border: Border.all(
             color: isSelected ? Colors.blue : Colors.grey.withValues(alpha: 0.3),
             width: 1,
@@ -94,7 +95,7 @@ class _BarChartWidgetState extends State<BarChartWidget> {
             Text(
               title,
               style: TextStyle(
-                fontSize: 15,
+                fontSize: Responsive.sp(15),
                 fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
                 color: isSelected ? Colors.blue : Colors.black87,
               ),
@@ -150,7 +151,7 @@ class _BarChartWidgetState extends State<BarChartWidget> {
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(Responsive.r(20)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -165,7 +166,7 @@ class _BarChartWidgetState extends State<BarChartWidget> {
                   child: Container(
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(Responsive.r(12)),
                       border: Border.all(width: 0.5 ,color: Colors.grey)
                     ),
                     child: Row(
@@ -175,7 +176,7 @@ class _BarChartWidgetState extends State<BarChartWidget> {
                           "$_selectedMonths Tháng",
                           style: TextStyles.buttonsetting.copyWith(fontWeight:FontWeight.normal ),
                         ),
-                        const SizedBox(width: 4),
+                        SizedBox(width: Responsive.w(4)),
                         const Icon(Icons.keyboard_arrow_down, color: Colors.black, size: 20),
                       ],
                     ),
@@ -184,8 +185,7 @@ class _BarChartWidgetState extends State<BarChartWidget> {
               ),
             ],
           ),
-          SizedBox(
-            height: 350,
+          SizedBox(height: Responsive.h(350),
             child: PageView.builder(
               controller: _pageController,
               onPageChanged: (index) {
@@ -206,7 +206,7 @@ class _BarChartWidgetState extends State<BarChartWidget> {
                           String type = rodIndex == 0 ? "Thu" : "Chi";
                           return BarTooltipItem(
                             "$type\n${rod.toY.toStringAsFixed(0)} đ",
-                            const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                            TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                           );
                         },
                       ),
@@ -217,7 +217,7 @@ class _BarChartWidgetState extends State<BarChartWidget> {
                         sideTitles: SideTitles(
                           showTitles: true,
                           reservedSize: 20,
-                          getTitlesWidget: (value, meta) => const SizedBox(),
+                          getTitlesWidget: (value, meta) => SizedBox(),
                         ),
                       ),
 
@@ -226,7 +226,7 @@ class _BarChartWidgetState extends State<BarChartWidget> {
                         sideTitles: SideTitles(
                           showTitles: true,
                           reservedSize: 15,
-                          getTitlesWidget: (value, meta) => const SizedBox(),
+                          getTitlesWidget: (value, meta) => SizedBox(),
                         ),
                       ),
 
@@ -235,12 +235,12 @@ class _BarChartWidgetState extends State<BarChartWidget> {
                           showTitles: true,
                           reservedSize: 40,
                           getTitlesWidget: (value, meta) {
-                            if (value.toInt() < 0 || value.toInt() >= pageData.length) return const SizedBox();
+                            if (value.toInt() < 0 || value.toInt() >= pageData.length) return SizedBox();
                             return SideTitleWidget(
                               meta: meta,
                               child: Text(
                                 pageData[value.toInt()]['month'],
-                                style: const TextStyle(color: Colors.grey, fontSize: 12, fontWeight: FontWeight.bold),
+                                style: TextStyle(color: Colors.grey, fontSize: Responsive.sp(12), fontWeight: FontWeight.bold),
                               ),
                             );
                           },
@@ -253,13 +253,13 @@ class _BarChartWidgetState extends State<BarChartWidget> {
                           reservedSize: 45,
                           interval: yInterval,
                           getTitlesWidget: (value, meta) {
-                            if (value >= maxY * 0.99) return const SizedBox();
+                            if (value >= maxY * 0.99) return SizedBox();
                             return SideTitleWidget(
                               meta: meta,
                               space: 8,
                               child: Text(
                                 _formatAmount(value),
-                                style: const TextStyle(color: Colors.grey, fontSize: 13),
+                                style: TextStyle(color: Colors.grey, fontSize: Responsive.sp(13)),
                                 textAlign: TextAlign.right,
                               ),
                             );
@@ -285,13 +285,13 @@ class _BarChartWidgetState extends State<BarChartWidget> {
                             toY: income,
                             color: Colors.green,
                             width: 20,
-                            borderRadius: BorderRadius.only(topLeft: Radius.circular(4),topRight: Radius.circular(4)),
+                            borderRadius: BorderRadius.only(topLeft: Radius.circular(Responsive.r(4)),topRight: Radius.circular(Responsive.r(4))),
                           ),
                           BarChartRodData(
                             toY: expense,
                             color: Colors.redAccent,
                             width: 20,
-                            borderRadius: BorderRadius.only(topLeft: Radius.circular(4),topRight: Radius.circular(4)),
+                            borderRadius: BorderRadius.only(topLeft: Radius.circular(Responsive.r(4)),topRight: Radius.circular(Responsive.r(4))),
                           ),
                         ],
                       );
@@ -301,14 +301,14 @@ class _BarChartWidgetState extends State<BarChartWidget> {
               },
             ),
           ),
-          const SizedBox(height: 15),
+          SizedBox(height: Responsive.h(15)),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Row(
                 children: [
                   _buildLegendItem(Colors.green, "Thu"),
-                  const SizedBox(width: 15),
+                  SizedBox(width: Responsive.w(15)),
                   _buildLegendItem(Colors.redAccent, "Chi"),
                 ],
               ),
@@ -321,7 +321,7 @@ class _BarChartWidgetState extends State<BarChartWidget> {
                       height: 6,
                       decoration: BoxDecoration(
                         color: _currentPage == index ? Colors.blue : Colors.grey[300],
-                        borderRadius: BorderRadius.circular(6),
+                        borderRadius: BorderRadius.circular(Responsive.r(6)),
                       ),
                     );
                   }),
@@ -337,8 +337,8 @@ class _BarChartWidgetState extends State<BarChartWidget> {
     return Row(
       children: [
         Container(width: 10, height: 10, decoration: BoxDecoration(color: color, shape: BoxShape.circle)),
-        const SizedBox(width: 5),
-        Text(label, style: const TextStyle(color: Colors.grey, fontSize: 12)),
+        SizedBox(width: Responsive.w(5)),
+        Text(label, style: TextStyle(color: Colors.grey, fontSize: Responsive.sp(12))),
       ],
     );
   }

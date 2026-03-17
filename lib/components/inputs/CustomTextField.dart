@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:expense_management/core/utils/responsive.dart';
 
 class CustomTextField extends StatelessWidget {
   final String hintText;
@@ -22,7 +23,7 @@ class CustomTextField extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: Colors.grey[50],
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(Responsive.r(16)),
         border: Border.all(color: Colors.grey.withOpacity(0.1), width: 1),
       ),
       child: TextField(
@@ -37,7 +38,7 @@ class CustomTextField extends StatelessWidget {
 
         decoration: InputDecoration(
           hintText: hintText,
-          hintStyle: const TextStyle(color: Colors.grey, fontSize: 16),
+          hintStyle: TextStyle(color: Colors.grey, fontSize: Responsive.sp(16)),
           border: InputBorder.none,
           enabledBorder: InputBorder.none,
           focusedBorder: InputBorder.none,

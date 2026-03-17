@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../../../components/inputs/CustomTextField.dart';
 import '../../../components/widget/BaseSettingLayout.dart';
 import '../../../core/data/service/authservice.dart';
+import 'package:expense_management/core/utils/responsive.dart';
 
 
 class BalanceSettingScreen extends StatefulWidget {
@@ -73,33 +74,33 @@ class _BalanceSettingScreenState extends State<BalanceSettingScreen> {
         children: [
           Text(
             "settings.enter_balance".tr(),
-            style: const TextStyle(
-                fontSize: 16,
+            style: TextStyle(
+                fontSize: Responsive.sp(16),
                 fontWeight: FontWeight.bold,
                 fontFamily: 'BeVietnamPro'
             ),
           ),
-          const SizedBox(height: 10),
+          SizedBox(height: Responsive.h(10)),
           Text(
             "settings.balance_desc".tr(),
-            style: const TextStyle(
-                fontSize: 14,
+            style: TextStyle(
+                fontSize: Responsive.sp(14),
                 color: Colors.grey,
                 fontFamily: 'BeVietnamPro',
                 height: 1.5
             ),
           ),
-          const SizedBox(height: 30),
+          SizedBox(height: Responsive.h(30)),
           Text(
               "settings.balance_label".tr(),
-              style: const TextStyle(
-                  fontSize: 14,
+              style: TextStyle(
+                  fontSize: Responsive.sp(14),
                   fontWeight: FontWeight.w600,
                   color: Colors.grey,
                   fontFamily: 'BeVietnamPro'
               )
           ),
-          const SizedBox(height: 8),
+          SizedBox(height: Responsive.h(8)),
           CustomTextField(
             controller: _balanceController,
             hintText: "settings.balance_hint".tr(),

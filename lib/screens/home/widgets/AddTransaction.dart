@@ -6,6 +6,7 @@ import 'package:expense_management/configs/theme/color.dart';
 import 'package:expense_management/configs/theme/icon.dart';
 import '../../../core/data/service/transactionservice.dart';
 import '../../../core/model/transactions.dart';
+import 'package:expense_management/core/utils/responsive.dart';
 
 class AddTransaction extends StatefulWidget {
   final String walletId;
@@ -41,14 +42,14 @@ class _AddTransactionState extends State<AddTransaction> {
       context: context,
       builder: (context) {
         return Dialog(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(Responsive.r(20))),
           child: Padding(
             padding: const EdgeInsets.all(20),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Text("Chọn biểu tượng", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, fontFamily: 'BeVietnamPro')),
-                const SizedBox(height: 20),
+                Text("Chọn biểu tượng", style: TextStyle(fontSize: Responsive.sp(18), fontWeight: FontWeight.bold, fontFamily: 'BeVietnamPro')),
+                SizedBox(height: Responsive.h(20)),
                 Wrap(
                   spacing: 15,
                   runSpacing: 15,
@@ -90,7 +91,7 @@ class _AddTransactionState extends State<AddTransaction> {
   void _saveTransaction() async {
     if (_titleController.text.isEmpty || _amountController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("add_transaction.error_empty".tr(), style: const TextStyle(color: Colors.white)), backgroundColor: Colors.red),
+        SnackBar(content: Text("add_transaction.error_empty".tr(), style: TextStyle(color: Colors.white)), backgroundColor: Colors.red),
       );
       return;
     }
@@ -98,7 +99,7 @@ class _AddTransactionState extends State<AddTransaction> {
     double? amount = double.tryParse(_amountController.text);
     if (amount == null || amount <= 0) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("add_transaction.error_invalid_amount".tr(), style: const TextStyle(color: Colors.white)), backgroundColor: Colors.red),
+        SnackBar(content: Text("add_transaction.error_invalid_amount".tr(), style: TextStyle(color: Colors.white)), backgroundColor: Colors.red),
       );
       return;
     }
@@ -130,7 +131,7 @@ class _AddTransactionState extends State<AddTransaction> {
 
     return Dialog(
       insetPadding: const EdgeInsets.all(20),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(Responsive.r(24))),
       elevation: 0,
       backgroundColor: Colors.transparent,
       child: Container(
@@ -138,7 +139,7 @@ class _AddTransactionState extends State<AddTransaction> {
         decoration: BoxDecoration(
           color: Colors.white,
           shape: BoxShape.rectangle,
-          borderRadius: BorderRadius.circular(24),
+          borderRadius: BorderRadius.circular(Responsive.r(24)),
           boxShadow: const [BoxShadow(color: Colors.black26, blurRadius: 10.0, offset: Offset(0.0, 10.0))],
         ),
         child: SingleChildScrollView(
@@ -147,9 +148,9 @@ class _AddTransactionState extends State<AddTransaction> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Center(
-                child: Text("add_transaction.title".tr(), style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold, fontFamily: 'BeVietnamPro')),
+                child: Text("add_transaction.title".tr(), style: TextStyle(fontSize: Responsive.sp(22), fontWeight: FontWeight.bold, fontFamily: 'BeVietnamPro')),
               ),
-              const SizedBox(height: 20),
+              SizedBox(height: Responsive.h(20)),
               Row(
                 children: [
                   Expanded(
@@ -159,14 +160,14 @@ class _AddTransactionState extends State<AddTransaction> {
                         padding: const EdgeInsets.symmetric(vertical: 12),
                         decoration: BoxDecoration(
                           color: _selectedType == 'expense' ? Colors.red : Colors.grey.shade100,
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(Responsive.r(12)),
                         ),
                         alignment: Alignment.center,
                         child: Text("add_transaction.expense".tr(), style: TextStyle(color: _selectedType == 'expense' ? Colors.white : Colors.grey.shade600, fontWeight: FontWeight.bold)),
                       ),
                     ),
                   ),
-                  const SizedBox(width: 12),
+                  SizedBox(width: Responsive.w(12)),
                   Expanded(
                     child: GestureDetector(
                       onTap: () => setState(() => _selectedType = 'income'),
@@ -174,7 +175,7 @@ class _AddTransactionState extends State<AddTransaction> {
                         padding: const EdgeInsets.symmetric(vertical: 12),
                         decoration: BoxDecoration(
                           color: _selectedType == 'income' ? Colors.green : Colors.grey.shade100,
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(Responsive.r(12)),
                         ),
                         alignment: Alignment.center,
                         child: Text("add_transaction.income".tr(), style: TextStyle(color: _selectedType == 'income' ? Colors.white : Colors.grey.shade600, fontWeight: FontWeight.bold)),
@@ -183,26 +184,26 @@ class _AddTransactionState extends State<AddTransaction> {
                   ),
                 ],
               ),
-              const SizedBox(height: 20),
-              Text("add_transaction.transaction_name".tr(), style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Colors.grey)),
-              const SizedBox(height: 8),
+              SizedBox(height: Responsive.h(20)),
+              Text("add_transaction.transaction_name".tr(), style: TextStyle(fontSize: Responsive.sp(14), fontWeight: FontWeight.w600, color: Colors.grey)),
+              SizedBox(height: Responsive.h(8)),
               CustomTextField(
                 controller: _titleController,
                 hintText: "add_transaction.transaction_name_hint".tr(),
                 suffixIcon: Icons.edit_note,
               ),
-              const SizedBox(height: 16),
-              Text("add_transaction.amount".tr(), style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Colors.grey)),
-              const SizedBox(height: 8),
+              SizedBox(height: Responsive.h(16)),
+              Text("add_transaction.amount".tr(), style: TextStyle(fontSize: Responsive.sp(14), fontWeight: FontWeight.w600, color: Colors.grey)),
+              SizedBox(height: Responsive.h(8)),
               CustomTextField(
                 controller: _amountController,
                 hintText: "0",
                 suffixIcon: Icons.monetization_on_outlined,
                 keyboardType: TextInputType.number,
               ),
-              const SizedBox(height: 16),
-              Text("add_transaction.choose_icon".tr(), style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 15, color: Colors.grey)),
-              const SizedBox(height: 12),
+              SizedBox(height: Responsive.h(16)),
+              Text("add_transaction.choose_icon".tr(), style: TextStyle(fontWeight: FontWeight.w600, fontSize: Responsive.sp(15), color: Colors.grey)),
+              SizedBox(height: Responsive.h(12)),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -239,13 +240,13 @@ class _AddTransactionState extends State<AddTransaction> {
                   )
                 ],
               ),
-              const SizedBox(height: 30),
+              SizedBox(height: Responsive.h(30)),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   TextButton(
                     onPressed: () => Navigator.pop(context),
-                    child: Text("add_transaction.cancel_btn".tr(), style: const TextStyle(color: Colors.grey, fontSize: 16, fontWeight: FontWeight.bold)),
+                    child: Text("add_transaction.cancel_btn".tr(), style: TextStyle(color: Colors.grey, fontSize: Responsive.sp(16), fontWeight: FontWeight.bold)),
                   ),
                   custombutton(
                     onPressed: _saveTransaction,

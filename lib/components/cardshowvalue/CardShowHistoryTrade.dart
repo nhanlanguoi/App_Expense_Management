@@ -1,5 +1,6 @@
 import 'package:expense_management/components/cardshowvalue/CardShowPriceTradeofCard.dart';
 import 'package:flutter/material.dart';
+import 'package:expense_management/core/utils/responsive.dart';
 
 class Cardshowhistorytrade extends StatelessWidget {
   final String date;
@@ -33,7 +34,7 @@ class Cardshowhistorytrade extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(date ,style: TextStyle(fontSize: 15),),
+              Text(date ,style: TextStyle(fontSize: Responsive.sp(15)),),
               if (isSelectionMode)
                 Checkbox(
                   shape: const CircleBorder(),
@@ -44,11 +45,11 @@ class Cardshowhistorytrade extends StatelessWidget {
             ],
           ),
         ),
-        const SizedBox(height: 10),
+        SizedBox(height: Responsive.h(10)),
         Container(
           decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.circular(15),
+            borderRadius: BorderRadius.circular(Responsive.r(15)),
           ),
           child: Column(
             children: List.generate(transactions.length, (index) {
@@ -83,7 +84,7 @@ class Cardshowhistorytrade extends StatelessWidget {
                               activeColor: Colors.red,
                               onChanged: (value) => onSelect(item['id'], value ?? false),
                             ),
-                          SizedBox(width: 10,)
+                          SizedBox(width: Responsive.w(10),)
                         ],
                       ),
                       if (index != transactions.length - 1)
@@ -98,7 +99,7 @@ class Cardshowhistorytrade extends StatelessWidget {
             }),
           ),
         ),
-        const SizedBox(height: 20),
+        SizedBox(height: Responsive.h(20)),
       ],
     );
   }

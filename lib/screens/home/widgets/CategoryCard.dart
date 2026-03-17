@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:expense_management/core/utils/responsive.dart';
 
 class CategoryCard extends StatefulWidget {
   final String title;
@@ -33,7 +34,7 @@ class _CategoryCardState extends State<CategoryCard> {
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
       decoration: BoxDecoration(
         color: const Color(0xFFF4F6F8),
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(Responsive.r(20)),
         border: Border.all(
           color: isExpanded
               ? Colors.deepPurple.withOpacity(0.4)
@@ -72,7 +73,7 @@ class _CategoryCardState extends State<CategoryCard> {
                   ),
                 ),
 
-                const SizedBox(width: 16),
+                SizedBox(width: Responsive.w(16)),
 
                 Expanded(
                   child: Column(
@@ -80,8 +81,8 @@ class _CategoryCardState extends State<CategoryCard> {
                     children: [
                       Text(
                         widget.title,
-                        style: const TextStyle(
-                          fontSize: 18,
+                        style: TextStyle(
+                          fontSize: Responsive.sp(18),
                           fontWeight: FontWeight.bold,
                           fontFamily: 'BeVietnamPro',
                         ),
@@ -90,11 +91,11 @@ class _CategoryCardState extends State<CategoryCard> {
                       AnimatedOpacity(
                         duration: const Duration(milliseconds: 300),
                         opacity: isExpanded ? 1 : 0,
-                        child: const Text(
+                        child: Text(
                           "Đang chỉnh sửa...",
                           style: TextStyle(
                             color: Colors.deepPurple,
-                            fontSize: 13,
+                            fontSize: Responsive.sp(13),
                           ),
                         ),
                       )
@@ -117,7 +118,7 @@ class _CategoryCardState extends State<CategoryCard> {
               child: Column(
                 children: [
 
-                  const SizedBox(height: 20),
+                  SizedBox(height: Responsive.h(20)),
 
                   Align(
                     alignment: Alignment.centerLeft,
@@ -126,12 +127,12 @@ class _CategoryCardState extends State<CategoryCard> {
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         color: Colors.grey.shade600,
-                        fontSize: 13,
+                        fontSize: Responsive.sp(13),
                       ),
                     ),
                   ),
 
-                  const SizedBox(height: 10),
+                  SizedBox(height: Responsive.h(10)),
 
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -145,7 +146,7 @@ class _CategoryCardState extends State<CategoryCard> {
                     ],
                   ),
 
-                  const SizedBox(height: 20),
+                  SizedBox(height: Responsive.h(20)),
 
                   Align(
                     alignment: Alignment.centerLeft,
@@ -154,12 +155,12 @@ class _CategoryCardState extends State<CategoryCard> {
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         color: Colors.grey.shade600,
-                        fontSize: 13,
+                        fontSize: Responsive.sp(13),
                       ),
                     ),
                   ),
 
-                  const SizedBox(height: 10),
+                  SizedBox(height: Responsive.h(10)),
 
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -174,7 +175,7 @@ class _CategoryCardState extends State<CategoryCard> {
                     ],
                   ),
 
-                  const SizedBox(height: 20),
+                  SizedBox(height: Responsive.h(20)),
 
                   Row(
                     children: [
@@ -184,13 +185,13 @@ class _CategoryCardState extends State<CategoryCard> {
                           height: 45,
                           decoration: BoxDecoration(
                             color: Colors.grey.shade300,
-                            borderRadius: BorderRadius.circular(25),
+                            borderRadius: BorderRadius.circular(Responsive.r(25)),
                           ),
                           child: const Center(child: Text("Hủy")),
                         ),
                       ),
 
-                      const SizedBox(width: 12),
+                      SizedBox(width: Responsive.w(12)),
 
                       Expanded(
                         child: Container(
@@ -202,7 +203,7 @@ class _CategoryCardState extends State<CategoryCard> {
                                 Color(0xFF6C3CF5),
                               ],
                             ),
-                            borderRadius: BorderRadius.circular(25),
+                            borderRadius: BorderRadius.circular(Responsive.r(25)),
                           ),
                           child: const Center(
                             child: Text(

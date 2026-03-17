@@ -119,7 +119,7 @@ class _custombuttonState extends State<custombutton> {
       return Center(child: widget.icon);
     }
 
-    Widget labelWidget = const SizedBox();
+    Widget labelWidget = SizedBox();
 
     if (widget.label.isNotEmpty) {
       labelWidget = Text(

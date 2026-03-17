@@ -9,6 +9,7 @@ import '../../../core/data/service/walletservice.dart';
 import '../../../core/model/transactions.dart';
 import '../../../core/model/users.dart';
 import '../../../core/model/wallet.dart';
+import 'package:expense_management/core/utils/responsive.dart';
 
 class AddTransaction extends StatefulWidget {
   final String? walletId;
@@ -60,17 +61,17 @@ class _AddTransactionState extends State<AddTransaction> {
       builder: (context) {
         return Container(
           height: MediaQuery.of(context).size.height * 0.5,
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+            borderRadius: BorderRadius.vertical(top: Radius.circular(Responsive.r(24))),
           ),
           child: Column(
             children: [
-              const Padding(
-                padding: EdgeInsets.all(20),
+              Padding(
+                padding: const EdgeInsets.all(20),
                 child: Text(
                   "Chọn danh mục / Ví",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, fontFamily: 'BeVietnamPro'),
+                  style: TextStyle(fontSize: Responsive.sp(18), fontWeight: FontWeight.bold, fontFamily: 'BeVietnamPro'),
                 ),
               ),
               Expanded(
@@ -96,7 +97,7 @@ class _AddTransactionState extends State<AddTransaction> {
                       title: Text(
                         wallet.name,
                         style: TextStyle(
-                          fontSize: 16,
+                          fontSize: Responsive.sp(16),
                           fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
                           color: isSelected ? Colors.blueAccent : Colors.black87,
                           fontFamily: 'BeVietnamPro',
@@ -129,14 +130,14 @@ class _AddTransactionState extends State<AddTransaction> {
       context: context,
       builder: (context) {
         return Dialog(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(Responsive.r(20))),
           child: Padding(
             padding: const EdgeInsets.all(20),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Text("Chọn biểu tượng", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, fontFamily: 'BeVietnamPro')),
-                const SizedBox(height: 20),
+                Text("Chọn biểu tượng", style: TextStyle(fontSize: Responsive.sp(18), fontWeight: FontWeight.bold, fontFamily: 'BeVietnamPro')),
+                SizedBox(height: Responsive.h(20)),
                 Wrap(
                   spacing: 15,
                   runSpacing: 15,
@@ -183,7 +184,7 @@ class _AddTransactionState extends State<AddTransaction> {
 
     if (_titleController.text.isEmpty || _amountController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("add_transaction.error_empty".tr(), style: const TextStyle(color: Colors.white)), backgroundColor: Colors.red),
+        SnackBar(content: Text("add_transaction.error_empty".tr(), style: TextStyle(color: Colors.white)), backgroundColor: Colors.red),
       );
       return;
     }
@@ -191,7 +192,7 @@ class _AddTransactionState extends State<AddTransaction> {
     double? amount = double.tryParse(_amountController.text);
     if (amount == null || amount <= 0) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("add_transaction.error_invalid_amount".tr(), style: const TextStyle(color: Colors.white)), backgroundColor: Colors.red),
+        SnackBar(content: Text("add_transaction.error_invalid_amount".tr(), style: TextStyle(color: Colors.white)), backgroundColor: Colors.red),
       );
       return;
     }
@@ -246,9 +247,9 @@ class _AddTransactionState extends State<AddTransaction> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Center(
-              child: Text("add_transaction.title".tr(), style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold, fontFamily: 'BeVietnamPro')),
+              child: Text("add_transaction.title".tr(), style: TextStyle(fontSize: Responsive.sp(22), fontWeight: FontWeight.bold, fontFamily: 'BeVietnamPro')),
             ),
-            const SizedBox(height: 20),
+            SizedBox(height: Responsive.h(20)),
             Row(
               children: [
                 Expanded(
@@ -258,14 +259,14 @@ class _AddTransactionState extends State<AddTransaction> {
                       padding: const EdgeInsets.symmetric(vertical: 12),
                       decoration: BoxDecoration(
                         color: _selectedType == 'expense' ? Colors.red : Colors.grey.shade100,
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(Responsive.r(12)),
                       ),
                       alignment: Alignment.center,
                       child: Text("add_transaction.expense".tr(), style: TextStyle(color: _selectedType == 'expense' ? Colors.white : Colors.grey.shade600, fontWeight: FontWeight.bold)),
                     ),
                   ),
                 ),
-                const SizedBox(width: 12),
+                SizedBox(width: Responsive.w(12)),
                 Expanded(
                   child: GestureDetector(
                     onTap: () => setState(() => _selectedType = 'income'),
@@ -273,7 +274,7 @@ class _AddTransactionState extends State<AddTransaction> {
                       padding: const EdgeInsets.symmetric(vertical: 12),
                       decoration: BoxDecoration(
                         color: _selectedType == 'income' ? Colors.green : Colors.grey.shade100,
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(Responsive.r(12)),
                       ),
                       alignment: Alignment.center,
                       child: Text("add_transaction.income".tr(), style: TextStyle(color: _selectedType == 'income' ? Colors.white : Colors.grey.shade600, fontWeight: FontWeight.bold)),
@@ -282,16 +283,16 @@ class _AddTransactionState extends State<AddTransaction> {
                 ),
               ],
             ),
-            const SizedBox(height: 20),
-            const Text("Chọn danh mục / Ví", style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Colors.grey)),
-            const SizedBox(height: 8),
+            SizedBox(height: Responsive.h(20)),
+            Text("Chọn danh mục / Ví", style: TextStyle(fontSize: Responsive.sp(14), fontWeight: FontWeight.w600, color: Colors.grey)),
+            SizedBox(height: Responsive.h(8)),
             GestureDetector(
               onTap: _myWallets.isEmpty ? null : _showWalletPicker,
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
                 decoration: BoxDecoration(
                   color: Colors.grey.shade50,
-                  borderRadius: BorderRadius.circular(15),
+                  borderRadius: BorderRadius.circular(Responsive.r(15)),
                   border: Border.all(color: Colors.grey.shade200),
                 ),
                 child: Row(
@@ -302,20 +303,20 @@ class _AddTransactionState extends State<AddTransaction> {
                         color: AppColors.getColorFromHex(selectedWallet.color),
                         size: 24,
                       ),
-                      const SizedBox(width: 12),
+                      SizedBox(width: Responsive.w(12)),
                       Expanded(
                         child: Text(
                           selectedWallet.name,
-                          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, fontFamily: 'BeVietnamPro', color: Colors.black87),
+                          style: TextStyle(fontSize: Responsive.sp(16), fontWeight: FontWeight.bold, fontFamily: 'BeVietnamPro', color: Colors.black87),
                         ),
                       ),
                     ] else ...[
                       const Icon(Icons.account_balance_wallet_outlined, color: Colors.grey, size: 24),
-                      const SizedBox(width: 12),
+                      SizedBox(width: Responsive.w(12)),
                       Expanded(
                         child: Text(
                           _myWallets.isEmpty ? "Bạn chưa có ví nào!" : "Vui lòng chọn ví...",
-                          style: const TextStyle(fontSize: 16, color: Colors.grey, fontFamily: 'BeVietnamPro'),
+                          style: TextStyle(fontSize: Responsive.sp(16), color: Colors.grey, fontFamily: 'BeVietnamPro'),
                         ),
                       ),
                     ],
@@ -324,27 +325,27 @@ class _AddTransactionState extends State<AddTransaction> {
                 ),
               ),
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: Responsive.h(16)),
 
-            Text("add_transaction.transaction_name".tr(), style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Colors.grey)),
-            const SizedBox(height: 8),
+            Text("add_transaction.transaction_name".tr(), style: TextStyle(fontSize: Responsive.sp(14), fontWeight: FontWeight.w600, color: Colors.grey)),
+            SizedBox(height: Responsive.h(8)),
             CustomTextField(
               controller: _titleController,
               hintText: "add_transaction.transaction_name_hint".tr(),
               suffixIcon: Icons.edit_note,
             ),
-            const SizedBox(height: 16),
-            Text("add_transaction.amount".tr(), style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Colors.grey)),
-            const SizedBox(height: 8),
+            SizedBox(height: Responsive.h(16)),
+            Text("add_transaction.amount".tr(), style: TextStyle(fontSize: Responsive.sp(14), fontWeight: FontWeight.w600, color: Colors.grey)),
+            SizedBox(height: Responsive.h(8)),
             CustomTextField(
               controller: _amountController,
               hintText: "0",
               suffixIcon: Icons.monetization_on_outlined,
               keyboardType: TextInputType.number,
             ),
-            const SizedBox(height: 16),
-            Text("add_transaction.choose_icon".tr(), style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 15, color: Colors.grey)),
-            const SizedBox(height: 12),
+            SizedBox(height: Responsive.h(16)),
+            Text("add_transaction.choose_icon".tr(), style: TextStyle(fontWeight: FontWeight.w600, fontSize: Responsive.sp(15), color: Colors.grey)),
+            SizedBox(height: Responsive.h(12)),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -381,13 +382,13 @@ class _AddTransactionState extends State<AddTransaction> {
                 )
               ],
             ),
-            const SizedBox(height: 30),
+            SizedBox(height: Responsive.h(30)),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 TextButton(
                   onPressed: () => Navigator.pop(context),
-                  child: Text("add_transaction.cancel_btn".tr(), style: const TextStyle(color: Colors.grey, fontSize: 16, fontWeight: FontWeight.bold)),
+                  child: Text("add_transaction.cancel_btn".tr(), style: TextStyle(color: Colors.grey, fontSize: Responsive.sp(16), fontWeight: FontWeight.bold)),
                 ),
                 custombutton(
                   onPressed: _saveTransaction,

@@ -2,6 +2,7 @@ import 'package:expense_management/configs/theme/color.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/utils/format.dart';
+import 'package:expense_management/core/utils/responsive.dart';
 
 class OverviewCard extends StatelessWidget {
   final int currentMonth;
@@ -22,7 +23,7 @@ class OverviewCard extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(25),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(Responsive.r(20)),
         gradient: AppColors.gradientcard,
         boxShadow: [
           BoxShadow(
@@ -36,19 +37,19 @@ class OverviewCard extends StatelessWidget {
         children: [
           Text(
             "Tổng chi tiêu tháng $currentMonth",
-            style: const TextStyle(color: Colors.white70, fontSize: 14, fontFamily: 'BeVietnamPro'),
+            style: TextStyle(color: Colors.white70, fontSize: Responsive.sp(14), fontFamily: 'BeVietnamPro'),
           ),
-          const SizedBox(height: 8),
+          SizedBox(height: Responsive.h(8)),
           Text(
             "${Format.formatnumber(totalExpense)} đ",
-            style: const TextStyle(
+            style: TextStyle(
               color: Colors.white,
-              fontSize: 32,
+              fontSize: Responsive.sp(32),
               fontWeight: FontWeight.bold,
               fontFamily: 'BeVietnamPro',
             ),
           ),
-          const SizedBox(height: 30),
+          SizedBox(height: Responsive.h(30)),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -57,15 +58,15 @@ class OverviewCard extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      const Text("Trung bình/ngày", style: TextStyle(color: Colors.white70, fontSize: 13)),
+                      Text("Trung bình/ngày", style: TextStyle(color: Colors.white70, fontSize: Responsive.sp(13))),
                     ],
                   ),
-                  const SizedBox(height: 8),
+                  SizedBox(height: Responsive.h(8)),
                   Text(
                     "${Format.formattext(Format.formatnumber(averagePerDay))} đ",
-                    style: const TextStyle(
+                    style: TextStyle(
                       color: Colors.white,
-                      fontSize: 18,
+                      fontSize: Responsive.sp(18),
                       fontWeight: FontWeight.bold,
                       fontFamily: 'BeVietnamPro',
                     ),
@@ -77,15 +78,15 @@ class OverviewCard extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      const Text("Khoản lớn nhất", style: TextStyle(color: Colors.white70, fontSize: 13)),
+                      Text("Khoản lớn nhất", style: TextStyle(color: Colors.white70, fontSize: Responsive.sp(13))),
                     ],
                   ),
-                  const SizedBox(height: 8),
+                  SizedBox(height: Responsive.h(8)),
                   Text(
                     "${Format.formattext(Format.formatnumber(maxExpense))} đ",
-                    style: const TextStyle(
+                    style: TextStyle(
                       color: Colors.white,
-                      fontSize: 18,
+                      fontSize: Responsive.sp(18),
                       fontWeight: FontWeight.bold,
                       fontFamily: 'BeVietnamPro',
                     ),

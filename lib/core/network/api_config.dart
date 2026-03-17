@@ -6,7 +6,7 @@ class ApiConfig {
   // flutter run --dart-define=API_BASE_URL=http://<LAN_IP>:3000
   // For Android emulator only, use:
   // flutter run --dart-define=API_BASE_URL=http://10.0.2.2:3000
-  static const String _defaultBaseUrl = 'http://192.168.1.158:3000';
+  static const String _defaultBaseUrl = 'http://192.168.100.223:3000';
 
   static const String baseUrl = String.fromEnvironment(
     'API_BASE_URL',

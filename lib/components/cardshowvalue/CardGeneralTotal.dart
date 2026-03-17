@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:intl/intl.dart';
+import 'package:expense_management/core/utils/responsive.dart';
 
 class CardGeneralTotal extends StatelessWidget {
   final double total;
@@ -23,7 +24,7 @@ class CardGeneralTotal extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(Responsive.r(20)),
         gradient: const LinearGradient(
           colors: [
             Color(0xFF9C61E7),
@@ -36,24 +37,24 @@ class CardGeneralTotal extends StatelessWidget {
         children: [
           Text(
             "home.total_balance".tr(),
-            style: const TextStyle(
+            style: TextStyle(
               color: Colors.white70,
-              fontSize: 12,
+              fontSize: Responsive.sp(12),
             ),
           ),
 
-          const SizedBox(height: 5),
+          SizedBox(height: Responsive.h(5)),
 
           Text(
             money(total),
-            style: const TextStyle(
-              fontSize: 26,
+            style: TextStyle(
+              fontSize: Responsive.sp(26),
               fontWeight: FontWeight.bold,
               color: Colors.white,
             ),
           ),
 
-          const SizedBox(height: 10),
+          SizedBox(height: Responsive.h(10)),
 
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -61,10 +62,10 @@ class CardGeneralTotal extends StatelessWidget {
               Row(
                 children: [
                   const Icon(Icons.circle, size: 10, color: Colors.green),
-                  const SizedBox(width: 5),
+                  SizedBox(width: Responsive.w(5)),
                   Text(
                     "${"home.savings".tr()}: ${money(income)}",
-                    style: const TextStyle(color: Colors.white, fontSize: 12),
+                    style: TextStyle(color: Colors.white, fontSize: Responsive.sp(12)),
                   ),
                 ],
               ),
@@ -72,10 +73,10 @@ class CardGeneralTotal extends StatelessWidget {
               Row(
                 children: [
                   const Icon(Icons.circle, size: 10, color: Colors.orange),
-                  const SizedBox(width: 5),
+                  SizedBox(width: Responsive.w(5)),
                   Text(
                     "${"home.spent".tr()}: ${money(expense)}",
-                    style: const TextStyle(color: Colors.white, fontSize: 12),
+                    style: TextStyle(color: Colors.white, fontSize: Responsive.sp(12)),
                   ),
                 ],
               ),
