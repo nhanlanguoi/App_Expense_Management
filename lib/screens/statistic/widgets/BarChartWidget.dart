@@ -1,4 +1,5 @@
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:expense_management/configs/theme/color.dart';
 import 'package:expense_management/configs/theme/textstyles.dart';
 import 'package:fl_chart/fl_chart.dart';
@@ -49,13 +50,13 @@ class _BarChartWidgetState extends State<BarChartWidget> {
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Text(
-                  "Chọn khoảng thời gian",
+                  "statistic.time_range_title".tr(),
                   style: TextStyle(fontSize: Responsive.sp(18), fontWeight: FontWeight.bold),
                 ),
               ),
-              _buildOption(3, "3 Tháng gần đây"),
-              _buildOption(6, "6 Tháng gần đây"),
-              _buildOption(12, "12 Tháng gần đây"),
+              _buildOption(3, "statistic.last_3_months".tr()),
+              _buildOption(6, "statistic.last_6_months".tr()),
+              _buildOption(12, "statistic.last_12_months".tr()),
               SizedBox(height: Responsive.h(100),)
             ],
           ),
@@ -130,7 +131,7 @@ class _BarChartWidgetState extends State<BarChartWidget> {
       if (expense > maxAmount) maxAmount = expense;
 
       allChartData.add({
-        'month': "T${monthTarget.month}",
+        'month': "statistic.month_tag".tr(namedArgs: {'month': monthTarget.month.toString()}),
         'income': income,
         'expense': expense,
       });
@@ -173,7 +174,7 @@ class _BarChartWidgetState extends State<BarChartWidget> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
-                          "$_selectedMonths Tháng",
+                          "statistic.selected_months".tr(namedArgs: {'count': _selectedMonths.toString()}),
                           style: TextStyles.buttonsetting.copyWith(fontWeight:FontWeight.normal ),
                         ),
                         SizedBox(width: Responsive.w(4)),
@@ -203,7 +204,7 @@ class _BarChartWidgetState extends State<BarChartWidget> {
                     barTouchData: BarTouchData(
                       touchTooltipData: BarTouchTooltipData(
                         getTooltipItem: (group, groupIndex, rod, rodIndex) {
-                          String type = rodIndex == 0 ? "Thu" : "Chi";
+                          String type = rodIndex == 0 ? "statistic.income_short".tr() : "statistic.expense_short".tr();
                           return BarTooltipItem(
                             "$type\n${rod.toY.toStringAsFixed(0)} đ",
                             TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
@@ -307,9 +308,9 @@ class _BarChartWidgetState extends State<BarChartWidget> {
             children: [
               Row(
                 children: [
-                  _buildLegendItem(Colors.green, "Thu"),
+                  _buildLegendItem(Colors.green, "statistic.income_short".tr()),
                   SizedBox(width: Responsive.w(15)),
-                  _buildLegendItem(Colors.redAccent, "Chi"),
+                  _buildLegendItem(Colors.redAccent, "statistic.expense_short".tr()),
                 ],
               ),
               if (pages.length > 1)

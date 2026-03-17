@@ -19,7 +19,19 @@
     "transactions_count": "giao dịch",
     "total_balance": "Tổng số dư",
     "savings": "Tiết kiệm",
-    "spent": "Đã tiêu"
+    "spent": "Đã tiêu",
+    "monthly_spending_title": "Chi tiêu tháng này",
+    "month_label": "Tháng",
+    "expense_by_category": "Phân loại chi tiêu",
+    "filter_by_group": "Lọc theo nhóm danh mục",
+    "category_count_suffix": "danh mục",
+    "view_all": "Xem tất cả",
+    "no_category_message": "Chưa có danh mục. Hãy tạo trong trang Quản lý danh mục.",
+    "delete_category_title": "Xóa danh mục",
+    "delete_category_confirm": "Bạn có chắc muốn xóa danh mục \"{name}\"?",
+    "deleted_category": "Đã xóa danh mục \"{name}\"",
+    "monthly_salary_with_unallocated": "Tổng lương + thu chưa phân bổ: {amount}",
+    "monthly_spent_label": "Đã chi tiêu"
   },
   "add_transaction": {
     "title": "Thêm giao dịch",
@@ -32,7 +44,47 @@
     "cancel_btn": "Hủy bỏ",
     "save_btn": "Lưu giao dịch",
     "error_empty": "Vui lòng nhập đầy đủ tên và số tiền",
-    "error_invalid_amount": "Số tiền không hợp lệ"
+    "error_invalid_amount": "Số tiền không hợp lệ",
+    "select_category": "Chọn danh mục",
+    "select_category_title": "Chọn danh mục",
+    "no_category_yet": "Bạn chưa có danh mục nào!",
+    "select_category_placeholder": "Vui lòng chọn danh mục...",
+    "uncategorized_unallocated": "Không xác định (chưa phân bổ)",
+    "transaction_date": "Ngày giao dịch",
+    "error_select_category": "Vui lòng chọn danh mục trước!"
+  },
+  "category": {
+    "allocated": "Đã phân bổ",
+    "spent": "Đã tiêu",
+    "remaining": "Còn lại",
+    "transactions_suffix": "giao dịch",
+    "tap_to_edit_amount": "Chạm để sửa số tiền"
+  },
+  "category_detail": {
+    "month_total": "Tổng chi tháng {month}",
+    "empty": "Chưa có giao dịch nào cho danh mục này trong tháng đã chọn.",
+    "deleted_transaction": "Đã xóa giao dịch",
+    "delete_transaction_title": "Xóa giao dịch",
+    "delete_transaction_confirm": "Bạn có chắc muốn xóa giao dịch này?"
+  },
+  "budget": {
+    "title": "Phân bổ ngân sách",
+    "save": "Lưu",
+    "saved": "Đã lưu phân bổ ngân sách",
+    "unassigned_money": "Tiền chưa có việc",
+    "allocated_money": "Tiền đã phân bổ",
+    "no_groups": "Chưa có nhóm danh mục nào",
+    "group_name_fallback": "Nhóm danh mục",
+    "no_categories_in_group": "Nhóm này chưa có danh mục",
+    "add_category": "+ THÊM DANH MỤC",
+    "allocation_amount_hint": "Số tiền phân bổ",
+    "delete": "Xóa",
+    "category_fallback": "Danh mục"
+  },
+  "common": {
+    "cancel": "Hủy",
+    "save": "Lưu",
+    "delete": "Xóa"
   },
   "history": {
     "today": "Hôm nay, ",
@@ -40,7 +92,37 @@
     "please_login": "Vui lòng đăng nhập lại",
     "title": "Lịch sử giao dịch",
     "total": "Tổng giao dịch",
-    "no_transaction": "Chưa có giao dịch nào."
+    "no_transaction": "Chưa có giao dịch nào.",
+    "overview": "Tổng quan",
+    "expense": "Chi tiêu",
+    "income": "Thu nhập",
+    "month_year": "Tháng {month}, {year}",
+    "total_expense": "Tổng chi",
+    "total_income": "Tổng thu",
+    "recent_transactions": "Giao dịch gần đây",
+    "view_all": "Xem tất cả",
+    "all_transactions": "Tất cả giao dịch",
+    "all_filter": "Tất cả",
+    "wallet_unnamed": "Ví không tên",
+    "wallet_other": "Ví khác"
+  },
+  "statistic": {
+    "login_required": "Vui lòng đăng nhập",
+    "income_expense": "Thu nhập và Chi tiêu",
+    "balance_fluctuation": "Biến động số dư",
+    "time_range_title": "Chọn khoảng thời gian",
+    "last_3_months": "3 Tháng gần đây",
+    "last_6_months": "6 Tháng gần đây",
+    "last_12_months": "12 Tháng gần đây",
+    "selected_months": "{count} Tháng",
+    "month_tag": "T{month}",
+    "income_short": "Thu",
+    "expense_short": "Chi",
+    "overview_total_expense_month": "Tổng chi tiêu tháng {month}",
+    "average_per_day": "Trung bình/ngày",
+    "max_expense": "Khoản lớn nhất",
+    "balance": "Số dư",
+    "change": "Biến động"
   },
   "settings": {
     "lang_title": "Ngôn ngữ",
@@ -54,7 +136,9 @@
     "balance_desc": "Hệ thống sẽ tự động cộng số lương này vào tổng số dư mỗi khi sang tháng mới. Nếu bạn vừa tạo lương lần đầu, số tiền cũng được cộng ngay.",
     "balance_label": "Lương hàng tháng (₫)",
     "balance_hint": "VD: 10000000",
-    "save_change" : "Lưu thay đổi"
+    "save_change" : "Lưu thay đổi",
+    "title": "Cài đặt",
+    "invalid_number": "Vui lòng nhập số hợp lệ!"
   },
   "add_wallet": {
     "title": "Thêm Ví Mới",

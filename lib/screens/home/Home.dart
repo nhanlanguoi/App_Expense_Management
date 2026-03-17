@@ -178,13 +178,13 @@ class _MyHomeState extends State<MyHome> {
   }
 
   String _selectedGroupLabel() {
-    if (_selectedGroupId == null) return 'Xem tất cả';
+    if (_selectedGroupId == null) return 'home.view_all'.tr();
     final groups = _getGroupMaps();
     final found = groups.cast<Map<String, dynamic>?>().firstWhere(
       (g) => g?['id'] == _selectedGroupId,
       orElse: () => null,
     );
-    return (found?['name'] ?? 'Xem tất cả').toString();
+    return (found?['name'] ?? 'home.view_all'.tr()).toString();
   }
 
   Future<void> _showGroupFilterSheet() async {
@@ -276,7 +276,7 @@ class _MyHomeState extends State<MyHome> {
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('Đã xóa danh mục "$categoryName"'),
+        content: Text('home.deleted_category'.tr(namedArgs: {'name': categoryName})),
         backgroundColor: const Color(0xFF344054),
       ),
     );
@@ -363,7 +363,7 @@ class _MyHomeState extends State<MyHome> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Chi tiêu tháng này',
+                'home.monthly_spending_title'.tr(),
                 style: TextStyle(fontSize: Responsive.sp(16), fontWeight: FontWeight.bold, fontFamily: 'BeVietnamPro'),
               ),
               PopupMenuButton<int>(
@@ -373,7 +373,7 @@ class _MyHomeState extends State<MyHome> {
                   return List.generate(12, (index) => index + 1).map((month) {
                     return PopupMenuItem<int>(
                       value: month,
-                      child: Text('Tháng $month', style: TextStyle(fontFamily: 'BeVietnamPro', fontSize: Responsive.sp(14))),
+                      child: Text('${'home.month_label'.tr()} $month', style: TextStyle(fontFamily: 'BeVietnamPro', fontSize: Responsive.sp(14))),
                     );
                   }).toList();
                 },
@@ -383,7 +383,7 @@ class _MyHomeState extends State<MyHome> {
                   child: Row(
                     children: [
                       Text(
-                        'Tháng $_selectedMonth',
+                        '${'home.month_label'.tr()} $_selectedMonth',
                         style: TextStyle(
                           fontFamily: 'BeVietnamPro',
                           fontSize: Responsive.sp(14),
@@ -455,7 +455,7 @@ class _MyHomeState extends State<MyHome> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Phân loại chi tiêu',
+                  'home.expense_by_category'.tr(),
                   style: TextStyle(fontSize: Responsive.sp(16), fontWeight: FontWeight.bold, fontFamily: 'BeVietnamPro'),
                 ),
                 InkWell(
@@ -547,7 +547,7 @@ class _MyHomeState extends State<MyHome> {
                               ),
                               child: Center(
                                 child: Text(
-                                  'Chưa có danh mục. Hãy tạo trong trang Quản lý danh mục.',
+                                  'home.no_category_message'.tr(),
                                   style: TextStyle(
                                     fontFamily: 'BeVietnamPro',
                                     fontSize: Responsive.sp(13),
@@ -580,7 +580,7 @@ class _MyHomeState extends State<MyHome> {
                                       Icon(Icons.delete_forever_rounded, color: Colors.white, size: Responsive.sp(20)),
                                       SizedBox(width: Responsive.w(6)),
                                       Text(
-                                        'Xóa',
+                                        'common.delete'.tr(),
                                         style: TextStyle(
                                           fontFamily: 'BeVietnamPro',
                                           color: Colors.white,
@@ -595,16 +595,16 @@ class _MyHomeState extends State<MyHome> {
                                   return await showDialog<bool>(
                                         context: context,
                                         builder: (dialogContext) => AlertDialog(
-                                          title: const Text('Xóa danh mục'),
-                                          content: Text('Bạn có chắc muốn xóa danh mục "$categoryName"?'),
+                                          title: Text('home.delete_category_title'.tr()),
+                                          content: Text('home.delete_category_confirm'.tr(namedArgs: {'name': categoryName})),
                                           actions: [
                                             TextButton(
                                               onPressed: () => Navigator.pop(dialogContext, false),
-                                              child: const Text('Hủy'),
+                                              child: Text('common.cancel'.tr()),
                                             ),
                                             TextButton(
                                               onPressed: () => Navigator.pop(dialogContext, true),
-                                              child: const Text('Xóa'),
+                                              child: Text('common.delete'.tr()),
                                             ),
                                           ],
                                         ),

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:expense_management/configs/theme/color.dart';
 import 'package:expense_management/core/data/service/authservice.dart';
 import 'package:expense_management/core/model/users.dart';
@@ -209,8 +210,8 @@ class _BudgetAllocationScreenState extends State<BudgetAllocationScreen> {
 
     if (showSnack && mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Đã lưu phân bổ ngân sách'),
+        SnackBar(
+          content: Text('budget.saved'.tr()),
           backgroundColor: Colors.green,
         ),
       );
@@ -232,7 +233,7 @@ class _BudgetAllocationScreenState extends State<BudgetAllocationScreen> {
             borderRadius: BorderRadius.circular(Responsive.r(16)),
           ),
           title: Text(
-            (category['name'] ?? 'Danh mục').toString(),
+            (category['name'] ?? 'budget.category_fallback'.tr()).toString(),
             style: TextStyle(
               fontFamily: 'BeVietnamPro',
               fontSize: Responsive.sp(15),
@@ -242,12 +243,12 @@ class _BudgetAllocationScreenState extends State<BudgetAllocationScreen> {
           content: TextField(
             controller: controller,
             keyboardType: TextInputType.number,
-            decoration: const InputDecoration(hintText: 'Số tiền phân bổ'),
+            decoration: InputDecoration(hintText: 'budget.allocation_amount_hint'.tr()),
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text('Hủy'),
+              child: Text('common.cancel'.tr()),
             ),
             TextButton(
               onPressed: () {
@@ -256,7 +257,7 @@ class _BudgetAllocationScreenState extends State<BudgetAllocationScreen> {
                 });
                 Navigator.pop(context);
               },
-              child: const Text('Xóa'),
+              child: Text('common.delete'.tr()),
             ),
             ElevatedButton(
               onPressed: () {
@@ -266,7 +267,7 @@ class _BudgetAllocationScreenState extends State<BudgetAllocationScreen> {
                 });
                 Navigator.pop(context);
               },
-              child: const Text('Lưu'),
+              child: Text('common.save'.tr()),
             ),
           ],
         );
@@ -377,7 +378,7 @@ class _BudgetAllocationScreenState extends State<BudgetAllocationScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    (category['name'] ?? 'Danh mục').toString(),
+                    (category['name'] ?? 'budget.category_fallback'.tr()).toString(),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
@@ -389,7 +390,7 @@ class _BudgetAllocationScreenState extends State<BudgetAllocationScreen> {
                   ),
                   SizedBox(height: Responsive.h(2)),
                   Text(
-                    'Chạm để sửa số tiền',
+                    'category.tap_to_edit_amount'.tr(),
                     style: TextStyle(
                       fontFamily: 'BeVietnamPro',
                       fontSize: Responsive.sp(11),
@@ -464,7 +465,7 @@ class _BudgetAllocationScreenState extends State<BudgetAllocationScreen> {
         ),
         child: Center(
           child: Text(
-            '+ THÊM DANH MỤC',
+            'budget.add_category'.tr(),
             style: TextStyle(
               fontFamily: 'BeVietnamPro',
               fontSize: Responsive.sp(14),
@@ -502,7 +503,7 @@ class _BudgetAllocationScreenState extends State<BudgetAllocationScreen> {
                   ),
                   Expanded(
                     child: Text(
-                      'Phân bổ ngân sách',
+                      'budget.title'.tr(),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
@@ -523,7 +524,7 @@ class _BudgetAllocationScreenState extends State<BudgetAllocationScreen> {
                         borderRadius: BorderRadius.circular(Responsive.r(24)),
                       ),
                       child: Text(
-                        'LƯU',
+                        'budget.save'.tr().toUpperCase(),
                         style: TextStyle(
                           fontFamily: 'BeVietnamPro',
                           fontSize: Responsive.sp(14),
@@ -542,9 +543,9 @@ class _BudgetAllocationScreenState extends State<BudgetAllocationScreen> {
                 children: [
                   Row(
                     children: [
-                      _summaryCard(title: 'Tiền chưa có việc', amount: _remainingAmount, filled: true),
+                      _summaryCard(title: 'budget.unassigned_money'.tr(), amount: _remainingAmount, filled: true),
                       SizedBox(width: Responsive.w(10)),
-                      _summaryCard(title: 'Tiền đã phân bổ', amount: _allocatedAmount, filled: false),
+                      _summaryCard(title: 'budget.allocated_money'.tr(), amount: _allocatedAmount, filled: false),
                     ],
                   ),
                   SizedBox(height: Responsive.h(16)),
@@ -561,7 +562,7 @@ class _BudgetAllocationScreenState extends State<BudgetAllocationScreen> {
                           const Icon(Icons.category_outlined, color: Color(0xFFB8C4D6), size: 30),
                           SizedBox(height: Responsive.h(8)),
                           Text(
-                            'Chưa có nhóm danh mục nào',
+                            'budget.no_groups'.tr(),
                             style: TextStyle(
                               fontFamily: 'BeVietnamPro',
                               fontSize: Responsive.sp(13),
@@ -583,7 +584,7 @@ class _BudgetAllocationScreenState extends State<BudgetAllocationScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            _groupHeader((group['name'] ?? 'Nhóm danh mục').toString(), groupTotal),
+                            _groupHeader((group['name'] ?? 'budget.group_name_fallback'.tr()).toString(), groupTotal),
                             SizedBox(height: Responsive.h(8)),
                             if (categories.isEmpty)
                               Container(
@@ -595,7 +596,7 @@ class _BudgetAllocationScreenState extends State<BudgetAllocationScreen> {
                                   border: Border.all(color: const Color(0xFFE4E7EC)),
                                 ),
                                 child: Text(
-                                  'Nhóm này chưa có danh mục',
+                                  'budget.no_categories_in_group'.tr(),
                                   style: TextStyle(
                                     fontFamily: 'BeVietnamPro',
                                     fontSize: Responsive.sp(12),

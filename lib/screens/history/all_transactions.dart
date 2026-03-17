@@ -53,7 +53,7 @@ class _AllTransactionsScreenState extends State<AllTransactionsScreen> {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: Responsive.w(20)),
               child: Text(
-                "Tất cả giao dịch",
+                "history.all_transactions".tr(),
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: Responsive.sp(24),
@@ -75,7 +75,7 @@ class _AllTransactionsScreenState extends State<AllTransactionsScreen> {
                       border: Border.all(color: Colors.blue.withOpacity(0.5)),
                     ),
                     child: Text(
-                      "Tất cả",
+                      "history.all_filter".tr(),
                       style: TextStyle(
                         color: Colors.blue,
                         fontWeight: FontWeight.bold,
@@ -93,7 +93,7 @@ class _AllTransactionsScreenState extends State<AllTransactionsScreen> {
                 builder: (context, box, child) {
                   final currentUser = AuthService().currentUser;
                   if (currentUser == null) {
-                    return const Center(child: Text("Vui lòng đăng nhập"));
+                    return Center(child: Text("history.please_login".tr()));
                   }
 
                   final transService = TransactionService();
@@ -110,8 +110,8 @@ class _AllTransactionsScreenState extends State<AllTransactionsScreen> {
                   final dateKeys = groupedTrans.keys.toList();
 
                   if (allTransactions.isEmpty) {
-                    return const Center(
-                      child: Text("Không có giao dịch nào", style: TextStyle(color: Colors.grey)),
+                    return Center(
+                      child: Text("history.no_transaction".tr(), style: const TextStyle(color: Colors.grey)),
                     );
                   }
 

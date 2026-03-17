@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:expense_management/configs/theme/color.dart';
 import 'package:expense_management/configs/theme/textstyles.dart';
 import 'package:expense_management/screens/statistic/widgets/BalanceChartWidget.dart';
@@ -31,7 +32,7 @@ class _StatisticScreenState extends State<StatisticScreen> {
           builder: (context, box, child) {
             final currentUser = AuthService().currentUser;
             if (currentUser == null) {
-              return const Center(child: Text("Vui lòng đăng nhập"));
+              return Center(child: Text("statistic.login_required".tr()));
             }
 
             final transService = TransactionService();
@@ -69,14 +70,14 @@ class _StatisticScreenState extends State<StatisticScreen> {
                     ),
                     SizedBox(height: Responsive.h(30)),
                     Text(
-                      "Thu nhập và Chi tiêu",
+                      "statistic.income_expense".tr(),
                       style: TextStyles.h2.copyWith(color: Colors.black)
                     ),
                     SizedBox(height: Responsive.h(10)),
                     BarChartWidget(transactions: allTransactions),
                     SizedBox(height: Responsive.h(30)),
                     Text(
-                      "Biến động số dư",
+                      "statistic.balance_fluctuation".tr(),
                       style: TextStyles.h2.copyWith(color: Colors.black)
                     ),
                     SizedBox(height: Responsive.h(10)),

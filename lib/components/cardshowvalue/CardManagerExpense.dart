@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:expense_management/core/utils/format.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -143,7 +144,7 @@ class _CardmanagerexpenseState extends State<Cardmanagerexpense> {
                                             color: const Color(0xFF98A2B3),
                                           ),
                                           children: [
-                                            const TextSpan(text: 'Đã phân bổ: '),
+                                            TextSpan(text: '${'category.allocated'.tr()}: '),
                                             TextSpan(
                                               text: '${Format.formatnumber(allocated)}đ',
                                               style: TextStyle(
@@ -153,7 +154,7 @@ class _CardmanagerexpenseState extends State<Cardmanagerexpense> {
                                               ),
                                             ),
                                             TextSpan(
-                                              text: ' • ${widget.transactionCount ?? 0} giao dịch',
+                                              text: ' • ${widget.transactionCount ?? 0} ${'category.transactions_suffix'.tr()}',
                                               style: TextStyle(
                                                 fontWeight: FontWeight.w500,
                                                 color: const Color(0xFF98A2B3),
@@ -196,7 +197,7 @@ class _CardmanagerexpenseState extends State<Cardmanagerexpense> {
                         children: [
                           Expanded(
                             child: Text(
-                              'Đã tiêu\n${Format.formatnumber(spent)}đ',
+                              '${'category.spent'.tr()}\n${Format.formatnumber(spent)}đ',
                               style: TextStyle(
                                 fontFamily: 'BeVietnamPro',
                                 fontSize: Responsive.sp(12),
@@ -207,7 +208,7 @@ class _CardmanagerexpenseState extends State<Cardmanagerexpense> {
                           ),
                           Expanded(
                             child: Text(
-                              'Còn lại\n${Format.formatnumber(remaining)}đ',
+                              '${'category.remaining'.tr()}\n${Format.formatnumber(remaining)}đ',
                               textAlign: TextAlign.end,
                               style: TextStyle(
                                 fontFamily: 'BeVietnamPro',

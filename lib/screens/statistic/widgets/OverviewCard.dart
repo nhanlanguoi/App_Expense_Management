@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:expense_management/configs/theme/color.dart';
 import 'package:flutter/material.dart';
 
@@ -36,7 +37,7 @@ class OverviewCard extends StatelessWidget {
       child: Column(
         children: [
           Text(
-            "Tổng chi tiêu tháng $currentMonth",
+            "statistic.overview_total_expense_month".tr(namedArgs: {'month': currentMonth.toString()}),
             style: TextStyle(color: Colors.white70, fontSize: Responsive.sp(14), fontFamily: 'BeVietnamPro'),
           ),
           SizedBox(height: Responsive.h(8)),
@@ -58,7 +59,7 @@ class OverviewCard extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      Text("Trung bình/ngày", style: TextStyle(color: Colors.white70, fontSize: Responsive.sp(13))),
+                      Text("statistic.average_per_day".tr(), style: TextStyle(color: Colors.white70, fontSize: Responsive.sp(13))),
                     ],
                   ),
                   SizedBox(height: Responsive.h(8)),
@@ -78,7 +79,7 @@ class OverviewCard extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      Text("Khoản lớn nhất", style: TextStyle(color: Colors.white70, fontSize: Responsive.sp(13))),
+                      Text("statistic.max_expense".tr(), style: TextStyle(color: Colors.white70, fontSize: Responsive.sp(13))),
                     ],
                   ),
                   SizedBox(height: Responsive.h(8)),

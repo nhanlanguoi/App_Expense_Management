@@ -86,7 +86,7 @@ class _HistoryState extends State<History> with TickerProviderStateMixin {
           final userWallets = walletService.getWallets(currentUser.email);
           Map<String, String> walletIdToName = {};
           for (var w in userWallets) {
-            walletIdToName[w.id ?? ''] = w.name ?? 'Ví không tên';
+            walletIdToName[w.id ?? ''] = w.name ?? 'history.wallet_unnamed'.tr();
           }
           List<TransactionRecord> monthlyTransactions = allTransactions.where((
             t,
@@ -101,7 +101,7 @@ class _HistoryState extends State<History> with TickerProviderStateMixin {
           for (var t in monthlyTransactions) {
             if ((_isExpense && t.type == 'expense') ||
                 (!_isExpense && t.type == 'income')) {
-              String walletName = walletIdToName[t.walletId] ?? 'Ví khác';
+              String walletName = walletIdToName[t.walletId] ?? 'history.wallet_other'.tr();
               chartData[walletName] = (chartData[walletName] ?? 0) + t.amount;
               totalChartAmount += t.amount;
             }
@@ -162,7 +162,7 @@ class _HistoryState extends State<History> with TickerProviderStateMixin {
                         ),
                         SizedBox(height: Responsive.h(30)),
                         Text(
-                          "Tổng quan",
+                          "history.overview".tr(),
                           style: TextStyles.h2.copyWith(color: Colors.black),
                         ),
                         SizedBox(height: Responsive.h(15)),
@@ -242,7 +242,7 @@ class _HistoryState extends State<History> with TickerProviderStateMixin {
                                                   fontFamily: 'BeVietnamPro',
                                                   fontSize: Responsive.sp(14),
                                                 ),
-                                                child: const Text("Chi tiêu"),
+                                                child: Text("history.expense".tr()),
                                               ),
                                             ),
                                           ),
@@ -267,7 +267,7 @@ class _HistoryState extends State<History> with TickerProviderStateMixin {
                                                   fontFamily: 'BeVietnamPro',
                                                   fontSize: Responsive.sp(14),
                                                 ),
-                                                child: const Text("Thu nhập"),
+                                                child: Text("history.income".tr()),
                                               ),
                                             ),
                                           ),
@@ -291,7 +291,10 @@ class _HistoryState extends State<History> with TickerProviderStateMixin {
                                     onPressed: () => _changeMonth(-1),
                                   ),
                                   Text(
-                                    "Tháng ${_selectedMonth.month}, ${_selectedMonth.year}",
+                                    "history.month_year".tr(namedArgs: {
+                                      'month': _selectedMonth.month.toString(),
+                                      'year': _selectedMonth.year.toString(),
+                                    }),
                                     style: TextStyle(
                                       fontSize: Responsive.sp(16),
                                       fontWeight: FontWeight.w500,
@@ -328,7 +331,7 @@ class _HistoryState extends State<History> with TickerProviderStateMixin {
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
                                         Text(
-                                          _isExpense ? "Tổng chi" : "Tổng thu",
+                                          _isExpense ? "history.total_expense".tr() : "history.total_income".tr(),
                                           style: TextStyle(
                                             fontSize: Responsive.sp(20),
                                             color: Colors.black,
@@ -407,7 +410,7 @@ class _HistoryState extends State<History> with TickerProviderStateMixin {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Text(
-                        "Giao dịch gần đây",
+                        "history.recent_transactions".tr(),
                         style: TextStyles.h2.copyWith(color: Colors.black),
                       ),
                       GestureDetector(
@@ -430,7 +433,7 @@ class _HistoryState extends State<History> with TickerProviderStateMixin {
                           child: Column(
                             children: [
                               Text(
-                                "Xem tất cả",
+                                "history.view_all".tr(),
                                 style: TextStyle(
                                   fontSize: Responsive.sp(16),
                                   color: Colors.blue,
@@ -475,7 +478,7 @@ class _HistoryState extends State<History> with TickerProviderStateMixin {
                             bottom: Responsive.h(40),
                           ),
                           child: Text(
-                            "Không có giao dịch nào",
+                            "history.no_transaction".tr(),
                             style: TextStyle(color: Colors.grey),
                           ),
                         )

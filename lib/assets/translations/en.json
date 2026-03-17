@@ -19,7 +19,19 @@
     "transactions_count": "transactions",
     "total_balance": "Total Balance",
     "savings": "Savings",
-    "spent": "Spent"
+    "spent": "Spent",
+    "monthly_spending_title": "Monthly spending",
+    "month_label": "Month",
+    "expense_by_category": "Expenses by category",
+    "filter_by_group": "Filter by category group",
+    "category_count_suffix": "categories",
+    "view_all": "View all",
+    "no_category_message": "No categories yet. Create one in Category Manager.",
+    "delete_category_title": "Delete category",
+    "delete_category_confirm": "Are you sure you want to delete category \"{name}\"?",
+    "deleted_category": "Deleted category \"{name}\"",
+    "monthly_salary_with_unallocated": "Monthly salary + unallocated income: {amount}",
+    "monthly_spent_label": "Spent"
   },
   "add_transaction": {
     "title": "Add Transaction",
@@ -32,7 +44,47 @@
     "cancel_btn": "Cancel",
     "save_btn": "Save Transaction",
     "error_empty": "Please enter name and amount",
-    "error_invalid_amount": "Invalid amount"
+    "error_invalid_amount": "Invalid amount",
+    "select_category": "Select category",
+    "select_category_title": "Select category",
+    "no_category_yet": "You have no categories yet!",
+    "select_category_placeholder": "Please select a category...",
+    "uncategorized_unallocated": "Unspecified (unallocated)",
+    "transaction_date": "Transaction date",
+    "error_select_category": "Please select a category first!"
+  },
+  "category": {
+    "allocated": "Allocated",
+    "spent": "Spent",
+    "remaining": "Remaining",
+    "transactions_suffix": "transactions",
+    "tap_to_edit_amount": "Tap to edit amount"
+  },
+  "category_detail": {
+    "month_total": "Total spent in month {month}",
+    "empty": "No transactions for this category in the selected month.",
+    "deleted_transaction": "Transaction deleted",
+    "delete_transaction_title": "Delete transaction",
+    "delete_transaction_confirm": "Are you sure you want to delete this transaction?"
+  },
+  "budget": {
+    "title": "Budget allocation",
+    "save": "Save",
+    "saved": "Budget allocation saved",
+    "unassigned_money": "Unassigned money",
+    "allocated_money": "Allocated money",
+    "no_groups": "No category groups yet",
+    "group_name_fallback": "Category group",
+    "no_categories_in_group": "This group has no categories yet",
+    "add_category": "+ ADD CATEGORY",
+    "allocation_amount_hint": "Allocation amount",
+    "delete": "Delete",
+    "category_fallback": "Category"
+  },
+  "common": {
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete"
   },
   "history": {
     "today": "Today, ",
@@ -40,7 +92,37 @@
     "please_login": "Please login again",
     "title": "Transaction History",
     "total": "Total Transaction",
-    "no_transaction": "No transactions yet."
+    "no_transaction": "No transactions yet.",
+    "overview": "Overview",
+    "expense": "Expense",
+    "income": "Income",
+    "month_year": "Month {month}, {year}",
+    "total_expense": "Total expense",
+    "total_income": "Total income",
+    "recent_transactions": "Recent transactions",
+    "view_all": "View all",
+    "all_transactions": "All transactions",
+    "all_filter": "All",
+    "wallet_unnamed": "Unnamed wallet",
+    "wallet_other": "Other wallet"
+  },
+  "statistic": {
+    "login_required": "Please log in",
+    "income_expense": "Income and Expense",
+    "balance_fluctuation": "Balance fluctuation",
+    "time_range_title": "Select time range",
+    "last_3_months": "Last 3 months",
+    "last_6_months": "Last 6 months",
+    "last_12_months": "Last 12 months",
+    "selected_months": "{count} months",
+    "month_tag": "M{month}",
+    "income_short": "Income",
+    "expense_short": "Expense",
+    "overview_total_expense_month": "Total expense in month {month}",
+    "average_per_day": "Average/day",
+    "max_expense": "Largest expense",
+    "balance": "Balance",
+    "change": "Change"
   },
   "settings": {
     "lang_title": "Language",
@@ -54,7 +136,9 @@
     "balance_desc": "The system will automatically add this salary to your total balance at the start of each new month. If this is your first salary setup, it is added immediately.",
     "balance_label": "Monthly Salary (₫)",
     "balance_hint": "Ex: 10000000",
-    "save_change" : "Save changes"
+    "save_change" : "Save changes",
+    "title": "Settings",
+    "invalid_number": "Please enter a valid number!"
   },
   "add_wallet": {
     "title": "Add New Wallet",

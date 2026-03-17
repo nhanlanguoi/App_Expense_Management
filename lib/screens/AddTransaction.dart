@@ -99,7 +99,7 @@ class _AddTransactionState extends State<AddTransaction> {
               Padding(
                 padding: const EdgeInsets.all(20),
                 child: Text(
-                  'Chọn danh mục',
+                  'add_transaction.select_category_title'.tr(),
                   style: TextStyle(
                     fontSize: Responsive.sp(18),
                     fontWeight: FontWeight.bold,
@@ -111,7 +111,7 @@ class _AddTransactionState extends State<AddTransaction> {
                 child: _categories.isEmpty
                     ? Center(
                         child: Text(
-                          'Bạn chưa có danh mục nào!',
+                          'add_transaction.no_category_yet'.tr(),
                           style: TextStyle(
                             fontFamily: 'BeVietnamPro',
                             fontSize: Responsive.sp(14),
@@ -135,7 +135,7 @@ class _AddTransactionState extends State<AddTransaction> {
                                 child: const Icon(Icons.help_outline_rounded, color: Color(0xFF12B76A)),
                               ),
                               title: Text(
-                                'Không xác định (chưa phân bổ)',
+                                'add_transaction.uncategorized_unallocated'.tr(),
                                 style: TextStyle(
                                   fontSize: Responsive.sp(16),
                                   fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
@@ -229,8 +229,8 @@ class _AddTransactionState extends State<AddTransaction> {
 
     if (!isIncome && _selectedCategoryId == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Vui lòng chọn danh mục trước!'),
+        SnackBar(
+          content: Text('add_transaction.error_select_category'.tr()),
           backgroundColor: Colors.red,
         ),
       );
@@ -394,7 +394,7 @@ class _AddTransactionState extends State<AddTransaction> {
             ),
             SizedBox(height: Responsive.h(20)),
             Text(
-              'Chọn danh mục',
+              'add_transaction.select_category'.tr(),
               style: TextStyle(fontSize: Responsive.sp(14), fontWeight: FontWeight.w600, color: Colors.grey),
             ),
             SizedBox(height: Responsive.h(8)),
@@ -433,8 +433,10 @@ class _AddTransactionState extends State<AddTransaction> {
                       Expanded(
                         child: Text(
                           _selectedType == 'income'
-                              ? 'Không xác định (chưa phân bổ)'
-                              : (_categories.isEmpty ? 'Bạn chưa có danh mục nào!' : 'Vui lòng chọn danh mục...'),
+                              ? 'add_transaction.uncategorized_unallocated'.tr()
+                              : (_categories.isEmpty
+                                  ? 'add_transaction.no_category_yet'.tr()
+                                  : 'add_transaction.select_category_placeholder'.tr()),
                           style: TextStyle(fontSize: Responsive.sp(16), color: Colors.grey, fontFamily: 'BeVietnamPro'),
                         ),
                       ),
@@ -446,7 +448,7 @@ class _AddTransactionState extends State<AddTransaction> {
             ),
             SizedBox(height: Responsive.h(16)),
             Text(
-              'Ngày giao dịch',
+              'add_transaction.transaction_date'.tr(),
               style: TextStyle(fontSize: Responsive.sp(14), fontWeight: FontWeight.w600, color: Colors.grey),
             ),
             SizedBox(height: Responsive.h(8)),

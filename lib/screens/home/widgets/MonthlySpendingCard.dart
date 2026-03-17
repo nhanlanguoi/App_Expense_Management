@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:expense_management/core/utils/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -84,7 +85,7 @@ class MonthlySpendingCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "Đã chi tiêu",
+                'home.monthly_spent_label'.tr(),
                 style: TextStyle(
                     fontSize: Responsive.sp(15),
                     fontWeight: FontWeight.bold,
@@ -130,7 +131,7 @@ class MonthlySpendingCard extends StatelessWidget {
           ),
           SizedBox(height: Responsive.h(5)),
           Text(
-            "Tổng lương tháng : ${money(monthSalary)}",
+            'home.monthly_salary_with_unallocated'.tr(namedArgs: {'amount': money(monthSalary)}),
             style: TextStyle(
               color: Colors.white70,
               fontSize: Responsive.sp(13),

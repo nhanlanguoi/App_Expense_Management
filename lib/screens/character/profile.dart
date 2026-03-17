@@ -70,7 +70,7 @@ class _CharacterState extends State<Character> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                        "Cài đặt".tr(),
+                      "settings.title".tr(),
                         style: TextStyles.h1.copyWith(color: Colors.black)
                     ),
                     SizedBox(height: Responsive.h(30)),
@@ -144,7 +144,7 @@ class _CharacterState extends State<Character> {
 
                 SettingItem(
                   icon: Icons.account_balance_wallet,
-                  title: "Thiết lập lương hàng tháng",
+                  title: "profile.balance_setup".tr(),
                   iconColor: AppColors.background,
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => const BalanceSettingScreen()));

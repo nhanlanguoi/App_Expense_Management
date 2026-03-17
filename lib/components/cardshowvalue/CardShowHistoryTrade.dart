@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:expense_management/components/cardshowvalue/CardShowPriceTradeofCard.dart';
 import 'package:flutter/material.dart';
 import 'package:expense_management/core/utils/responsive.dart';
@@ -122,16 +123,16 @@ class Cardshowhistorytrade extends StatelessWidget {
                   return await showDialog<bool>(
                         context: context,
                         builder: (dialogContext) => AlertDialog(
-                          title: const Text('Xóa giao dịch'),
-                          content: const Text('Bạn có chắc muốn xóa giao dịch này?'),
+                          title: Text('category_detail.delete_transaction_title'.tr()),
+                          content: Text('category_detail.delete_transaction_confirm'.tr()),
                           actions: [
                             TextButton(
                               onPressed: () => Navigator.pop(dialogContext, false),
-                              child: const Text('Hủy'),
+                              child: Text('common.cancel'.tr()),
                             ),
                             TextButton(
                               onPressed: () => Navigator.pop(dialogContext, true),
-                              child: const Text('Xóa'),
+                              child: Text('common.delete'.tr()),
                             ),
                           ],
                         ),

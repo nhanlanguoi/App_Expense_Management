@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:expense_management/components/cardshowvalue/CardShowHistoryTrade.dart';
 import 'package:expense_management/components/widget/purple_header.dart';
 import 'package:expense_management/configs/theme/icon.dart';
@@ -115,7 +116,7 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
                         return Column(
                           children: [
                             Text(
-                              'Tổng chi tháng ${widget.month}',
+                              'category_detail.month_total'.tr(namedArgs: {'month': widget.month.toString()}),
                               style: TextStyle(
                                 color: Colors.white70,
                                 fontSize: Responsive.sp(13),
@@ -155,7 +156,7 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
                         if (listTrans.isEmpty) {
                           return Center(
                             child: Text(
-                              'Chưa có giao dịch nào cho danh mục này trong tháng đã chọn.',
+                              'category_detail.empty'.tr(),
                               style: TextStyle(
                                 fontFamily: 'BeVietnamPro',
                                 fontSize: Responsive.sp(13),
@@ -205,8 +206,8 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
                                 await TransactionService().deleteTransactions([id]);
                                 if (!mounted) return;
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text('Đã xóa giao dịch'),
+                                  SnackBar(
+                                    content: Text('category_detail.deleted_transaction'.tr()),
                                     backgroundColor: Color(0xFF344054),
                                   ),
                                 );

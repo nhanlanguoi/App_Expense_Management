@@ -64,8 +64,8 @@ class _BalanceSettingScreenState extends State<BalanceSettingScreen> {
         final salary = _parseMoneyInput(_balanceController.text);
         if (salary == null) {
           ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                  content: Text("Vui lòng nhập số hợp lệ!"),
+              SnackBar(
+                content: Text("settings.invalid_number".tr()),
                   backgroundColor: Colors.red
               )
           );

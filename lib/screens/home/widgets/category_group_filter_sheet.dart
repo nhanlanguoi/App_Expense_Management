@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:expense_management/core/utils/responsive.dart';
 import 'package:flutter/material.dart';
 
@@ -35,7 +36,7 @@ class CategoryGroupFilterSheet extends StatelessWidget {
           ),
           SizedBox(height: Responsive.h(14)),
           Text(
-            'Lọc theo nhóm danh mục',
+            'home.filter_by_group'.tr(),
             style: TextStyle(
               fontFamily: 'BeVietnamPro',
               fontSize: Responsive.sp(16),
@@ -51,7 +52,7 @@ class CategoryGroupFilterSheet extends StatelessWidget {
               size: Responsive.sp(20),
             ),
             title: Text(
-              'Xem tất cả',
+              'home.view_all'.tr(),
               style: TextStyle(
                 fontFamily: 'BeVietnamPro',
                 fontSize: Responsive.sp(14),
@@ -88,7 +89,7 @@ class CategoryGroupFilterSheet extends StatelessWidget {
                     ),
                   ),
                   subtitle: Text(
-                    '${group['count'] ?? 0} danh mục',
+                    '${group['count'] ?? 0} ${'home.category_count_suffix'.tr()}',
                     style: TextStyle(
                       fontFamily: 'BeVietnamPro',
                       fontSize: Responsive.sp(12),
