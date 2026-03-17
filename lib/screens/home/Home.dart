@@ -41,6 +41,45 @@ class _MyHomeState extends State<MyHome> {
     return '${now.year}-$month';
   }
 
+  String _selectedMonthKey() {
+    final month = _selectedMonth.toString().padLeft(2, '0');
+    return '$_selectedYear-$month';
+  }
+
+  double _safeDouble(dynamic value) {
+    if (value is num) return value.toDouble();
+    if (value is String) return double.tryParse(value) ?? 0;
+    return 0;
+  }
+
+  Map<String, double> _getAllocationByCategoryForSelectedMonth() {
+    final raw = Hive.box('budget_allocations').get(widget.users.email);
+    if (raw is! Map) return <String, double>{};
+
+    final monthKey = _selectedMonthKey();
+    final result = <String, double>{};
+
+    final months = raw['months'];
+    if (months is Map) {
+      final monthRaw = months[monthKey];
+      if (monthRaw is Map && monthRaw['amounts'] is Map) {
+        final amounts = Map<String, dynamic>.from(monthRaw['amounts'] as Map);
+        for (final entry in amounts.entries) {
+          result[entry.key.toString()] = _safeDouble(entry.value);
+        }
+        return result;
+      }
+    }
+
+    if (raw['amounts'] is Map) {
+      final legacy = Map<String, dynamic>.from(raw['amounts'] as Map);
+      for (final entry in legacy.entries) {
+        result[entry.key.toString()] = _safeDouble(entry.value);
+      }
+    }
+    return result;
+  }
+
   double _getAllocatedCurrentMonth() {
     final budgetMap = Hive.box('budget_allocations').get(widget.users.email);
     if (budgetMap is! Map) return 0;
@@ -323,11 +362,7 @@ class _MyHomeState extends State<MyHome> {
                       final allTransactions = TransactionService().getAllUserTransactions(widget.users.email);
                       double monthlyExpense = 0;
                       final updatedUser = AuthService.instance.currentUser;
-                      final currentTotalBalance = updatedUser?.totalBalance ?? widget.users.totalBalance;
-                      final allocatedAmount = _getAllocatedCurrentMonth();
-                      final double remainingAmount = (currentTotalBalance - allocatedAmount) < 0
-                          ? 0.0
-                          : (currentTotalBalance - allocatedAmount).toDouble();
+                      final monthlySalary = updatedUser?.monthlySalary ?? widget.users.monthlySalary;
 
                       for (final t in allTransactions) {
                         if (t.type == 'expense' && t.date.month == _selectedMonth && t.date.year == _selectedYear) {
@@ -335,7 +370,11 @@ class _MyHomeState extends State<MyHome> {
                         }
                       }
 
-                      return MonthlySpendingCard(collapsed: _collapsed, spent: monthlyExpense, total: remainingAmount);
+                      return MonthlySpendingCard(
+                        collapsed: _collapsed,
+                        spent: monthlyExpense,
+                        total: monthlySalary,
+                      );
                     },
                   );
                 },
@@ -388,88 +427,112 @@ class _MyHomeState extends State<MyHome> {
                 valueListenable: Hive.box('categories').listenable(),
                 builder: (context, _, __) {
                   return ValueListenableBuilder(
-                    valueListenable: Hive.box('transactions').listenable(),
+                    valueListenable: Hive.box('budget_allocations').listenable(),
                     builder: (context, _, __) {
-                      final categories = _getCategoryMaps();
-                      final allTransactions = TransactionService().getAllUserTransactions(widget.users.email);
+                      return ValueListenableBuilder(
+                        valueListenable: Hive.box('transactions').listenable(),
+                        builder: (context, _, __) {
+                          final categories = _getCategoryMaps();
+                          final allTransactions = TransactionService().getAllUserTransactions(widget.users.email);
+                          final allocationByCategoryId = _getAllocationByCategoryForSelectedMonth();
 
-                      final expenseTransactions = allTransactions.where((t) {
-                        return t.type == 'expense' && t.date.month == _selectedMonth && t.date.year == _selectedYear;
-                      }).toList();
+                          final expenseTransactions = allTransactions.where((t) {
+                            return t.type == 'expense' && t.date.month == _selectedMonth && t.date.year == _selectedYear;
+                          }).toList();
 
-                      final totalExpense = expenseTransactions.fold<double>(0, (sum, t) => sum + t.amount);
+                          final rows = categories.map((category) {
+                            final categoryId = (category['id'] ?? '').toString();
+                            final iconCode = (category['icon_code'] ?? Icons.category.codePoint) as int;
+                            final colorValue = (category['color_value'] ?? const Color(0xFF7B61FF).value) as int;
+                            final iconData = IconData(iconCode, fontFamily: 'MaterialIcons');
 
-                      final rows = categories.map((category) {
-                        final iconCode = (category['icon_code'] ?? Icons.category.codePoint) as int;
-                        final colorValue = (category['color_value'] ?? const Color(0xFF7B61FF).value) as int;
-                        final iconData = IconData(iconCode, fontFamily: 'MaterialIcons');
+                            // Support both new category_id mapping and legacy icon-based mapping.
+                            final matched = expenseTransactions.where((t) {
+                              if ((t.categoryId ?? '').isNotEmpty) {
+                                return t.categoryId == categoryId;
+                              }
+                              return t.icon == iconCode.toString();
+                            }).toList();
 
-                        final matched = expenseTransactions.where((t) => t.icon == iconCode.toString()).toList();
-                        final amount = matched.fold<double>(0, (sum, t) => sum + t.amount);
-                        final percent = totalExpense > 0 ? amount / totalExpense : 0.0;
+                            final spent = matched.fold<double>(0, (sum, t) => sum + t.amount);
+                            final allocated = allocationByCategoryId[categoryId] ?? 0.0;
+                            final remaining = (allocated - spent) < 0 ? 0.0 : (allocated - spent);
+                            final percent = allocated > 0 ? (spent / allocated) : 0.0;
 
-                        return {
-                          'title': (category['name'] ?? 'Danh mục').toString(),
-                          'icon': iconData,
-                          'iconCode': iconCode,
-                          'color': Color(colorValue),
-                          'count': matched.length,
-                          'amount': amount,
-                          'percent': percent,
-                        };
-                      }).toList()
-                        ..sort((a, b) => (b['amount'] as double).compareTo(a['amount'] as double));
+                            return {
+                              'id': categoryId,
+                              'title': (category['name'] ?? 'Danh mục').toString(),
+                              'icon': iconData,
+                              'iconCode': iconCode,
+                              'color': Color(colorValue),
+                              'count': matched.length,
+                              'spent': spent,
+                              'allocated': allocated,
+                              'remaining': remaining,
+                              'percent': percent,
+                            };
+                          }).toList()
+                            ..sort((a, b) {
+                              final bAllocated = (b['allocated'] as double) > 0 ? 1 : 0;
+                              final aAllocated = (a['allocated'] as double) > 0 ? 1 : 0;
+                              if (bAllocated != aAllocated) return bAllocated - aAllocated;
+                              return (b['spent'] as double).compareTo(a['spent'] as double);
+                            });
 
-                      if (rows.isEmpty) {
-                        return Container(
-                          margin: EdgeInsets.only(top: Responsive.h(8)),
-                          padding: EdgeInsets.all(Responsive.w(14)),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(Responsive.r(16)),
-                          ),
-                          child: Center(
-                            child: Text(
-                              'Chưa có danh mục. Hãy tạo trong trang Quản lý danh mục.',
-                              style: TextStyle(
-                                fontFamily: 'BeVietnamPro',
-                                fontSize: Responsive.sp(13),
-                                color: const Color(0xFF667085),
+                          if (rows.isEmpty) {
+                            return Container(
+                              margin: EdgeInsets.only(top: Responsive.h(8)),
+                              padding: EdgeInsets.all(Responsive.w(14)),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(Responsive.r(16)),
                               ),
-                            ),
-                          ),
-                        );
-                      }
-
-                      return Column(
-                        children: rows.map((row) {
-                          return Padding(
-                            padding: EdgeInsets.only(bottom: Responsive.h(12)),
-                            child: Cardmanagerexpense(
-                              title: row['title'] as String,
-                              total: '${row['count']} giao dịch',
-                              allmoney: (row['amount'] as double).toStringAsFixed(0),
-                              percen: row['percent'] as double,
-                              Icon: row['icon'] as IconData,
-                              Iconcolor: row['color'] as Color,
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (_) => CategoryDetailScreen(
-                                      user: widget.users,
-                                      categoryName: row['title'] as String,
-                                      categoryIconCode: row['iconCode'] as int,
-                                      headerColor: row['color'] as Color,
-                                      month: _selectedMonth,
-                                      year: _selectedYear,
-                                    ),
+                              child: Center(
+                                child: Text(
+                                  'Chưa có danh mục. Hãy tạo trong trang Quản lý danh mục.',
+                                  style: TextStyle(
+                                    fontFamily: 'BeVietnamPro',
+                                    fontSize: Responsive.sp(13),
+                                    color: const Color(0xFF667085),
                                   ),
-                                );
-                              },
-                            ),
+                                ),
+                              ),
+                            );
+                          }
+
+                          return Column(
+                            children: rows.map((row) {
+                              return Padding(
+                                padding: EdgeInsets.only(bottom: Responsive.h(12)),
+                                child: Cardmanagerexpense(
+                                  title: row['title'] as String,
+                                  transactionCount: row['count'] as int,
+                                  spentAmount: row['spent'] as double,
+                                  allocatedAmount: row['allocated'] as double,
+                                  remainingAmount: row['remaining'] as double,
+                                  progressPercent: row['percent'] as double,
+                                  Icon: row['icon'] as IconData,
+                                  Iconcolor: row['color'] as Color,
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (_) => CategoryDetailScreen(
+                                          user: widget.users,
+                                          categoryName: row['title'] as String,
+                                          categoryIconCode: row['iconCode'] as int,
+                                          headerColor: row['color'] as Color,
+                                          month: _selectedMonth,
+                                          year: _selectedYear,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              );
+                            }).toList(),
                           );
-                        }).toList(),
+                        },
                       );
                     },
                   );

@@ -63,14 +63,34 @@ class TransactionService {
 
   List<TransactionRecord> getAllUserTransactions(String email) {
     final myWallets = WalletService().getWallets(email);
-    List<TransactionRecord> allTransactions = [];
+    final box = Hive.box('transactions');
+    final walletIds = myWallets.map((w) => w.id).whereType<String>().toSet();
+    final Map<String, TransactionRecord> unique = {};
 
     for (var wallet in myWallets) {
       if (wallet.id != null) {
-        allTransactions.addAll(getTransactionsByWallet(wallet.id!));
+        for (final t in getTransactionsByWallet(wallet.id!)) {
+          if (t.id != null) {
+            unique[t.id!] = t;
+          }
+        }
       }
     }
-    allTransactions.sort((a, b) => b.date.compareTo(a.date));
+
+    for (final key in box.keys) {
+      final value = box.get(key);
+      if (value == null) continue;
+      final t = TransactionRecord.fromMap(key.toString(), Map<dynamic, dynamic>.from(value));
+      final fromWallet = walletIds.contains(t.walletId);
+      final fromUserTag = t.userEmail == email;
+      if (fromWallet || fromUserTag) {
+        if (t.id != null) {
+          unique[t.id!] = t;
+        }
+      }
+    }
+
+    final allTransactions = unique.values.toList()..sort((a, b) => b.date.compareTo(a.date));
     return allTransactions;
   }
 

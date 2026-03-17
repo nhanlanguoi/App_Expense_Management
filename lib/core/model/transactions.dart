@@ -1,6 +1,8 @@
 class TransactionRecord {
   final String? id;
   final String walletId;
+  final String? userEmail;
+  final String? categoryId;
   final String title;
   final double amount;
   final String type;
@@ -11,6 +13,8 @@ class TransactionRecord {
   TransactionRecord({
     this.id,
     required this.walletId,
+    this.userEmail,
+    this.categoryId,
     required this.title,
     required this.amount,
     required this.type,
@@ -22,6 +26,8 @@ class TransactionRecord {
   Map<String, dynamic> toMap() {
     return {
       'wallet_id': walletId,
+      'user_email': userEmail,
+      'category_id': categoryId,
       'title': title,
       'amount': amount,
       'type': type,
@@ -35,6 +41,8 @@ class TransactionRecord {
     return TransactionRecord(
       id: id,
       walletId: map['wallet_id'] ?? '',
+      userEmail: map['user_email']?.toString(),
+      categoryId: map['category_id']?.toString(),
       title: map['title'] ?? 'Giao dịch',
       amount: (map['amount'] ?? 0).toDouble(),
       type: map['type'] ?? 'expense',

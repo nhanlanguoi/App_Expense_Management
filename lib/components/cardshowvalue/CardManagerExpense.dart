@@ -6,18 +6,22 @@ import 'package:expense_management/core/utils/responsive.dart';
 class Cardmanagerexpense extends StatefulWidget {
   final VoidCallback? onPressed;
   final String? title;
-  final String? total;
-  final String? allmoney;
-  final double? percen;
+  final int? transactionCount;
+  final double? allocatedAmount;
+  final double? spentAmount;
+  final double? remainingAmount;
+  final double? progressPercent;
   final IconData? Icon;
   final Color? Iconcolor;
 
   const Cardmanagerexpense({
     super.key,
     this.title,
-    this.total,
-    this.allmoney,
-    this.percen,
+    this.transactionCount,
+    this.allocatedAmount,
+    this.spentAmount,
+    this.remainingAmount,
+    this.progressPercent,
     this.Icon,
     this.Iconcolor,
     this.onPressed,
@@ -32,6 +36,12 @@ class _CardmanagerexpenseState extends State<Cardmanagerexpense> {
 
   @override
   Widget build(BuildContext context) {
+    final allocated = (widget.allocatedAmount ?? 0).clamp(0, double.infinity).toDouble();
+    final spent = (widget.spentAmount ?? 0).clamp(0, double.infinity).toDouble();
+    final remaining = (widget.remainingAmount ?? (allocated - spent)).clamp(0, double.infinity).toDouble();
+    final rawProgress = allocated > 0 ? (spent / allocated) : 0.0;
+    final progress = (widget.progressPercent ?? rawProgress).clamp(0.0, 1.0);
+
     return Listener(
       onPointerDown: (_) {
         setState(() => _isPressed = true);
@@ -122,13 +132,35 @@ class _CardmanagerexpenseState extends State<Cardmanagerexpense> {
                                         ),
                                       ),
                                       SizedBox(height: Responsive.h(2)),
-                                      Text(
-                                        (widget.total ?? "15"),
-                                        style: TextStyle(
-                                          fontFamily: 'BeVietnamPro',
-                                          fontSize: Responsive.sp(12),
-                                          fontWeight: FontWeight.w500,
-                                          color: const Color(0xFF98A2B3),
+                                      RichText(
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        text: TextSpan(
+                                          style: TextStyle(
+                                            fontFamily: 'BeVietnamPro',
+                                            fontSize: Responsive.sp(12),
+                                            fontWeight: FontWeight.w500,
+                                            color: const Color(0xFF98A2B3),
+                                          ),
+                                          children: [
+                                            const TextSpan(text: 'Đã phân bổ: '),
+                                            TextSpan(
+                                              text: '${Format.formatnumber(allocated)}đ',
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.w700,
+                                                color: const Color(0xFF1D2939),
+                                                fontSize: Responsive.sp(12),
+                                              ),
+                                            ),
+                                            TextSpan(
+                                              text: ' • ${widget.transactionCount ?? 0} giao dịch',
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.w500,
+                                                color: const Color(0xFF98A2B3),
+                                                fontSize: Responsive.sp(12),
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ),
                                     ],
@@ -139,20 +171,15 @@ class _CardmanagerexpenseState extends State<Cardmanagerexpense> {
                           ),
                           SizedBox(width: Responsive.w(8)),
                           Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
-                              Text(
-                                (Format.formattext(widget.allmoney ?? "0")) + " ₫",
-                                style: TextStyle(
-                                  fontFamily: 'BeVietnamPro',
-                                  fontWeight: FontWeight.w800,
-                                  fontSize: Responsive.sp(15),
-                                  color: const Color(0xFF1D2939),
-                                ),
+                              Icon(
+                                Icons.more_horiz_rounded,
+                                size: Responsive.sp(20),
+                                color: const Color(0xFF667085),
                               ),
-                              SizedBox(height: Responsive.h(2)),
+                              SizedBox(height: Responsive.h(6)),
                               Text(
-                                "${((widget.percen ?? 0.23) * 100).toInt()}%",
+                                '${(progress * 100).toInt()}%',
                                 style: TextStyle(
                                   fontFamily: 'BeVietnamPro',
                                   fontSize: Responsive.sp(12),
@@ -164,13 +191,41 @@ class _CardmanagerexpenseState extends State<Cardmanagerexpense> {
                           ),
                         ],
                       ),
+                      SizedBox(height: Responsive.h(12)),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              'Đã tiêu\n${Format.formatnumber(spent)}đ',
+                              style: TextStyle(
+                                fontFamily: 'BeVietnamPro',
+                                fontSize: Responsive.sp(12),
+                                color: const Color(0xFF475467),
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: Text(
+                              'Còn lại\n${Format.formatnumber(remaining)}đ',
+                              textAlign: TextAlign.end,
+                              style: TextStyle(
+                                fontFamily: 'BeVietnamPro',
+                                fontSize: Responsive.sp(12),
+                                color: const Color(0xFF1D2939),
+                                fontWeight: FontWeight.w800,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                       SizedBox(height: Responsive.h(10)),
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: Responsive.w(2)),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(Responsive.r(10)),
                           child: LinearProgressIndicator(
-                            value: widget.percen ?? 0.4,
+                            value: progress,
                             backgroundColor: const Color(0xFFEAECEF),
                             color: widget.Iconcolor ?? Colors.orange,
                             minHeight: Responsive.h(6),

@@ -21,7 +21,7 @@ class MonthlySpendingCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double percent = total > 0 ? (spent / total).clamp(0.0, 1.0) : 0.0;
-    double remain = total;
+    double monthSalary = total;
 
     return AnimatedContainer(
       duration: const Duration(milliseconds: 500),
@@ -130,7 +130,7 @@ class MonthlySpendingCard extends StatelessWidget {
           ),
           SizedBox(height: Responsive.h(5)),
           Text(
-            "Số tiền trong ví thật : ${money(remain)}",
+            "Tổng lương tháng : ${money(monthSalary)}",
             style: TextStyle(
               color: Colors.white70,
               fontSize: Responsive.sp(13),

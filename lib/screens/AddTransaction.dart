@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:expense_management/components/inputs/CustomTextField.dart';
 import 'package:expense_management/components/buttons/custombutton.dart';
 import 'package:expense_management/configs/theme/color.dart';
@@ -26,17 +27,17 @@ class _AddTransactionState extends State<AddTransaction> {
   final TextEditingController _amountController = TextEditingController();
 
   String _selectedType = 'expense';
-  IconData selectedIcon = AppIcons.defaultWalletIcons[0];
-  List<IconData> displayIcons = [];
+  DateTime _selectedDate = DateTime.now();
 
-  List<Wallet> _myWallets = [];
+  List<Map<String, dynamic>> _categories = <Map<String, dynamic>>[];
+  String? _selectedCategoryId;
+
+  List<Wallet> _myWallets = <Wallet>[];
   String? _selectedWalletId;
 
   @override
   void initState() {
     super.initState();
-    displayIcons = List.from(AppIcons.defaultWalletIcons.take(4));
-
     _myWallets = WalletService().getWallets(widget.users.email);
 
     if (widget.walletId != null) {
@@ -44,6 +45,36 @@ class _AddTransactionState extends State<AddTransaction> {
     } else if (_myWallets.isNotEmpty) {
       _selectedWalletId = _myWallets.first.id;
     }
+
+    _loadCategories();
+  }
+
+  void _loadCategories() {
+    final box = Hive.box('categories');
+    final list = <Map<String, dynamic>>[];
+
+    for (final key in box.keys) {
+      final raw = box.get(key);
+      if (raw is Map) {
+        final map = Map<String, dynamic>.from(raw);
+        if ((map['user_email'] ?? '').toString() == widget.users.email) {
+          list.add({
+            ...map,
+            'id': key.toString(),
+          });
+        }
+      }
+    }
+
+    list.sort((a, b) =>
+        (a['created_at'] ?? '').toString().compareTo((b['created_at'] ?? '').toString()));
+
+    setState(() {
+      _categories = list;
+      if (_categories.isNotEmpty && _selectedCategoryId == null) {
+        _selectedCategoryId = (_categories.first['id'] ?? '').toString();
+      }
+    });
   }
 
   @override
@@ -53,7 +84,7 @@ class _AddTransactionState extends State<AddTransaction> {
     super.dispose();
   }
 
-  void _showWalletPicker() {
+  void _showCategoryPicker() {
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
@@ -70,51 +101,69 @@ class _AddTransactionState extends State<AddTransaction> {
               Padding(
                 padding: const EdgeInsets.all(20),
                 child: Text(
-                  "Chọn danh mục / Ví",
-                  style: TextStyle(fontSize: Responsive.sp(18), fontWeight: FontWeight.bold, fontFamily: 'BeVietnamPro'),
+                  'Chọn danh mục',
+                  style: TextStyle(
+                    fontSize: Responsive.sp(18),
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'BeVietnamPro',
+                  ),
                 ),
               ),
               Expanded(
-                child: ListView.builder(
-                  itemCount: _myWallets.length,
-                  itemBuilder: (context, index) {
-                    final wallet = _myWallets[index];
-                    bool isSelected = wallet.id == _selectedWalletId;
+                child: _categories.isEmpty
+                    ? Center(
+                        child: Text(
+                          'Bạn chưa có danh mục nào!',
+                          style: TextStyle(
+                            fontFamily: 'BeVietnamPro',
+                            fontSize: Responsive.sp(14),
+                            color: const Color(0xFF98A2B3),
+                          ),
+                        ),
+                      )
+                    : ListView.builder(
+                        itemCount: _categories.length,
+                        itemBuilder: (context, index) {
+                          final category = _categories[index];
+                          final categoryId = (category['id'] ?? '').toString();
+                          final isSelected = categoryId == _selectedCategoryId;
+                          final iconCode = (category['icon_code'] ?? Icons.category.codePoint) as int;
+                          final colorValue = (category['color_value'] ?? const Color(0xFF7B61FF).value) as int;
 
-                    return ListTile(
-                      contentPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 4),
-                      leading: Container(
-                        padding: const EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          color: AppColors.getColorFromHex(wallet.color).withOpacity(0.15),
-                          shape: BoxShape.circle,
-                        ),
-                        child: Icon(
-                          AppIcons.getIconFromData(wallet.icon),
-                          color: AppColors.getColorFromHex(wallet.color),
-                        ),
+                          return ListTile(
+                            contentPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 4),
+                            leading: Container(
+                              padding: const EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                color: Color(colorValue).withOpacity(0.15),
+                                shape: BoxShape.circle,
+                              ),
+                              child: Icon(
+                                IconData(iconCode, fontFamily: 'MaterialIcons'),
+                                color: Color(colorValue),
+                              ),
+                            ),
+                            title: Text(
+                              (category['name'] ?? 'Danh mục').toString(),
+                              style: TextStyle(
+                                fontSize: Responsive.sp(16),
+                                fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
+                                color: isSelected ? Colors.blueAccent : Colors.black87,
+                                fontFamily: 'BeVietnamPro',
+                              ),
+                            ),
+                            trailing: isSelected
+                                ? const Icon(Icons.check_circle, color: Colors.blueAccent)
+                                : null,
+                            onTap: () {
+                              setState(() {
+                                _selectedCategoryId = categoryId;
+                              });
+                              Navigator.pop(context);
+                            },
+                          );
+                        },
                       ),
-                      title: Text(
-                        wallet.name,
-                        style: TextStyle(
-                          fontSize: Responsive.sp(16),
-                          fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
-                          color: isSelected ? Colors.blueAccent : Colors.black87,
-                          fontFamily: 'BeVietnamPro',
-                        ),
-                      ),
-                      trailing: isSelected
-                          ? const Icon(Icons.check_circle, color: Colors.blueAccent)
-                          : null,
-                      onTap: () {
-                        setState(() {
-                          _selectedWalletId = wallet.id;
-                        });
-                        Navigator.pop(context);
-                      },
-                    );
-                  },
-                ),
               ),
             ],
           ),
@@ -123,91 +172,79 @@ class _AddTransactionState extends State<AddTransaction> {
     );
   }
 
-  void showIconPicker() {
-    Color activeThemeColor = _selectedType == 'income' ? Colors.green : Colors.red;
-
-    showDialog(
+  Future<void> _pickTransactionDate() async {
+    final picked = await showDatePicker(
       context: context,
-      builder: (context) {
-        return Dialog(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(Responsive.r(20))),
-          child: Padding(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text("Chọn biểu tượng", style: TextStyle(fontSize: Responsive.sp(18), fontWeight: FontWeight.bold, fontFamily: 'BeVietnamPro')),
-                SizedBox(height: Responsive.h(20)),
-                Wrap(
-                  spacing: 15,
-                  runSpacing: 15,
-                  children: AppIcons.extendedWalletIcons.map((icon) {
-                    return GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          selectedIcon = icon;
-                          if (!displayIcons.contains(icon)) {
-                            displayIcons.insert(0, icon);
-                            displayIcons.removeLast();
-                          }
-                        });
-                        Navigator.pop(context);
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: selectedIcon == icon ? activeThemeColor.withOpacity(0.1) : Colors.grey[100],
-                            border: Border.all(
-                              color: selectedIcon == icon ? activeThemeColor : Colors.transparent,
-                            )),
-                        child: Icon(icon, color: selectedIcon == icon ? activeThemeColor : Colors.black87),
-                      ),
-                    );
-                  }).toList(),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
+      initialDate: _selectedDate,
+      firstDate: DateTime(2020),
+      lastDate: DateTime(2100),
     );
+    if (picked != null) {
+      setState(() {
+        _selectedDate = DateTime(
+          picked.year,
+          picked.month,
+          picked.day,
+          DateTime.now().hour,
+          DateTime.now().minute,
+        );
+      });
+    }
   }
 
   void _saveTransaction() async {
-    if (_selectedWalletId == null) {
+    if (_selectedCategoryId == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Vui lòng chọn danh mục/ví trước!", style: TextStyle(color: Colors.white)), backgroundColor: Colors.red),
+        const SnackBar(
+          content: Text('Vui lòng chọn danh mục trước!'),
+          backgroundColor: Colors.red,
+        ),
       );
       return;
     }
 
     if (_titleController.text.isEmpty || _amountController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("add_transaction.error_empty".tr(), style: TextStyle(color: Colors.white)), backgroundColor: Colors.red),
+        SnackBar(
+          content: Text('add_transaction.error_empty'.tr(), style: const TextStyle(color: Colors.white)),
+          backgroundColor: Colors.red,
+        ),
       );
       return;
     }
 
-    double? amount = double.tryParse(_amountController.text);
+    final amount = double.tryParse(_amountController.text);
     if (amount == null || amount <= 0) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("add_transaction.error_invalid_amount".tr(), style: TextStyle(color: Colors.white)), backgroundColor: Colors.red),
+        SnackBar(
+          content: Text('add_transaction.error_invalid_amount'.tr(), style: const TextStyle(color: Colors.white)),
+          backgroundColor: Colors.red,
+        ),
       );
       return;
     }
 
-    Color typeColor = _selectedType == 'income' ? Colors.green : Colors.red;
+    final selectedCategory = _categories.firstWhere(
+      (c) => (c['id'] ?? '').toString() == _selectedCategoryId,
+      orElse: () => {},
+    );
 
-    TransactionRecord newTrans = TransactionRecord(
-      id: "t_${DateTime.now().millisecondsSinceEpoch}",
-      walletId: _selectedWalletId!,
-      title: _titleController.text,
+    final categoryIconCode = (selectedCategory['icon_code'] ?? Icons.category.codePoint) as int;
+    final categoryColor = Color((selectedCategory['color_value'] ?? const Color(0xFF7B61FF).value) as int);
+
+    final fallbackWalletId = _selectedWalletId ?? (_myWallets.isNotEmpty ? _myWallets.first.id : null) ?? 'general';
+
+    final newTrans = TransactionRecord(
+      id: 't_${DateTime.now().millisecondsSinceEpoch}',
+      walletId: fallbackWalletId,
+      userEmail: widget.users.email,
+      categoryId: _selectedCategoryId,
+      title: _titleController.text.trim(),
       amount: amount,
-      date: DateTime.now(),
+      date: _selectedDate,
       type: _selectedType,
-      icon: selectedIcon.codePoint.toString(),
-      color: AppColors.colorToHex(typeColor),
+      icon: categoryIconCode.toString(),
+      color: AppColors.colorToHex(categoryColor),
     );
 
     await TransactionService().addTransaction(newTrans);
@@ -219,16 +256,15 @@ class _AddTransactionState extends State<AddTransaction> {
 
   @override
   Widget build(BuildContext context) {
-    Color activeThemeColor = _selectedType == 'income' ? Colors.green : Colors.red;
+    final activeThemeColor = _selectedType == 'income' ? Colors.green : Colors.red;
 
-
-    Wallet? selectedWallet;
-    try {
-      if (_selectedWalletId != null) {
-        selectedWallet = _myWallets.firstWhere((w) => w.id == _selectedWalletId);
+    Map<String, dynamic>? selectedCategory;
+    if (_selectedCategoryId != null) {
+      try {
+        selectedCategory = _categories.firstWhere((c) => (c['id'] ?? '').toString() == _selectedCategoryId);
+      } catch (_) {
+        selectedCategory = null;
       }
-    } catch (e) {
-      selectedWallet = null;
     }
 
     return Container(
@@ -238,16 +274,21 @@ class _AddTransactionState extends State<AddTransaction> {
         left: 24,
         right: 24,
       ),
-      decoration: const BoxDecoration(
-        color: Colors.white,
-      ),
+      decoration: const BoxDecoration(color: Colors.white),
       child: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Center(
-              child: Text("add_transaction.title".tr(), style: TextStyle(fontSize: Responsive.sp(22), fontWeight: FontWeight.bold, fontFamily: 'BeVietnamPro')),
+              child: Text(
+                'add_transaction.title'.tr(),
+                style: TextStyle(
+                  fontSize: Responsive.sp(22),
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'BeVietnamPro',
+                ),
+              ),
             ),
             SizedBox(height: Responsive.h(20)),
             Row(
@@ -262,7 +303,13 @@ class _AddTransactionState extends State<AddTransaction> {
                         borderRadius: BorderRadius.circular(Responsive.r(12)),
                       ),
                       alignment: Alignment.center,
-                      child: Text("add_transaction.expense".tr(), style: TextStyle(color: _selectedType == 'expense' ? Colors.white : Colors.grey.shade600, fontWeight: FontWeight.bold)),
+                      child: Text(
+                        'add_transaction.expense'.tr(),
+                        style: TextStyle(
+                          color: _selectedType == 'expense' ? Colors.white : Colors.grey.shade600,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
                   ),
                 ),
@@ -277,17 +324,26 @@ class _AddTransactionState extends State<AddTransaction> {
                         borderRadius: BorderRadius.circular(Responsive.r(12)),
                       ),
                       alignment: Alignment.center,
-                      child: Text("add_transaction.income".tr(), style: TextStyle(color: _selectedType == 'income' ? Colors.white : Colors.grey.shade600, fontWeight: FontWeight.bold)),
+                      child: Text(
+                        'add_transaction.income'.tr(),
+                        style: TextStyle(
+                          color: _selectedType == 'income' ? Colors.white : Colors.grey.shade600,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
                   ),
                 ),
               ],
             ),
             SizedBox(height: Responsive.h(20)),
-            Text("Chọn danh mục / Ví", style: TextStyle(fontSize: Responsive.sp(14), fontWeight: FontWeight.w600, color: Colors.grey)),
+            Text(
+              'Chọn danh mục',
+              style: TextStyle(fontSize: Responsive.sp(14), fontWeight: FontWeight.w600, color: Colors.grey),
+            ),
             SizedBox(height: Responsive.h(8)),
             GestureDetector(
-              onTap: _myWallets.isEmpty ? null : _showWalletPicker,
+              onTap: _showCategoryPicker,
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
                 decoration: BoxDecoration(
@@ -297,25 +353,30 @@ class _AddTransactionState extends State<AddTransaction> {
                 ),
                 child: Row(
                   children: [
-                    if (selectedWallet != null) ...[
+                    if (selectedCategory != null) ...[
                       Icon(
-                        AppIcons.getIconFromData(selectedWallet.icon),
-                        color: AppColors.getColorFromHex(selectedWallet.color),
+                        IconData((selectedCategory['icon_code'] ?? Icons.category.codePoint) as int, fontFamily: 'MaterialIcons'),
+                        color: Color((selectedCategory['color_value'] ?? const Color(0xFF7B61FF).value) as int),
                         size: 24,
                       ),
                       SizedBox(width: Responsive.w(12)),
                       Expanded(
                         child: Text(
-                          selectedWallet.name,
-                          style: TextStyle(fontSize: Responsive.sp(16), fontWeight: FontWeight.bold, fontFamily: 'BeVietnamPro', color: Colors.black87),
+                          (selectedCategory['name'] ?? 'Danh mục').toString(),
+                          style: TextStyle(
+                            fontSize: Responsive.sp(16),
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'BeVietnamPro',
+                            color: Colors.black87,
+                          ),
                         ),
                       ),
                     ] else ...[
-                      const Icon(Icons.account_balance_wallet_outlined, color: Colors.grey, size: 24),
+                      const Icon(Icons.category_outlined, color: Colors.grey, size: 24),
                       SizedBox(width: Responsive.w(12)),
                       Expanded(
                         child: Text(
-                          _myWallets.isEmpty ? "Bạn chưa có ví nào!" : "Vui lòng chọn ví...",
+                          _categories.isEmpty ? 'Bạn chưa có danh mục nào!' : 'Vui lòng chọn danh mục...',
                           style: TextStyle(fontSize: Responsive.sp(16), color: Colors.grey, fontFamily: 'BeVietnamPro'),
                         ),
                       ),
@@ -326,73 +387,77 @@ class _AddTransactionState extends State<AddTransaction> {
               ),
             ),
             SizedBox(height: Responsive.h(16)),
-
-            Text("add_transaction.transaction_name".tr(), style: TextStyle(fontSize: Responsive.sp(14), fontWeight: FontWeight.w600, color: Colors.grey)),
+            Text(
+              'Ngày giao dịch',
+              style: TextStyle(fontSize: Responsive.sp(14), fontWeight: FontWeight.w600, color: Colors.grey),
+            ),
+            SizedBox(height: Responsive.h(8)),
+            GestureDetector(
+              onTap: _pickTransactionDate,
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade50,
+                  borderRadius: BorderRadius.circular(Responsive.r(15)),
+                  border: Border.all(color: Colors.grey.shade200),
+                ),
+                child: Row(
+                  children: [
+                    const Icon(Icons.calendar_today_rounded, color: Colors.grey, size: 20),
+                    SizedBox(width: Responsive.w(12)),
+                    Expanded(
+                      child: Text(
+                        '${_selectedDate.day.toString().padLeft(2, '0')}/${_selectedDate.month.toString().padLeft(2, '0')}/${_selectedDate.year}',
+                        style: TextStyle(
+                          fontSize: Responsive.sp(15),
+                          fontWeight: FontWeight.w600,
+                          fontFamily: 'BeVietnamPro',
+                          color: const Color(0xFF1D2939),
+                        ),
+                      ),
+                    ),
+                    const Icon(Icons.edit_calendar_rounded, color: Colors.grey),
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(height: Responsive.h(16)),
+            Text(
+              'add_transaction.transaction_name'.tr(),
+              style: TextStyle(fontSize: Responsive.sp(14), fontWeight: FontWeight.w600, color: Colors.grey),
+            ),
             SizedBox(height: Responsive.h(8)),
             CustomTextField(
               controller: _titleController,
-              hintText: "add_transaction.transaction_name_hint".tr(),
+              hintText: 'add_transaction.transaction_name_hint'.tr(),
               suffixIcon: Icons.edit_note,
             ),
             SizedBox(height: Responsive.h(16)),
-            Text("add_transaction.amount".tr(), style: TextStyle(fontSize: Responsive.sp(14), fontWeight: FontWeight.w600, color: Colors.grey)),
+            Text(
+              'add_transaction.amount'.tr(),
+              style: TextStyle(fontSize: Responsive.sp(14), fontWeight: FontWeight.w600, color: Colors.grey),
+            ),
             SizedBox(height: Responsive.h(8)),
             CustomTextField(
               controller: _amountController,
-              hintText: "0",
+              hintText: '0',
               suffixIcon: Icons.monetization_on_outlined,
               keyboardType: TextInputType.number,
             ),
-            SizedBox(height: Responsive.h(16)),
-            Text("add_transaction.choose_icon".tr(), style: TextStyle(fontWeight: FontWeight.w600, fontSize: Responsive.sp(15), color: Colors.grey)),
-            SizedBox(height: Responsive.h(12)),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                ...displayIcons.map((icon) {
-                  bool isSelected = selectedIcon == icon;
-                  return GestureDetector(
-                    onTap: () => setState(() => selectedIcon = icon),
-                    child: Container(
-                      width: 48,
-                      height: 48,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          color: isSelected ? activeThemeColor : Colors.grey.withOpacity(0.2),
-                          width: 1.5,
-                        ),
-                        color: isSelected ? activeThemeColor.withOpacity(0.05) : Colors.transparent,
-                      ),
-                      child: Icon(icon, color: isSelected ? activeThemeColor : Colors.black87),
-                    ),
-                  );
-                }).toList(),
-                GestureDetector(
-                  onTap: showIconPicker,
-                  child: Container(
-                    width: 48,
-                    height: 48,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(color: Colors.grey.withOpacity(0.2), width: 1.5),
-                    ),
-                    child: const Icon(Icons.grid_view_outlined, color: Colors.black87),
-                  ),
-                )
-              ],
-            ),
-            SizedBox(height: Responsive.h(30)),
+            SizedBox(height: Responsive.h(28)),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 TextButton(
                   onPressed: () => Navigator.pop(context),
-                  child: Text("add_transaction.cancel_btn".tr(), style: TextStyle(color: Colors.grey, fontSize: Responsive.sp(16), fontWeight: FontWeight.bold)),
+                  child: Text(
+                    'add_transaction.cancel_btn'.tr(),
+                    style: TextStyle(color: Colors.grey, fontSize: Responsive.sp(16), fontWeight: FontWeight.bold),
+                  ),
                 ),
                 custombutton(
                   onPressed: _saveTransaction,
-                  label: "add_transaction.save_btn".tr(),
+                  label: 'add_transaction.save_btn'.tr(),
                   backgroundColor: activeThemeColor,
                   textColor: Colors.white,
                   height: 45,
