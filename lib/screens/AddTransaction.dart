@@ -288,14 +288,13 @@ class _AddTransactionState extends State<AddTransaction> {
 
     await TransactionService().addTransaction(newTrans);
 
-    // Income without category is treated as unallocated money of that month.
-    if (isIncome && _selectedCategoryId == null) {
-      final now = DateTime.now();
-      final isCurrentMonth = _selectedDate.month == now.month && _selectedDate.year == now.year;
-      if (isCurrentMonth) {
-        final current = AuthService.instance.currentUser?.totalBalance ?? widget.users.totalBalance;
-        await AuthService.instance.updateUserBalance(widget.users.email, current + amount);
-      }
+    if (isIncome) {
+      await AuthService.instance.applyIncomeTransaction(
+        email: widget.users.email,
+        amount: amount,
+        transactionDate: _selectedDate,
+        categoryId: _selectedCategoryId,
+      );
     }
 
     if (mounted) {

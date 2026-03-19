@@ -1,0 +1,31 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36" version="29.3.7">
+  <diagram id="data-model-1" name="Data Object Model">
+    <mxGraphModel dx="2021" dy="1111" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1800" pageHeight="1200" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" parent="1" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;fontStyle=1;fontSize=22;" value="DATA OBJECT MODEL - App_Expense_Management" vertex="1">
+          <mxGeometry height="40" width="960" x="420" y="130" as="geometry" />
+        </mxCell>
+        <mxCell id="users" parent="1" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=10;fillColor=#FFFFFF;strokeColor=#2E7D32;strokeWidth=2;fontStyle=1;fontSize=18;" value="&lt;font style=&quot;font-size: 26px;&quot;&gt;Users&lt;/font&gt;&lt;br&gt;------------------------------&lt;br&gt;- id: String?&lt;br&gt;- username: String&lt;br&gt;- email: String&lt;br&gt;- password: String&lt;br&gt;- avatarUrl: String?&lt;br&gt;- totalBalance: double&lt;br&gt;- monthlySalary: double&lt;br&gt;- salaryLastCreditedMonth: String?&lt;br&gt;- savingsBalance: double&lt;br&gt;- balanceMonthKey: String?&lt;br&gt;------------------------------&lt;br&gt;+ fromMap(Map)&lt;br&gt;+ fromApi(Map)&lt;br&gt;+ toMap(): Map" vertex="1">
+          <mxGeometry height="400" width="420" x="220" y="200" as="geometry" />
+        </mxCell>
+        <mxCell id="wallet" parent="1" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=10;fillColor=#FFFFFF;strokeColor=#2E7D32;strokeWidth=2;fontStyle=1;fontSize=18;" value="&lt;font style=&quot;font-size: 26px;&quot;&gt;Wallet&lt;br&gt;&lt;/font&gt;------------------------------&lt;br&gt;- id: String?&lt;br&gt;- userEmail: String&lt;br&gt;- name: String&lt;br&gt;- icon: String&lt;br&gt;- color: String&lt;br&gt;- balance: double&lt;br&gt;------------------------------&lt;br&gt;+ fromMap(String, Map)&lt;br&gt;+ toMap(): Map" vertex="1">
+          <mxGeometry height="280" width="360" x="760" y="250" as="geometry" />
+        </mxCell>
+        <mxCell id="transaction" parent="1" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=10;fillColor=#FFFFFF;strokeColor=#2E7D32;strokeWidth=2;fontStyle=1;fontSize=18;" value="&lt;font style=&quot;font-size: 26px;&quot;&gt;TransactionRecord&lt;br&gt;&lt;/font&gt;------------------------------&lt;br&gt;- id: String?&lt;br&gt;- walletId: String&lt;br&gt;- userEmail: String?&lt;br&gt;- categoryId: String?&lt;br&gt;- title: String&lt;br&gt;- amount: double&lt;br&gt;- type: String&lt;br&gt;- date: DateTime&lt;br&gt;- icon: String&lt;br&gt;- color: String&lt;br&gt;------------------------------&lt;br&gt;+ fromMap(String, Map)&lt;br&gt;+ toMap(): Map" vertex="1">
+          <mxGeometry height="390" width="310" x="1260" y="210" as="geometry" />
+        </mxCell>
+        <mxCell id="rel_users_wallet" edge="1" parent="1" source="users" style="endArrow=block;html=1;rounded=0;strokeWidth=2;fontSize=18;" target="wallet" value="1 ---- has ---- 0..*">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel_wallet_tx" edge="1" parent="1" source="wallet" style="endArrow=block;html=1;rounded=0;strokeWidth=2;fontSize=18;" target="transaction" value="1 ---- has ---- 0..*">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel_users_tx" edge="1" parent="1" source="users" style="dashed=1;endArrow=open;html=1;rounded=0;strokeColor=#616161;fontSize=18;" target="transaction" value="0..1 reference ---- 0..*">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

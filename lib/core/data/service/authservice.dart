@@ -379,6 +379,77 @@ class AuthService {
     await reconcileMonthlyBalance(email, rebuildCurrentMonthBalance: true);
   }
 
+  Future<void> applyIncomeTransaction({
+    required String email,
+    required double amount,
+    required DateTime transactionDate,
+    String? categoryId,
+  }) async {
+    if (amount <= 0) return;
+
+    final now = DateTime.now();
+    final isCurrentMonth =
+        transactionDate.month == now.month && transactionDate.year == now.year;
+
+    // Keep monthly-balance behavior stable: only current month transactions affect
+    // current working balance/allocation bucket.
+    if (!isCurrentMonth) return;
+
+    final userData = userBox.get(email);
+    final userMap = userData != null
+        ? Map<String, dynamic>.from(userData)
+        : (currentUser?.toMap() ?? <String, dynamic>{'email': email});
+
+    final currentBalance = _safeDouble(userMap['total_balance']);
+    userMap['total_balance'] = currentBalance + amount;
+    await userBox.put(email, userMap);
+    _syncCurrentUserFromMap(userMap);
+
+    final normalizedCategoryId = categoryId?.trim();
+    if (normalizedCategoryId == null || normalizedCategoryId.isEmpty) {
+      return;
+    }
+
+    final budgetBox = await _ensureBudgetBox();
+    final rawBudget = budgetBox.get(email);
+    final budgetMap = rawBudget is Map
+        ? Map<String, dynamic>.from(rawBudget)
+        : <String, dynamic>{'user_email': email};
+
+    // Migration: old format {'amounts': {...}} -> {'months': {'YYYY-MM': {'amounts': {...}}}}
+    if (budgetMap['months'] is! Map && budgetMap['amounts'] is Map) {
+      final nowKey = _monthKey(now);
+      budgetMap['months'] = {
+        nowKey: {
+          'amounts': Map<String, dynamic>.from(budgetMap['amounts'] as Map),
+        }
+      };
+      budgetMap.remove('amounts');
+    }
+
+    final monthKey = _monthKey(now);
+    _ensureCurrentMonthBudgetNode(budgetMap, monthKey);
+
+    final months = Map<String, dynamic>.from(budgetMap['months'] as Map);
+    final monthRaw = months[monthKey];
+    final monthData = monthRaw is Map
+        ? Map<String, dynamic>.from(monthRaw)
+        : <String, dynamic>{};
+    final amountsRaw = monthData['amounts'];
+    final amounts = amountsRaw is Map
+        ? Map<String, dynamic>.from(amountsRaw)
+        : <String, dynamic>{};
+
+    amounts[normalizedCategoryId] =
+        _safeDouble(amounts[normalizedCategoryId]) + amount;
+    monthData['amounts'] = amounts;
+    months[monthKey] = monthData;
+    budgetMap['months'] = months;
+    budgetMap['updated_at'] = DateTime.now().toIso8601String();
+
+    await budgetBox.put(email, budgetMap);
+  }
+
   Future<bool> applyMonthlySalaryIfNeeded(String email) async {
     return reconcileMonthlyBalance(email);
   }

@@ -1,0 +1,202 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36" version="29.3.7">
+  <diagram id="func-decomp-1" name="Functional Decomposition">
+    <mxGraphModel dx="4221" dy="1111" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2200" pageHeight="1400" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="root" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E1D5E7;strokeColor=#9673A6;fontStyle=1;fontSize=21;" value="He thong Quan ly Chi tieu&#xa;(App_Expense_Management)" vertex="1">
+          <mxGeometry height="80" width="420" x="860" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="l1_auth" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontSize=21;" value="1. Quan ly Nguoi dung va Cai dat" vertex="1">
+          <mxGeometry height="70" width="260" x="-30" y="250" as="geometry" />
+        </mxCell>
+        <mxCell id="l1_category" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontSize=21;" value="2. Quan ly Nhom/Danh muc" vertex="1">
+          <mxGeometry height="70" width="260" x="330" y="250" as="geometry" />
+        </mxCell>
+        <mxCell id="l1_transaction" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontSize=21;" value="3. Quan ly Giao dich" vertex="1">
+          <mxGeometry height="70" width="260" x="610" y="250" as="geometry" />
+        </mxCell>
+        <mxCell id="l1_budget" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontSize=21;" value="4. Phan bo Ngan sach" vertex="1">
+          <mxGeometry height="70" width="260" x="890" y="250" as="geometry" />
+        </mxCell>
+        <mxCell id="l1_home" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontSize=21;" value="5. Tong quan Trang chu" vertex="1">
+          <mxGeometry height="70" width="260" x="1170" y="250" as="geometry" />
+        </mxCell>
+        <mxCell id="l1_history" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontSize=21;" value="6. Lich su Giao dich" vertex="1">
+          <mxGeometry height="70" width="260" x="1450" y="250" as="geometry" />
+        </mxCell>
+        <mxCell id="l1_stat" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontSize=21;" value="7. Thong ke" vertex="1">
+          <mxGeometry height="70" width="260" x="1730" y="250" as="geometry" />
+        </mxCell>
+        <mxCell id="a11" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656;fontSize=21;" value="1.1 Dang nhap/Dang ky&#xa;(Email, Google, Facebook)" vertex="1">
+          <mxGeometry height="70" width="200" x="-120" y="390" as="geometry" />
+        </mxCell>
+        <mxCell id="a12" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656;fontSize=21;" value="1.2 Ho so nguoi dung&#xa;(Thong tin ca nhan, Dang xuat)" vertex="1">
+          <mxGeometry height="70" width="200" x="120" y="380" as="geometry" />
+        </mxCell>
+        <mxCell id="a13" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656;fontSize=21;" value="1.3 Cai dat he thong&#xa;(Ngon ngu, Luong thang)" vertex="1">
+          <mxGeometry height="70" width="200" y="510" as="geometry" />
+        </mxCell>
+        <mxCell id="c21" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F8CECC;strokeColor=#B85450;fontSize=21;" value="2.1 CRUD Nhom danh muc" vertex="1">
+          <mxGeometry height="60" width="240" x="340" y="420" as="geometry" />
+        </mxCell>
+        <mxCell id="c22" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F8CECC;strokeColor=#B85450;fontSize=21;" value="2.2 CRUD Danh muc&#xa;(Icon, Mau, Group)" vertex="1">
+          <mxGeometry height="70" width="240" x="340" y="510" as="geometry" />
+        </mxCell>
+        <mxCell id="c23" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F8CECC;strokeColor=#B85450;fontSize=21;" value="2.3 Loc theo nhom&#xa;(Home + BottomSheet)" vertex="1">
+          <mxGeometry height="70" width="240" x="340" y="625" as="geometry" />
+        </mxCell>
+        <mxCell id="t31" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;fontSize=21;" value="3.1 Tao giao dich thu/chi" vertex="1">
+          <mxGeometry height="60" width="240" x="620" y="410" as="geometry" />
+        </mxCell>
+        <mxCell id="t32" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;fontSize=21;" value="3.2 Gan danh muc + ngay giao dich" vertex="1">
+          <mxGeometry height="60" width="240" x="620" y="500" as="geometry" />
+        </mxCell>
+        <mxCell id="t33" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;fontSize=21;" value="3.3 Thu khong danh muc -&amp;gt; tien chua phan bo" vertex="1">
+          <mxGeometry height="70" width="240" x="620" y="590" as="geometry" />
+        </mxCell>
+        <mxCell id="t34" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;fontSize=21;" value="3.4 Xoa giao dich (swipe)" vertex="1">
+          <mxGeometry height="60" width="240" x="620" y="680" as="geometry" />
+        </mxCell>
+        <mxCell id="b41" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFE6CC;strokeColor=#D79B00;fontSize=21;" value="4.1 Phan bo theo thang (YYYY-MM)" vertex="1">
+          <mxGeometry height="60" width="240" x="900" y="410" as="geometry" />
+        </mxCell>
+        <mxCell id="b42" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFE6CC;strokeColor=#D79B00;fontSize=21;" value="4.2 Phan bo theo danh muc" vertex="1">
+          <mxGeometry height="60" width="240" x="900" y="500" as="geometry" />
+        </mxCell>
+        <mxCell id="b43" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFE6CC;strokeColor=#D79B00;fontSize=21;" value="4.3 Tong hop: da phan bo / con lai" vertex="1">
+          <mxGeometry height="60" width="240" x="900" y="590" as="geometry" />
+        </mxCell>
+        <mxCell id="b44" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFE6CC;strokeColor=#D79B00;fontSize=21;" value="4.4 Luu vao Hive box: budget_allocations" vertex="1">
+          <mxGeometry height="60" width="240" x="900" y="680" as="geometry" />
+        </mxCell>
+        <mxCell id="h51" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E1D5E7;strokeColor=#9673A6;fontSize=21;" value="5.1 Tong quan so du, tiet kiem, da tieu" vertex="1">
+          <mxGeometry height="60" width="240" x="1180" y="410" as="geometry" />
+        </mxCell>
+        <mxCell id="h52" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E1D5E7;strokeColor=#9673A6;fontSize=21;" value="5.2 Card chi tieu thang (% theo luong)" vertex="1">
+          <mxGeometry height="60" width="240" x="1180" y="500" as="geometry" />
+        </mxCell>
+        <mxCell id="h53" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E1D5E7;strokeColor=#9673A6;fontSize=21;" value="5.3 Chi tieu theo danh muc&#xa;(Da phan bo/Da tieu/Con lai)" vertex="1">
+          <mxGeometry height="70" width="240" x="1180" y="590" as="geometry" />
+        </mxCell>
+        <mxCell id="h54" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E1D5E7;strokeColor=#9673A6;fontSize=21;" value="5.4 Swipe xoa danh muc + cap nhat du lieu" vertex="1">
+          <mxGeometry height="60" width="240" x="1180" y="680" as="geometry" />
+        </mxCell>
+        <mxCell id="his61" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F5F5F5;strokeColor=#666666;fontSize=21;" value="6.1 Tong quan theo thang&#xa;(Pie chart Thu/Chi)" vertex="1">
+          <mxGeometry height="70" width="240" x="1460" y="440" as="geometry" />
+        </mxCell>
+        <mxCell id="his62" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F5F5F5;strokeColor=#666666;fontSize=21;" value="6.2 Giao dich gan day + xem tat ca" vertex="1">
+          <mxGeometry height="60" width="240" x="1460" y="540" as="geometry" />
+        </mxCell>
+        <mxCell id="his63" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F5F5F5;strokeColor=#666666;fontSize=21;" value="6.3 Loc thang + nhom theo ngay" vertex="1">
+          <mxGeometry height="60" width="240" x="1460" y="655" as="geometry" />
+        </mxCell>
+        <mxCell id="s71" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D4E1F5;strokeColor=#6C8EBF;fontSize=21;" value="7.1 Overview card (Tong chi tieu thang)" vertex="1">
+          <mxGeometry height="60" width="240" x="1740" y="445" as="geometry" />
+        </mxCell>
+        <mxCell id="s72" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D4E1F5;strokeColor=#6C8EBF;fontSize=21;" value="7.2 Bieu do Thu/Chi (Bar chart)" vertex="1">
+          <mxGeometry height="60" width="240" x="1740" y="540" as="geometry" />
+        </mxCell>
+        <mxCell id="s73" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D4E1F5;strokeColor=#6C8EBF;fontSize=21;" value="7.3 Bieu do bien dong so du (Line chart)" vertex="1">
+          <mxGeometry height="60" width="240" x="1740" y="630" as="geometry" />
+        </mxCell>
+        <mxCell id="cross" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656;fontSize=21;" value="8. Dich vu nen tang (xuyen suot)&#xa;- Luu tru: Hive (users, wallets, transactions, categories, category_groups, budget_allocations)&#xa;- Da ngon ngu: EasyLocalization (vi/en)&#xa;- Dieu huong: Routes + Bottom navigation" vertex="1">
+          <mxGeometry height="110" width="1040" x="490" y="790" as="geometry" />
+        </mxCell>
+        <mxCell id="e_root_1" edge="1" parent="1" source="root" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontSize=21;" target="l1_auth">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_root_2" edge="1" parent="1" source="root" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontSize=21;" target="l1_category">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_root_3" edge="1" parent="1" source="root" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontSize=21;" target="l1_transaction">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_root_4" edge="1" parent="1" source="root" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontSize=21;" target="l1_budget">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_root_5" edge="1" parent="1" source="root" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontSize=21;" target="l1_home">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_root_6" edge="1" parent="1" source="root" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontSize=21;" target="l1_history">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_root_7" edge="1" parent="1" source="root" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;fontSize=21;" target="l1_stat">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e11" edge="1" parent="1" source="l1_auth" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;fontSize=21;" target="a11">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e12" edge="1" parent="1" source="l1_auth" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;fontSize=21;" target="a12">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e13" edge="1" parent="1" source="l1_auth" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;fontSize=21;" target="a13">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e21" edge="1" parent="1" source="l1_category" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;fontSize=21;" target="c21">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e22" edge="1" parent="1" source="l1_category" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;fontSize=21;" target="c22">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e23" edge="1" parent="1" source="l1_category" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;fontSize=21;" target="c23">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e31" edge="1" parent="1" source="l1_transaction" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;fontSize=21;" target="t31">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e32" edge="1" parent="1" source="l1_transaction" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;fontSize=21;" target="t32">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e33" edge="1" parent="1" source="l1_transaction" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;fontSize=21;" target="t33">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e34" edge="1" parent="1" source="l1_transaction" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;fontSize=21;" target="t34">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e41" edge="1" parent="1" source="l1_budget" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;fontSize=21;" target="b41">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e42" edge="1" parent="1" source="l1_budget" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;fontSize=21;" target="b42">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e43" edge="1" parent="1" source="l1_budget" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;fontSize=21;" target="b43">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e44" edge="1" parent="1" source="l1_budget" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;fontSize=21;" target="b44">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e51" edge="1" parent="1" source="l1_home" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;fontSize=21;" target="h51">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e52" edge="1" parent="1" source="l1_home" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;fontSize=21;" target="h52">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e53" edge="1" parent="1" source="l1_home" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;fontSize=21;" target="h53">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e54" edge="1" parent="1" source="l1_home" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;fontSize=21;" target="h54">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e61" edge="1" parent="1" source="l1_history" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;fontSize=21;" target="his61">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e62" edge="1" parent="1" source="l1_history" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;fontSize=21;" target="his62">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e63" edge="1" parent="1" source="l1_history" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;fontSize=21;" target="his63">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e71" edge="1" parent="1" source="l1_stat" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;fontSize=21;" target="s71">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e72" edge="1" parent="1" source="l1_stat" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;fontSize=21;" target="s72">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e73" edge="1" parent="1" source="l1_stat" style="edgeStyle=orthogonalEdgeStyle;html=1;endArrow=block;endFill=1;fontSize=21;" target="s73">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
